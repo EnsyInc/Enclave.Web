@@ -36,8 +36,8 @@ jobs:
             exit 1
           }
 
-      - name: Build
-        run: npx ng build
+      - name: Build image
+        run: docker build -t enclave-web:ci .
 
   test:
     runs-on: ubuntu-latest
