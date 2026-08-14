@@ -23,7 +23,7 @@ export class ThemeService {
   }
 
   private applyTheme(theme: Theme): void {
-    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.dataset['theme'] = theme;
   }
 
   private resolveInitialTheme(): Theme {
