@@ -30,7 +30,11 @@ jobs:
         run: npm ci
 
       - name: Check formatting
-        run: npx prettier --check .
+        run: |
+          npx prettier --check . || {
+            echo "::error::Formatting check failed. Run 'npx prettier --write .' locally, then commit and push the changes."
+            exit 1
+          }
 
       - name: Build
         run: npx ng build

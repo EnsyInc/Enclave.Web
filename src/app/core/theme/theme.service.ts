@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 
 export type Theme = 'dark' | 'light';
 
-const STORAGE_KEY = 'enclave-theme';
+export const STORAGE_KEY = 'enclave-theme';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
@@ -29,7 +29,7 @@ export class ThemeService {
   private resolveInitialTheme(): Theme {
     // Precedence: remembered choice > OS preference > brand default (dark —
     // see docs/UiUx/branding.md, "Dark mode is the natural home for this palette").
-    if (typeof localStorage === 'undefined' || typeof window === 'undefined') {
+    if (typeof localStorage === 'undefined') {
       return 'dark';
     }
 
