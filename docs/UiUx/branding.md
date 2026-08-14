@@ -10,16 +10,16 @@ Source file: [`assets/logo.png`](./assets/logo.png).
 
 Confirmed by the FE designer (supersedes the earlier logo-sampled estimates). Implemented as CSS custom properties in [`src/styles/_tokens.scss`](../../src/styles/_tokens.scss).
 
-| Token | Role | Light | Dark |
-|---|---|---|---|
-| **BG** | Base page background | `#F8F8F5` | `#14140C` |
-| **Surface** | Secondary surfaces (headers, panels) | `#FFFFFF` | `#1B1B13` |
-| **Card** | Elevated content containers | `#FFFFFF` | `#232319` |
-| **Border** | Dividers, outlines | `#E7E3D7` | `#353323` |
-| **Primary accent** | Primary actions/highlights | `#D8B315` | `#D8B315` |
-| **Secondary accent** | Secondary actions, borders | `#B88416` | `#B88416` |
-| **Text** | Body text | `#1C1C19` | `#FFFFFF` |
-| **Secondary text** | Muted/supporting text | `#5E5E56` | `#B6B6A8` |
+| Token                | Role                                 | Light     | Dark      |
+| -------------------- | ------------------------------------ | --------- | --------- |
+| **BG**               | Base page background                 | `#F8F8F5` | `#14140C` |
+| **Surface**          | Secondary surfaces (headers, panels) | `#FFFFFF` | `#1B1B13` |
+| **Card**             | Elevated content containers          | `#FFFFFF` | `#232319` |
+| **Border**           | Dividers, outlines                   | `#E7E3D7` | `#353323` |
+| **Primary accent**   | Primary actions/highlights           | `#D8B315` | `#D8B315` |
+| **Secondary accent** | Secondary actions, borders           | `#B88416` | `#B88416` |
+| **Text**             | Body text                            | `#1C1C19` | `#FFFFFF` |
+| **Secondary text**   | Muted/supporting text                | `#5E5E56` | `#B6B6A8` |
 
 The destructive/danger color is not yet part of the designer's handoff — the implementation currently uses a conventional red (`#DC2626`) as a placeholder pending confirmation.
 
@@ -27,7 +27,7 @@ The destructive/danger color is not yet part of the designer's handoff — the i
 
 ## Typography
 
-**Inter** is the app's primary typeface, self-hosted via `@fontsource-variable/inter` (imported once in `src/main.ts`) rather than loaded from a CDN. The font stack is exposed as the `--font-sans` token in [`src/styles/_typography.scss`](../../src/styles/_typography.scss): `'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`.
+**Inter** is the app's primary typeface, self-hosted via `@fontsource-variable/inter` (imported once in `src/styles.scss`) rather than loaded from a CDN. The font stack is exposed as the `--font-sans` token in [`src/styles/_typography.scss`](../../src/styles/_typography.scss): `'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`.
 
 ## Light/dark mode
 
