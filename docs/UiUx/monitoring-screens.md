@@ -2,20 +2,21 @@
 
 See [monitoring-service.md](../monitoring-service.md) for the underlying entities, feature list, and status-derivation rules this spec is built on.
 
-**Scope note**: this document specifies *what* screens exist, what data/actions each needs, and the flows between them. It intentionally does not prescribe layout, visual design, or component choices — that's for the UI/UX designer to own.
+**Scope note**: this document specifies _what_ screens exist, what data/actions each needs, and the flows between them. It intentionally does not prescribe layout, visual design, or component choices — that's for the UI/UX designer to own.
 
 ---
 
 ## Admin backoffice
 
 ### Screen inventory
-| Screen | Purpose |
-|---|---|
-| Status Dashboard | At-a-glance live status of every product |
-| Product Monitoring Config | Configure the health-check endpoint per product |
-| Incidents list | Browse/filter all incidents |
-| Incident detail | View and update a single incident |
-| Create/Update Incident form | Open a new incident or add a timeline update |
+
+| Screen                      | Purpose                                         |
+| --------------------------- | ----------------------------------------------- |
+| Status Dashboard            | At-a-glance live status of every product        |
+| Product Monitoring Config   | Configure the health-check endpoint per product |
+| Incidents list              | Browse/filter all incidents                     |
+| Incident detail             | View and update a single incident               |
+| Create/Update Incident form | Open a new incident or add a timeline update    |
 
 ### Per-screen detail
 
@@ -30,6 +31,7 @@ See [monitoring-service.md](../monitoring-service.md) for the underlying entitie
 **Create/Update Incident form** — Fields: affected product(s) (multi-select), title, description, severity (Minor/Major/Critical), status (Investigating/Identified/Monitoring/Resolved), optional root-cause/internal notes. Timeline updates are appended entries over the incident's life, not a one-time field.
 
 ### Key flows
+
 - **M1 — React to automated detection**: Status Dashboard shows a product down (health check) or degraded (smoke test, internal-only) → admin opens an Incident from that row, pre-filled with the affected product.
 - **M2 — Manually report an issue automation missed**: Incidents list → Create Incident → select affected product(s), set severity/status, describe → save.
 - **M3 — Update an ongoing incident**: Incident detail → add timeline update (status change, new info) → eventually mark Resolved.
@@ -39,11 +41,12 @@ See [monitoring-service.md](../monitoring-service.md) for the underlying entitie
 ## Public status page (no login required)
 
 ### Screen inventory
-| Screen | Purpose |
-|---|---|
-| Status Overview | Public landing page: current status of every product |
-| Incident History | Public list of past incidents |
-| Product Uptime detail | Aggregate uptime history for one product |
+
+| Screen                | Purpose                                              |
+| --------------------- | ---------------------------------------------------- |
+| Status Overview       | Public landing page: current status of every product |
+| Incident History      | Public list of past incidents                        |
+| Product Uptime detail | Aggregate uptime history for one product             |
 
 ### Per-screen detail
 
@@ -54,6 +57,7 @@ See [monitoring-service.md](../monitoring-service.md) for the underlying entitie
 **Product Uptime detail** — Data: rounded/aggregate uptime % over time per product (e.g. "99.95% last 90 days"), status-over-time graph.
 
 ### Key flows
+
 - **M4 — Public visitor checks overall health**: Status Overview → see all products' current badges → optionally drill into Incident History or a product's Uptime detail.
 
 ---
@@ -61,11 +65,12 @@ See [monitoring-service.md](../monitoring-service.md) for the underlying entitie
 ## Customer backoffice (authenticated status view)
 
 ### Screen inventory
-| Screen | Purpose |
-|---|---|
-| My Services Status | Status overview scoped to the org's licensed products |
+
+| Screen                     | Purpose                                                      |
+| -------------------------- | ------------------------------------------------------------ |
+| My Services Status         | Status overview scoped to the org's licensed products        |
 | Incident detail (customer) | Same as public incident view, plus root-cause/internal notes |
-| Precise Uptime detail | Exact downtime timestamps/durations, not just rounded % |
+| Precise Uptime detail      | Exact downtime timestamps/durations, not just rounded %      |
 
 ### Per-screen detail
 
@@ -76,6 +81,7 @@ See [monitoring-service.md](../monitoring-service.md) for the underlying entitie
 **Precise Uptime detail** — Exact timestamps and durations of downtime for the org's licensed products, versus the public page's rounded aggregate %.
 
 ### Key flows
+
 - **M5 — Customer checks their services' status**: My Services Status → scoped badges for licensed products only.
 - **M6 — Customer drills into an incident**: Incident detail (customer) → sees root-cause notes and precise downtime figures not available on the public page.
 

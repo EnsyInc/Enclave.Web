@@ -1,0 +1,54 @@
+// Color tokens for the EnsyLabs brand.
+// Palette source: FE designer handoff (light + dark themes confirmed).
+//
+// Each theme's values live in one mixin so there's a single place to edit
+// when new colors arrive — both the explicit [data-theme] override and the
+// prefers-color-scheme fallback include the same mixin, so they can't drift.
+
+@mixin dark-theme-tokens {
+  --color-bg: #14140c;
+  --color-surface: #1b1b13;
+  --color-card: #232319;
+  --color-border: #353323;
+  --color-text: #ffffff;
+  --color-text-muted: #b6b6a8;
+
+  --color-primary: #d8b315;
+  --color-primary-text: #14140c;
+  --color-secondary: #b88416;
+  --color-secondary-text: #b88416;
+  --color-danger: #dc2626;
+  --color-danger-text: #ffffff;
+}
+
+@mixin light-theme-tokens {
+  --color-bg: #f8f8f5;
+  --color-surface: #ffffff;
+  --color-card: #ffffff;
+  --color-border: #e7e3d7;
+  --color-text: #1c1c19;
+  --color-text-muted: #5e5e56;
+
+  --color-primary: #d8b315;
+  --color-primary-text: #1c1c19;
+  --color-secondary: #b88416;
+  --color-secondary-text: #b88416;
+  --color-danger: #dc2626;
+  --color-danger-text: #ffffff;
+}
+
+// Dark is the default (bare :root) — see docs/UiUx/branding.md, "Dark mode
+// is the natural home for this palette".
+:root {
+  @include dark-theme-tokens;
+}
+
+:root[data-theme='light'] {
+  @include light-theme-tokens;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']):not([data-theme='light']) {
+    @include light-theme-tokens;
+  }
+}

@@ -1,0 +1,7 @@
+// Typography tokens. Inter (self-hosted via @fontsource-variable/inter,
+// imported in styles.scss) is the app's primary typeface.
+:root {
+  --font-sans:
+    'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+}

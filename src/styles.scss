@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+@use './styles/tokens';
+@use './styles/typography';
+@use '@fontsource-variable/inter';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
