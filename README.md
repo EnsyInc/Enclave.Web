@@ -4,8 +4,6 @@
 
 Frontend for EnsyInc's Licensing + Monitoring platform. The backend lives in [EnsyInc/Enclave](https://github.com/EnsyInc/Enclave).
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.4.
-
 ## Development server
 
 To start a local development server, run:
@@ -33,13 +31,3 @@ To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use th
 ```bash
 ng test
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
