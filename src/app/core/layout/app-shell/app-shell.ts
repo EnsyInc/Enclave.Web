@@ -1,8 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatListModule } from '@angular/material/list';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSidenav, MatSidenavContainer, MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -16,6 +24,7 @@ export const SIDENAV_STORAGE_KEY = 'enclave-sidenav-collapsed';
   imports: [
     AppHeader,
     EnsyLabsIcon,
+    MatBadgeModule,
     MatDividerModule,
     MatSidenavModule,
     MatListModule,
@@ -29,6 +38,9 @@ export const SIDENAV_STORAGE_KEY = 'enclave-sidenav-collapsed';
 })
 export class AppShell {
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly drawer = viewChild.required<MatSidenav>('drawer');
+  private readonly sidenavContainer = viewChild.required(MatSidenavContainer);
+  private animationFrameId?: number;
 
   protected readonly isHandset = toSignal(
     this.breakpointObserver.observe(Breakpoints.Handset).pipe(map((state) => state.matches)),
@@ -36,10 +48,7 @@ export class AppShell {
   );
   protected readonly sidenavCollapsed = signal(this.getInitialSidenavCollapseState());
   protected readonly sidenavContentHidden = signal(this.getInitialSidenavCollapseState());
-  private animationFrameId?: number;
-
-  private readonly drawer = viewChild.required<MatSidenav>('drawer');
-  private readonly sidenavContainer = viewChild.required(MatSidenavContainer);
+  protected readonly licenseRequestsCount = input<number>(3);
 
   protected onToggleSidenav(): void {
     if (this.isHandset()) {
