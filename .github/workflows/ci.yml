@@ -29,10 +29,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Check formatting
+      - name: Lint and check formatting
         run: |
           npx prettier --check . || {
             echo "::error::Formatting check failed. Run 'npx prettier --write .' locally, then commit and push the changes."
+            exit 1
+          }
+          npx ng lint || {
+            echo "::error::Lint check failed. Run 'npx ng lint' locally to see the errors, then fix them, commit, and push the changes."
             exit 1
           }
 

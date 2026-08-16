@@ -45,4 +45,12 @@ describe('app routes', () => {
       expect(route.snapshot.data['breadcrumb']).toBe(breadcrumb);
     },
   );
+
+  it('tags every admin route with a section of "Admin"', async () => {
+    const harness = await RouterTestingHarness.create('/admin/dashboard');
+    const router = TestBed.inject(Router);
+
+    expect(harness.routeDebugElement).toBeTruthy();
+    expect(router.routerState.root.firstChild?.snapshot.data['section']).toBe('Admin');
+  });
 });

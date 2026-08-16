@@ -54,7 +54,10 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+}
+
+mat-divider.mat-divider {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  border-color: var(--color-border);
 }
