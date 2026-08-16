@@ -1,75 +1,75 @@
 :host {
-    display: block;
-    height: 100dvh;
+  display: block;
+  height: 100dvh;
 }
 
 .brand {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
 }
 
 .brand-text {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .logo {
-    height: 3rem;
-    width: 3rem;
+  height: 3rem;
+  width: 3rem;
 }
 
 .brand-name {
-    font-family: var(--font-mono);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
 }
 
 .brand-subtitle {
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 0.05rem;
-    color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  color: var(--color-text-muted);
 }
 
 .section-label {
-    font-size: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05rem;
-    color: var(--color-text-muted);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  color: var(--color-text-muted);
 }
 
 mat-divider {
-    margin-block: 1rem;
+  margin-block: 1rem;
 }
 
 .brand,
 .section-label,
 mat-nav-list {
-    padding-inline: 1rem;
+  padding-inline: 1rem;
 }
 
 mat-sidenav-container {
-    height: 100%;
+  height: 100%;
 
-    a {
-        border-radius: 0.75rem;
-        
-        &.active {
-            background-color: var(--color-border);
+  a {
+    border-radius: 0.75rem;
 
-            ensy-icon {
-                color: var(--color-primary);
-            }
-        }
+    &.active {
+      background-color: var(--color-border);
 
-        ensy-icon {
-            color: var(--color-text)
-        }
+      ensy-icon {
+        color: var(--color-primary);
+      }
     }
+
+    ensy-icon {
+      color: var(--color-text);
+    }
+  }
 }

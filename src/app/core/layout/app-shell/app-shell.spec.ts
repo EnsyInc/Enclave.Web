@@ -23,7 +23,10 @@ describe('AppShell', () => {
       imports: [AppShell],
       providers: [
         provideRouter([]),
-        { provide: BreakpointObserver, useValue: { observe: () => breakpointState$.asObservable() } },
+        {
+          provide: BreakpointObserver,
+          useValue: { observe: () => breakpointState$.asObservable() },
+        },
       ],
     }).compileComponents();
 
@@ -37,7 +40,8 @@ describe('AppShell', () => {
   });
 
   it('opens the sidenav as a permanent side panel on desktop', () => {
-    const sidenav = fixture.debugElement.query(By.directive(MatSidenav)).componentInstance as MatSidenav;
+    const sidenav = fixture.debugElement.query(By.directive(MatSidenav))
+      .componentInstance as MatSidenav;
     expect(sidenav.mode).toBe('side');
     expect(sidenav.opened).toBe(true);
   });
@@ -46,14 +50,18 @@ describe('AppShell', () => {
     breakpointState$.next({ matches: true, breakpoints: {} });
     await fixture.whenStable();
 
-    const sidenav = fixture.debugElement.query(By.directive(MatSidenav)).componentInstance as MatSidenav;
+    const sidenav = fixture.debugElement.query(By.directive(MatSidenav))
+      .componentInstance as MatSidenav;
     expect(sidenav.mode).toBe('over');
     expect(sidenav.opened).toBe(false);
   });
 
   it('renders a nav link for each admin route', () => {
-    const links: HTMLAnchorElement[] = fixture.debugElement.nativeElement.querySelectorAll('a[mat-list-item]');
-    const hrefs = Array.from(links).map(link => link.getAttribute('routerLink') ?? link.getAttribute('href'));
+    const links: HTMLAnchorElement[] =
+      fixture.debugElement.nativeElement.querySelectorAll('a[mat-list-item]');
+    const hrefs = Array.from(links).map(
+      (link) => link.getAttribute('routerLink') ?? link.getAttribute('href'),
+    );
 
     expect(hrefs).toEqual([
       '/admin/dashboard',

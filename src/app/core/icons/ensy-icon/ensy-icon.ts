@@ -8,6 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './ensy-icon.scss',
 })
 export class EnsyIcon {
-    @Input({ required: true }) name: string = '';
-    @Input() color?: string;
+  @Input({ required: true }) name: string = '';
+  @Input() color?: string;
 }
