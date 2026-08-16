@@ -50,6 +50,6 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('app-shell')).toBeTruthy();
+    expect(compiled.querySelector('enclave-shell')).toBeTruthy();
   });
 });

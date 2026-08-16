@@ -2,18 +2,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MatIcon } from '@angular/material/icon';
 
-import { EnsyIcon } from './ensy-icon';
+import { EnsyLabsIcon } from './ensy-labs-icon';
 
-describe('EnsyIcon', () => {
-  let component: EnsyIcon;
-  let fixture: ComponentFixture<EnsyIcon>;
+describe('EnsyLabsIcon', () => {
+  let component: EnsyLabsIcon;
+  let fixture: ComponentFixture<EnsyLabsIcon>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EnsyIcon],
+      imports: [EnsyLabsIcon],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EnsyIcon);
+    fixture = TestBed.createComponent(EnsyLabsIcon);
     component = fixture.componentInstance;
   });
 

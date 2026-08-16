@@ -6,16 +6,16 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSidenav, MatSidenavContainer, MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { EnsyIcon } from '../../icons/ensy-icon/ensy-icon';
+import { EnsyLabsIcon } from '../../icons/ensy-labs-icon/ensy-labs-icon';
 import { AppHeader } from '../app-header/app-header';
 
 export const SIDENAV_STORAGE_KEY = 'enclave-sidenav-collapsed';
 
 @Component({
-  selector: 'app-shell',
+  selector: 'enclave-shell',
   imports: [
     AppHeader,
-    EnsyIcon,
+    EnsyLabsIcon,
     MatDividerModule,
     MatSidenavModule,
     MatListModule,

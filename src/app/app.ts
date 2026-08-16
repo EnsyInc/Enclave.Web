@@ -4,7 +4,7 @@ import { AppShell } from './core/layout/app-shell/app-shell';
 import { IconRegistryService } from './core/icons/icon-registry.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'enclave-root',
   imports: [AppShell],
   templateUrl: './app.html',
   styleUrl: './app.scss',

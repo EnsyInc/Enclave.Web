@@ -69,12 +69,12 @@ mat-sidenav-container {
     &.active {
       background-color: var(--color-border);
 
-      ensy-icon {
+      ensy-labs-icon {
         color: var(--color-primary);
       }
     }
 
-    ensy-icon {
+    ensy-labs-icon {
       color: var(--color-text);
     }
 

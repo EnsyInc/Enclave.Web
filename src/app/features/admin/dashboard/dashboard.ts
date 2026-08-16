@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'enclave-dashboard',
   imports: [],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',

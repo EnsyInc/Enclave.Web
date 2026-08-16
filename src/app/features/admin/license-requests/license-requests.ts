@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-license-requests',
+  selector: 'enclave-license-requests',
   imports: [],
   templateUrl: './license-requests.html',
   styleUrl: './license-requests.scss',

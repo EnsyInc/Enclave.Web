@@ -8,24 +8,24 @@ Guidance for Claude Code (and other agents) working in this repository.
 
 ## Reusable building blocks
 
-### `EnsyIcon` (`src/app/core/icons/ensy-icon/`)
+### `EnsyLabsIcon` (`src/app/core/icons/ensy-labs-icon/`)
 
-Wraps `mat-icon` for consistent, theme-aware SVG icon usage anywhere in the app. Usage:
+Wraps `mat-icon` for consistent, theme-aware SVG icon usage anywhere in the app. Named after the EnsyLabs brand rather than the app (`enclave-*` prefix) since it's a candidate to be extracted into its own shared library later. Usage:
 
 ```html
-<ensy-icon name="dashboard" /> <ensy-icon name="dashboard" color="var(--color-primary)" />
+<ensy-labs-icon name="dashboard" /> <ensy-labs-icon name="dashboard" color="var(--color-primary)" />
 ```
 
 - `name` (required, `string`) — must match a name registered in `IconRegistryService` below, or Material logs a console error and renders nothing.
 - `color` (optional, `string`) — any valid CSS color value, including `var(--color-*)` tokens. When omitted, the icon inherits `color` from its ancestor via normal CSS cascade (its SVGs use `stroke="currentColor"`), so it automatically matches surrounding text/theme without any extra wiring — only pass `color` when you need it to differ from context (e.g. an active/selected state).
-- Sizing: defaults to `1.5rem`. Override per-usage via the `--ensy-icon-size` CSS custom property (e.g. `.logo { --ensy-icon-size: 3rem; }`), not by trying to size `mat-icon` directly.
-- Inside a `mat-list-item` (or anywhere Material expects a specific content slot), pair it with the relevant attribute directive, e.g. `<ensy-icon name="dashboard" matListItemIcon />` — Material's content projection is attribute-based, not tag-based, so `<ensy-icon>` alone won't be recognized as an icon slot without it.
+- Sizing: defaults to `1.5rem`. Override per-usage via the `--ensy-labs-icon-size` CSS custom property (e.g. `.logo { --ensy-labs-icon-size: 3rem; }`), not by trying to size `mat-icon` directly.
+- Inside a `mat-list-item` (or anywhere Material expects a specific content slot), pair it with the relevant attribute directive, e.g. `<ensy-labs-icon name="dashboard" matListItemIcon />` — Material's content projection is attribute-based, not tag-based, so `<ensy-labs-icon>` alone won't be recognized as an icon slot without it.
 
 ### `IconRegistryService` (`src/app/core/icons/icon-registry.service.ts`)
 
-`providedIn: 'root'` singleton that registers every SVG icon `EnsyIcon` can render, via `MatIconRegistry.addSvgIcon`. It's wired up once by injecting it in `App` (`app.ts`) purely for the constructor side effect — no need to inject it anywhere else.
+`providedIn: 'root'` singleton that registers every SVG icon `EnsyLabsIcon` can render, via `MatIconRegistry.addSvgIcon`. It's wired up once by injecting it in `App` (`app.ts`) purely for the constructor side effect — no need to inject it anywhere else.
 
-To add a new icon: drop the SVG in `public/icons/`, edit its `stroke`/`fill` attributes to `currentColor` (so `EnsyIcon`'s `color` input/inheritance works), then add one `addSvgIcon(...)` call in the constructor here.
+To add a new icon: drop the SVG in `public/icons/`, edit its `stroke`/`fill` attributes to `currentColor` (so `EnsyLabsIcon`'s `color` input/inheritance works), then add one `addSvgIcon(...)` call in the constructor here.
 
 Currently registered names: `logo`, `dashboard`, `products`, `organizations`, `licenses`, `license-requests`, `moon`, `sidenav`, `chevrons-up-down`.
 
@@ -49,7 +49,7 @@ protected readonly themeService = inject(ThemeService);
 
 ## Angular Material gotchas (v22.1.x)
 
-Non-obvious internals discovered while building the app shell (`AppShell`/`AppHeader`/`EnsyIcon`, under `src/app/core/layout/` and `src/app/core/icons/`) by reading the compiled source in `node_modules/@angular/material/**`. Re-verify against installed source if `@angular/material` is upgraded past 22.1.x, since these are implementation details, not public API guarantees.
+Non-obvious internals discovered while building the app shell (`AppShell`/`AppHeader`/`EnsyLabsIcon`, under `src/app/core/layout/` and `src/app/core/icons/`) by reading the compiled source in `node_modules/@angular/material/**`. Re-verify against installed source if `@angular/material` is upgraded past 22.1.x, since these are implementation details, not public API guarantees.
 
 - **`mat.core()` is a deprecated no-op** in this version (`@mixin core() {}` is literally empty, slated for removal). `mat.theme()` alone emits everything needed — don't bother calling `mat.core()`.
 - **`mat.theme()`'s `$overrides` param** lets you re-point specific M3 system-color roles (`primary`, `on-primary`, `surface`, `on-surface`, `background`, `on-background`, `outline`, `error`, `on-error`) at our own `--color-*` tokens instead of hand-writing CSS custom property overrides. See `src/styles.scss`. Roles left un-overridden fall back to the seed palette and only track `prefers-color-scheme`, not our `[data-theme]` toggle.

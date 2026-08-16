@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-organizations',
+  selector: 'enclave-organizations',
   imports: [],
   templateUrl: './organizations.html',
   styleUrl: './organizations.scss',

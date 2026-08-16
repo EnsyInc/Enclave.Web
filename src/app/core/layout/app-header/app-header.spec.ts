@@ -10,7 +10,7 @@ import { ThemeService } from '../../theme/theme.service';
 
 @Component({
   imports: [AppHeader, RouterOutlet],
-  template: `<app-header (toggleSidenav)="toggleCount = toggleCount + 1" /><router-outlet />`,
+  template: `<enclave-header (toggleSidenav)="toggleCount = toggleCount + 1" /><router-outlet />`,
 })
 class HostComponent {
   toggleCount = 0;

@@ -4,12 +4,12 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
-import { EnsyIcon } from '../../icons/ensy-icon/ensy-icon';
+import { EnsyLabsIcon } from '../../icons/ensy-labs-icon/ensy-labs-icon';
 import { ThemeService } from '../../theme/theme.service';
 
 @Component({
-  selector: 'app-header',
-  imports: [MatButtonModule, EnsyIcon, MatDivider],
+  selector: 'enclave-header',
+  imports: [MatButtonModule, EnsyLabsIcon, MatDivider],
   templateUrl: './app-header.html',
   styleUrl: './app-header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
