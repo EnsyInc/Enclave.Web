@@ -6,7 +6,21 @@ import { MatSidenav, MatSidenavContainer } from '@angular/material/sidenav';
 import { BehaviorSubject } from 'rxjs';
 import { vi } from 'vitest';
 
-import { AppShell } from './app-shell';
+import { AppShell, SIDENAV_STORAGE_KEY } from './app-shell';
+
+function createStorageMock(initial: Record<string, string> = {}): Storage {
+  const store = new Map(Object.entries(initial));
+  return {
+    getItem: (key) => store.get(key) ?? null,
+    setItem: (key, value) => void store.set(key, value),
+    removeItem: (key) => void store.delete(key),
+    clear: () => store.clear(),
+    key: (index) => Array.from(store.keys())[index] ?? null,
+    get length() {
+      return store.size;
+    },
+  };
+}
 
 describe('AppShell', () => {
   let component: AppShell;
@@ -18,6 +32,11 @@ describe('AppShell', () => {
   let breakpointState$: BehaviorSubject<BreakpointState>;
 
   beforeEach(async () => {
+    vi.stubGlobal('localStorage', createStorageMock());
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn().mockReturnValue({ matches: false }) as unknown as typeof window.matchMedia,
+    );
     breakpointState$ = new BehaviorSubject<BreakpointState>({ matches: false, breakpoints: {} });
 
     await TestBed.configureTestingModule({
@@ -34,6 +53,10 @@ describe('AppShell', () => {
     fixture = TestBed.createComponent(AppShell);
     component = fixture.componentInstance;
     await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   it('should create', () => {
@@ -122,6 +145,50 @@ describe('AppShell', () => {
 
       expect(toggleSpy).toHaveBeenCalledOnce();
     });
+
+    it('persists the new collapsed state to localStorage on desktop', () => {
+      component['onToggleSidenav']();
+      expect(localStorage.getItem(SIDENAV_STORAGE_KEY)).toBe('true');
+
+      component['onToggleSidenav']();
+      expect(localStorage.getItem(SIDENAV_STORAGE_KEY)).toBe('false');
+    });
+
+    it('does not touch localStorage on handset', async () => {
+      breakpointState$.next({ matches: true, breakpoints: {} });
+      await fixture.whenStable();
+
+      component['onToggleSidenav']();
+
+      expect(localStorage.getItem(SIDENAV_STORAGE_KEY)).toBeNull();
+    });
+  });
+
+  describe('persisted sidenav collapse state', () => {
+    it('starts expanded when localStorage has no remembered state', () => {
+      // The outer beforeEach already created `component` with clean storage.
+      expect(component['sidenavCollapsed']()).toBe(false);
+      expect(component['sidenavContentHidden']()).toBe(false);
+    });
+
+    it('starts collapsed when localStorage remembers a collapsed state', async () => {
+      vi.stubGlobal('localStorage', createStorageMock({ [SIDENAV_STORAGE_KEY]: 'true' }));
+
+      const freshFixture = TestBed.createComponent(AppShell);
+      await freshFixture.whenStable();
+
+      expect(freshFixture.componentInstance['sidenavCollapsed']()).toBe(true);
+      expect(freshFixture.componentInstance['sidenavContentHidden']()).toBe(true);
+    });
+
+    it('starts expanded when localStorage is unavailable rather than throwing', async () => {
+      vi.stubGlobal('localStorage', undefined);
+
+      const freshFixture = TestBed.createComponent(AppShell);
+      await freshFixture.whenStable();
+
+      expect(freshFixture.componentInstance['sidenavCollapsed']()).toBe(false);
+    });
   });
 
   describe('sidenav width-transition handling', () => {
@@ -182,6 +249,47 @@ describe('AppShell', () => {
 
       vi.advanceTimersByTime(48);
       expect(updateContentMarginsSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('reveals sidenav content immediately when the width transition starts while expanding', () => {
+      component['sidenavCollapsed'].set(false);
+      component['sidenavContentHidden'].set(true);
+
+      component['onSidenavTransitionStart']({ propertyName: 'width' } as TransitionEvent);
+
+      expect(component['sidenavContentHidden']()).toBe(false);
+    });
+
+    it('keeps sidenav content visible while collapsing, hiding it only once the transition ends', () => {
+      component['sidenavCollapsed'].set(true);
+      component['sidenavContentHidden'].set(false);
+
+      component['onSidenavTransitionStart']({ propertyName: 'width' } as TransitionEvent);
+      expect(component['sidenavContentHidden']()).toBe(false);
+
+      component['onSidenavTransitionEnd']({ propertyName: 'width' } as TransitionEvent);
+      expect(component['sidenavContentHidden']()).toBe(true);
+    });
+
+    it('leaves sidenav content visible when the transition ends while expanded', () => {
+      component['sidenavCollapsed'].set(false);
+      component['sidenavContentHidden'].set(false);
+
+      component['onSidenavTransitionEnd']({ propertyName: 'width' } as TransitionEvent);
+
+      expect(component['sidenavContentHidden']()).toBe(false);
+    });
+
+    it('reflects the content-hidden state as a class on the sidenav', () => {
+      const sidenavEl: HTMLElement = fixture.debugElement.query(
+        By.directive(MatSidenav),
+      ).nativeElement;
+      expect(sidenavEl.classList.contains('content-hidden')).toBe(false);
+
+      component['sidenavContentHidden'].set(true);
+      fixture.detectChanges();
+
+      expect(sidenavEl.classList.contains('content-hidden')).toBe(true);
     });
   });
 });

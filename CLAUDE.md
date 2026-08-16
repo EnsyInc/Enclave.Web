@@ -38,6 +38,11 @@ protected readonly themeService = inject(ThemeService);
 <!-- 'dark' | 'light' -->
 ```
 
+## Testing gotchas
+
+- **`localStorage` and `window.matchMedia` are not reliably present in this Vitest + jsdom setup** — code that touches either directly (e.g. `ThemeService`, `AppShell`'s sidenav-collapse persistence) will intermittently throw `Cannot read properties of undefined` in specs that don't stub them, even in files that previously worked, because Node's own experimental `globalThis.localStorage` can shadow jsdom's. Every spec that constructs a component/service touching these must `vi.stubGlobal('localStorage', <mock Storage>)` and, if nothing is stored (so `ThemeService` falls through to it), `vi.stubGlobal('matchMedia', ...)` too — see the `createStorageMock()` helper duplicated in `theme.service.spec.ts`, `app.spec.ts`, and `app-shell.spec.ts`. Always pair with `vi.unstubAllGlobals()` in `afterEach`.
+- **`BreakpointObserver`'s real implementation needs a fuller `matchMedia` stub than `ThemeService` does** — it calls the legacy `mql.addListener`/`removeListener` on the object `matchMedia()` returns, not just reads `.matches`. A stub that only returns `{ matches: false }` works for `ThemeService` but throws `mql.addListener is not a function` the moment a component using `BreakpointObserver` (e.g. `AppShell`, or `App` which renders it) is constructed with the real observer instead of a faked one.
+
 ## Angular Material gotchas (v22.1.x)
 
 Non-obvious internals discovered while building the app shell (`AppShell`/`AppHeader`/`EnsyIcon`, under `src/app/core/layout/` and `src/app/core/icons/`) by reading the compiled source in `node_modules/@angular/material/**`. Re-verify against installed source if `@angular/material` is upgraded past 22.1.x, since these are implementation details, not public API guarantees.

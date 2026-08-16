@@ -85,4 +85,28 @@ describe('AppHeader', () => {
 
     expect(component['breadcrumb']()).toBe('Licenses');
   });
+
+  it('has no section before any route has been activated', () => {
+    expect(component['section']()).toBeUndefined();
+  });
+
+  it('shows the section inherited from the admin parent route', async () => {
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/admin/products');
+    await hostFixture.whenStable();
+
+    expect(component['section']()).toBe('Admin');
+  });
+
+  it('renders the full breadcrumb trail once navigation resolves', async () => {
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/admin/products');
+    await hostFixture.whenStable();
+
+    const breadcrumbText: string = hostFixture.debugElement.nativeElement
+      .querySelector('.breadcrumb')
+      .textContent.replace(/\s+/g, '')
+      .trim();
+    expect(breadcrumbText).toBe('Enclave/Admin/Products');
+  });
 });
