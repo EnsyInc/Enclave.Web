@@ -1,7 +1,39 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
 @use './styles/tokens';
 @use './styles/typography';
 @use '@fontsource-variable/inter';
+@use '@fontsource-variable/geist-mono';
+
+// mat.core() is a deprecated no-op as of this Material version, so it's
+// intentionally omitted — mat.theme() alone emits everything components need.
+// The $overrides map re-points the roles our brand already defines
+// (styles/_tokens.scss) at our own --color-* custom properties, so Material
+// components follow the [data-theme] toggle instead of a second palette.
+// Roles we don't brand (secondary/tertiary containers, elevation, shape)
+// fall back to the yellow M3 palette and only track prefers-color-scheme.
+html {
+  @include mat.theme(
+    (
+      color: (
+        theme-type: color-scheme,
+        primary: mat.$yellow-palette,
+      ),
+      typography: var(--font-sans),
+      density: 0,
+    ),
+    (
+      primary: var(--color-primary),
+      on-primary: var(--color-primary-text),
+      background: var(--color-bg),
+      on-background: var(--color-text),
+      surface: var(--color-surface),
+      on-surface: var(--color-text),
+      outline: var(--color-border),
+      error: var(--color-danger),
+      on-error: var(--color-danger-text),
+    )
+  );
+}
 
 * {
   box-sizing: border-box;
