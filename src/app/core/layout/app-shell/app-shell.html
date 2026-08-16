@@ -68,7 +68,11 @@
         routerLink="/admin/license-requests"
         routerLinkActive="active"
         [ariaCurrentWhenActive]="'page'"
-        aria-label="License Requests"
+        [attr.aria-label]="
+          licenseRequestsCount() > 0
+            ? 'License Requests, ' + licenseRequestsCount() + ' pending'
+            : 'License Requests'
+        "
       >
         <ensy-labs-icon
           [matBadge]="licenseRequestsCount()"
