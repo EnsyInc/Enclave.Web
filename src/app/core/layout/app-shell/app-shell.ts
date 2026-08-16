@@ -26,7 +26,7 @@ import { AppHeader } from '../app-header/app-header';
 })
 export class AppShell {
   private readonly breakpointObserver = inject(BreakpointObserver);
-  
+
   protected readonly isHandset = toSignal(
     this.breakpointObserver.observe(Breakpoints.Handset).pipe(map((state) => state.matches)),
     { requireSync: true },
@@ -41,7 +41,7 @@ export class AppShell {
     if (this.isHandset()) {
       this.drawer.toggle();
     } else {
-      this.sidenavCollapsed.update(v => !v);
+      this.sidenavCollapsed.update((v) => !v);
     }
   }
 

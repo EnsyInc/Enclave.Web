@@ -4,7 +4,9 @@
 @use '@fontsource-variable/inter';
 @use '@fontsource-variable/geist-mono';
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   --theme-transition-duration: 0.3s;
 
   transition:
