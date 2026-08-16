@@ -44,6 +44,7 @@ __screenshots__/
 /playwright-report
 /blob-report
 /playwright/.cache
+/sonar-report
 
 # System files
 .DS_Store
