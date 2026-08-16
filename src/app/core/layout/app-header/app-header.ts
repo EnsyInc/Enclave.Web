@@ -33,11 +33,29 @@ export class AppHeader {
     return route.snapshot.data['breadcrumb'];
   }
 
+  private findSection(): string | undefined {
+    let route = this.router.routerState.root;
+    let section: string | undefined = route.snapshot.data['section'];
+    while (route.firstChild) {
+      route = route.firstChild;
+      section = route.snapshot.data['section'] ?? section;
+    }
+    return section;
+  }
+
   protected readonly breadcrumb = toSignal(
     this.router.events.pipe(
       filter((e) => e instanceof NavigationEnd),
       map(() => this.findDeepestBreadcrumb()),
     ),
     { initialValue: this.findDeepestBreadcrumb() },
+  );
+
+  protected readonly section = toSignal(
+    this.router.events.pipe(
+      filter((e) => e instanceof NavigationEnd),
+      map(() => this.findSection()),
+    ),
+    { initialValue: this.findSection() },
   );
 }

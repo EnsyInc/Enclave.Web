@@ -32,6 +32,7 @@ export class AppShell {
     { requireSync: true },
   );
   protected readonly sidenavCollapsed = signal(false);
+  protected readonly sidenavContentHidden = signal(false);
   private animationFrameId?: number;
 
   @ViewChild('drawer') private readonly drawer!: MatSidenav;
@@ -49,6 +50,11 @@ export class AppShell {
     if (event.propertyName !== 'width') {
       return;
     }
+    if (!this.sidenavCollapsed()) {
+      // Expanding: reveal the labels immediately so they grow in with the width
+      // instead of popping in only after the animation finishes.
+      this.sidenavContentHidden.set(false);
+    }
     const step = () => {
       this.sidenavContainer.updateContentMargins();
       this.animationFrameId = requestAnimationFrame(step);
@@ -64,5 +70,11 @@ export class AppShell {
       cancelAnimationFrame(this.animationFrameId);
     }
     this.sidenavContainer.updateContentMargins();
+    if (this.sidenavCollapsed()) {
+      // Collapsing: only remove the labels from layout once the rail has
+      // finished narrowing, so they clip smoothly with the width instead of
+      // vanishing instantly at the start of the animation.
+      this.sidenavContentHidden.set(true);
+    }
   }
 }

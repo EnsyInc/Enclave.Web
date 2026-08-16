@@ -6,42 +6,47 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   height: var(--header-height);
 }
 
 .brand-text {
   display: flex;
   flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.logo-slot {
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 3rem;
 }
 
 .logo {
-  height: 3rem;
-  width: 3rem;
+  height: 2.25rem;
+  width: 2.25rem;
 }
 
 .brand-name {
   font-family: var(--font-mono);
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.2;
   color: var(--color-text);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .brand-subtitle {
   font-family: var(--font-mono);
-  font-size: 1rem;
+  font-size: 0.75rem;
   font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.05rem;
   color: var(--color-text-muted);
-}
-
-.section-label {
-  font-size: 1rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05rem;
-  color: var(--color-text-muted);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 mat-divider {
@@ -51,9 +56,8 @@ mat-divider {
 }
 
 .brand,
-.section-label,
 mat-nav-list {
-  padding-inline: 1rem;
+  padding-inline: var(--sidenav-padding);
 }
 
 mat-sidenav {
@@ -61,26 +65,11 @@ mat-sidenav {
 
   &.collapsed {
     --mat-sidenav-container-width: 5rem;
+  }
 
+  &.content-hidden {
     .brand-text,
-    .section-label,
-    [matListItemTitle] {
-      display: none;
-    }
-
-    .brand {
-      justify-content: center;
-    }
-
-    a {
-      justify-content: center;
-
-      &.mdc-list-item--with-leading-icon {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-    }
-
+    [matListItemTitle],
     .mdc-list-item__content {
       display: none;
     }
@@ -92,11 +81,12 @@ mat-sidenav {
 }
 
 mat-sidenav-container {
-  --header-height: 4rem;
+  --header-height: 4.5rem;
+  --sidenav-padding: 1rem;
   height: 100%;
 
   a {
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
 
     &.active {
       background-color: var(--color-border);
@@ -108,6 +98,24 @@ mat-sidenav-container {
 
     ensy-icon {
       color: var(--color-text);
+    }
+
+    &.mdc-list-item--with-leading-icon {
+      padding-left: 0.75rem;
+      padding-right: var(--sidenav-padding);
+    }
+  }
+
+  mat-nav-list {
+    .mdc-list-item__start {
+      margin-inline: 0 0.5rem;
+    }
+
+    [matListItemTitle] {
+      font-size: 1rem;
+      font-weight: 400;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 }

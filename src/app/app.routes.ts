@@ -13,6 +13,9 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
+    data: {
+      section: 'Admin',
+    },
     children: [
       {
         path: 'dashboard',
