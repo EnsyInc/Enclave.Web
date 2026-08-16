@@ -111,10 +111,12 @@ describe('AppShell', () => {
     });
 
     it('wires the header toggle button to onToggleSidenav', () => {
-      const toggleSpy = vi.spyOn(component as unknown as { onToggleSidenav(): void }, 'onToggleSidenav');
-      const toggleButton: HTMLButtonElement = fixture.debugElement.nativeElement.querySelector(
-        '.app-header-left button',
+      const toggleSpy = vi.spyOn(
+        component as unknown as { onToggleSidenav(): void },
+        'onToggleSidenav',
       );
+      const toggleButton: HTMLButtonElement =
+        fixture.debugElement.nativeElement.querySelector('.app-header-left button');
 
       toggleButton.click();
 

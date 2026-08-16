@@ -44,9 +44,8 @@ describe('AppHeader', () => {
   });
 
   it('emits toggleSidenav when the menu button is clicked', () => {
-    const toggleButton: HTMLButtonElement = hostFixture.debugElement.nativeElement.querySelector(
-      '.app-header-left button',
-    );
+    const toggleButton: HTMLButtonElement =
+      hostFixture.debugElement.nativeElement.querySelector('.app-header-left button');
     toggleButton.click();
 
     expect(host.toggleCount).toBe(1);

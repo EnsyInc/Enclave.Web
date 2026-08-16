@@ -30,16 +30,19 @@ describe('app routes', () => {
     ['/admin/organizations', Organizations, 'Organizations'],
     ['/admin/licenses', Licenses, 'Licenses'],
     ['/admin/license-requests', LicenseRequests, 'License Requests'],
-  ] as const)('renders %s with the matching component and breadcrumb', async (url, expectedComponent, breadcrumb) => {
-    const harness = await RouterTestingHarness.create(url);
-    const router = TestBed.inject(Router);
+  ] as const)(
+    'renders %s with the matching component and breadcrumb',
+    async (url, expectedComponent, breadcrumb) => {
+      const harness = await RouterTestingHarness.create(url);
+      const router = TestBed.inject(Router);
 
-    expect(harness.routeDebugElement?.componentInstance).toBeInstanceOf(expectedComponent);
+      expect(harness.routeDebugElement?.componentInstance).toBeInstanceOf(expectedComponent);
 
-    let route = router.routerState.root;
-    while (route.firstChild) {
-      route = route.firstChild;
-    }
-    expect(route.snapshot.data['breadcrumb']).toBe(breadcrumb);
-  });
+      let route = router.routerState.root;
+      while (route.firstChild) {
+        route = route.firstChild;
+      }
+      expect(route.snapshot.data['breadcrumb']).toBe(breadcrumb);
+    },
+  );
 });
