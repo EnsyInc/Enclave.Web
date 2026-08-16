@@ -2,6 +2,7 @@
 @use './styles/tokens';
 @use './styles/typography';
 @use '@fontsource-variable/inter';
+@use '@fontsource-variable/geist-mono';
 
 // mat.core() is a deprecated no-op as of this Material version, so it's
 // intentionally omitted — mat.theme() alone emits everything components need.

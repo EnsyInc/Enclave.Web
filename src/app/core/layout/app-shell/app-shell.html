@@ -1,6 +1,19 @@
 <mat-sidenav-container>
     
     <mat-sidenav #drawer [mode]="isHandset() ? 'over' : 'side'" [opened]="!isHandset()">
+
+        <div class="brand">
+            <ensy-icon name="logo" color="var(--color-primary)" class="logo" />
+            <div class="brand-text">
+                <span class="brand-name">Enclave</span>
+                <span class="brand-subtitle">License Control</span>
+            </div>
+        </div>
+        
+        <mat-divider />
+
+        <span class="section-label">Admin</span>
+
         <mat-nav-list>
             <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="active">
                 <ensy-icon name="dashboard" matListItemIcon />
@@ -24,7 +37,9 @@
             </a>
         </mat-nav-list>
     </mat-sidenav>
+
     <mat-sidenav-content>
         <router-outlet />
     </mat-sidenav-content>
+
 </mat-sidenav-container>

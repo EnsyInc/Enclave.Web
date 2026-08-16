@@ -8,6 +8,8 @@ export class IconRegistryService {
     private readonly domSanitizer = inject(DomSanitizer);
 
     constructor() {
+        this.iconRegistry.addSvgIcon('logo', this.domSanitizer.bypassSecurityTrustResourceUrl('icons/logo.svg'));
+
         this.iconRegistry.addSvgIcon('dashboard', this.domSanitizer.bypassSecurityTrustResourceUrl('icons/dashboard.svg'));
         this.iconRegistry.addSvgIcon('products', this.domSanitizer.bypassSecurityTrustResourceUrl('icons/products.svg'));
         this.iconRegistry.addSvgIcon('organizations', this.domSanitizer.bypassSecurityTrustResourceUrl('icons/organizations.svg'));
