@@ -9,6 +9,8 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { EnsyIcon } from '../../icons/ensy-icon/ensy-icon';
 import { AppHeader } from '../app-header/app-header';
 
+export const SIDENAV_STORAGE_KEY = 'enclave-sidenav-collapsed';
+
 @Component({
   selector: 'app-shell',
   imports: [
@@ -31,8 +33,8 @@ export class AppShell {
     this.breakpointObserver.observe(Breakpoints.Handset).pipe(map((state) => state.matches)),
     { requireSync: true },
   );
-  protected readonly sidenavCollapsed = signal(false);
-  protected readonly sidenavContentHidden = signal(false);
+  protected readonly sidenavCollapsed = signal(this.getInitialSidenavCollapseState());
+  protected readonly sidenavContentHidden = signal(this.getInitialSidenavCollapseState());
   private animationFrameId?: number;
 
   @ViewChild('drawer') private readonly drawer!: MatSidenav;
@@ -43,7 +45,12 @@ export class AppShell {
       this.drawer.toggle();
     } else {
       this.sidenavCollapsed.update((v) => !v);
+      localStorage.setItem(SIDENAV_STORAGE_KEY, this.sidenavCollapsed().toString());
     }
+  }
+
+  private getInitialSidenavCollapseState(): boolean {
+    return localStorage.getItem(SIDENAV_STORAGE_KEY) === 'true';
   }
 
   protected onSidenavTransitionStart(event: TransitionEvent): void {
