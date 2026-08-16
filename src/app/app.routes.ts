@@ -16,6 +16,7 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () =>
           import('./features/admin/dashboard/dashboard').then((m) => m.Dashboard),
+        title: 'Dashboard | Enclave',
         data: {
           breadcrumb: 'Dashboard',
         },
@@ -23,6 +24,7 @@ export const routes: Routes = [
       {
         path: 'products',
         loadComponent: () => import('./features/admin/products/products').then((m) => m.Products),
+        title: 'Products | Enclave',
         data: {
           breadcrumb: 'Products',
         },
@@ -31,6 +33,7 @@ export const routes: Routes = [
         path: 'organizations',
         loadComponent: () =>
           import('./features/admin/organizations/organizations').then((m) => m.Organizations),
+        title: 'Organizations | Enclave',
         data: {
           breadcrumb: 'Organizations',
         },
@@ -38,6 +41,7 @@ export const routes: Routes = [
       {
         path: 'licenses',
         loadComponent: () => import('./features/admin/licenses/licenses').then((m) => m.Licenses),
+        title: 'Licenses | Enclave',
         data: {
           breadcrumb: 'Licenses',
         },
@@ -48,6 +52,7 @@ export const routes: Routes = [
           import('./features/admin/license-requests/license-requests').then(
             (m) => m.LicenseRequests,
           ),
+        title: 'License Requests | Enclave',
         data: {
           breadcrumb: 'License Requests',
         },
