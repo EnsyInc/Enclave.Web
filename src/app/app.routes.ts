@@ -17,22 +17,37 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: Dashboard,
+        data: {
+          breadcrumb: 'Dashboard',
+        },
       },
       {
         path: 'products',
         component: Products,
+        data: {
+          breadcrumb: 'Products',
+        },
       },
       {
         path: 'organizations',
         component: Organizations,
+        data: {
+          breadcrumb: 'Organizations',
+        },
       },
       {
         path: 'licenses',
         component: Licenses,
+        data: {
+          breadcrumb: 'Licenses',
+        },
       },
       {
         path: 'license-requests',
         component: LicenseRequests,
+        data: {
+          breadcrumb: 'License Requests',
+        },
       },
     ],
   },

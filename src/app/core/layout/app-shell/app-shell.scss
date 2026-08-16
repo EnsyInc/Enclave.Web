@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 1rem;
+  height: var(--header-height);
 }
 
 .brand-text {
@@ -45,7 +45,9 @@
 }
 
 mat-divider {
-  margin-block: 1rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--color-border);
 }
 
 .brand,
@@ -54,7 +56,43 @@ mat-nav-list {
   padding-inline: 1rem;
 }
 
+mat-sidenav {
+  border-radius: 0;
+
+  &.collapsed {
+    --mat-sidenav-container-width: 5rem;
+
+    .brand-text,
+    .section-label,
+    [matListItemTitle] {
+      display: none;
+    }
+
+    .brand {
+      justify-content: center;
+    }
+
+    a {
+      justify-content: center;
+
+      &.mdc-list-item--with-leading-icon {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+
+    .mdc-list-item__content {
+      display: none;
+    }
+  }
+}
+
+.mat-drawer-side {
+  border-right-width: 0px;
+}
+
 mat-sidenav-container {
+  --header-height: 4rem;
   height: 100%;
 
   a {

@@ -26,6 +26,9 @@ describe('IconRegistryService', () => {
 
     const expected: [string, string][] = [
       ['logo', 'icons/logo.svg'],
+      ['chevrons-up-down', 'icons/chevrons-up-down.svg'],
+      ['moon', 'icons/moon.svg'],
+      ['sidenav', 'icons/sidenav.svg'],
       ['dashboard', 'icons/dashboard.svg'],
       ['products', 'icons/products.svg'],
       ['organizations', 'icons/organizations.svg'],

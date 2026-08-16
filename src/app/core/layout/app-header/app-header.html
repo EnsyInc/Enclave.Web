@@ -1,0 +1,35 @@
+<div class="app-header">
+  <div class="app-header-left">
+    <button matIconButton (click)="toggleSidenav.emit()">
+      <ensy-icon name="sidenav" color="var(--color-text-muted)" />
+    </button>
+
+    <div class="breadcrumb">
+      <span>Enclave</span>
+      @if (breadcrumb()) {
+        <span>/</span>
+      }
+      <span class="active-breadcrumb-item">{{ breadcrumb() }}</span>
+    </div>
+  </div>
+
+  <div class="app-header-right">
+    <button matIconButton (click)="themeService.toggle()">
+      <ensy-icon name="moon" color="var(--color-text-muted)" />
+    </button>
+
+    <mat-divider vertical></mat-divider>
+    <div class="user-info">
+      <div class="user-avatar">{{ userInitials }}</div>
+      <div class="user-details">
+        <div class="user-name">{{ userName }}</div>
+        <div class="user-role">{{ userRole }}</div>
+      </div>
+      <button matIconButton>
+        <ensy-icon name="chevrons-up-down" color="var(--color-text-muted)" />
+      </button>
+    </div>
+  </div>
+</div>
+
+<mat-divider />

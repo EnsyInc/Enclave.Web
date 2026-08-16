@@ -14,6 +14,18 @@ export class IconRegistryService {
     );
 
     this.iconRegistry.addSvgIcon(
+      'chevrons-up-down',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('icons/chevrons-up-down.svg'),
+    );
+    this.iconRegistry.addSvgIcon(
+      'moon',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('icons/moon.svg'),
+    );
+    this.iconRegistry.addSvgIcon(
+      'sidenav',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('icons/sidenav.svg'),
+    );
+    this.iconRegistry.addSvgIcon(
       'dashboard',
       this.domSanitizer.bypassSecurityTrustResourceUrl('icons/dashboard.svg'),
     );

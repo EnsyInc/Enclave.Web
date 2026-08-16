@@ -1,5 +1,12 @@
 <mat-sidenav-container>
-  <mat-sidenav #drawer [mode]="isHandset() ? 'over' : 'side'" [opened]="!isHandset()">
+  <mat-sidenav
+    #drawer
+    [mode]="isHandset() ? 'over' : 'side'"
+    [opened]="!isHandset()"
+    [class.collapsed]="sidenavCollapsed()"
+    (transitionstart)="onSidenavTransitionStart($event)"
+    (transitionend)="onSidenavTransitionEnd($event)"
+  >
     <div class="brand">
       <ensy-icon name="logo" color="var(--color-primary)" class="logo" />
       <div class="brand-text">
@@ -37,6 +44,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
+    <app-header (toggleSidenav)="onToggleSidenav()" />
     <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>

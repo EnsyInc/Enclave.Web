@@ -4,13 +4,18 @@
 @use '@fontsource-variable/inter';
 @use '@fontsource-variable/geist-mono';
 
-// mat.core() is a deprecated no-op as of this Material version, so it's
-// intentionally omitted — mat.theme() alone emits everything components need.
-// The $overrides map re-points the roles our brand already defines
-// (styles/_tokens.scss) at our own --color-* custom properties, so Material
-// components follow the [data-theme] toggle instead of a second palette.
-// Roles we don't brand (secondary/tertiary containers, elevation, shape)
-// fall back to the yellow M3 palette and only track prefers-color-scheme.
+*,
+*::before,
+*::after {
+  --theme-transition-duration: 0.3s;
+
+  transition:
+    background-color var(--theme-transition-duration) ease,
+    color var(--theme-transition-duration) ease,
+    border-color var(--theme-transition-duration) ease,
+    width var(--theme-transition-duration) ease !important;
+}
+
 html {
   @include mat.theme(
     (
