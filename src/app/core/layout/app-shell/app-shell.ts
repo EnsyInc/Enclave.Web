@@ -7,10 +7,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { EnsyIcon } from '../../icons/ensy-icon/ensy-icon';
+import { AppHeader } from '../app-header/app-header';
 
 @Component({
   selector: 'app-shell',
   imports: [
+    AppHeader,
     EnsyIcon,
     MatDividerModule,
     MatSidenavModule,

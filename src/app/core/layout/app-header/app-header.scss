@@ -1,0 +1,66 @@
+.user-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-primary);
+    text-transform: uppercase;
+    color: var(--color-primary-text);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.05rem;
+}
+
+mat-divider {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 1rem;
+    height: var(--header-height);
+
+    .app-header-left, .app-header-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        span {
+            color: var(--color-text-muted);
+
+            &.active-breadcrumb-item {
+                color: var(--color-text);
+            }
+        }
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .user-details {
+        display: flex;
+        flex-direction: column;
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+        }
+    }
+}
