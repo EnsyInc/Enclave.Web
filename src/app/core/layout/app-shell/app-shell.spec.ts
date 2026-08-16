@@ -96,6 +96,51 @@ describe('AppShell', () => {
     ]);
   });
 
+  describe('license requests badge and chip', () => {
+    function getLicenseRequestsIcon(): HTMLElement {
+      return fixture.debugElement.nativeElement.querySelector(
+        'a[routerLink="/admin/license-requests"] ensy-labs-icon',
+      );
+    }
+
+    function getLicenseRequestsChip(): HTMLElement | null {
+      return fixture.debugElement.nativeElement.querySelector(
+        'a[routerLink="/admin/license-requests"] .license-requests-span',
+      );
+    }
+
+    it('shows the count as a chip and hides the icon badge when expanded', () => {
+      expect(getLicenseRequestsChip()?.textContent?.trim()).toBe('3');
+      expect(getLicenseRequestsIcon().classList.contains('mat-badge-hidden')).toBe(true);
+    });
+
+    it('shows the icon badge and hides the chip once the sidenav is collapsed', () => {
+      component['onToggleSidenav']();
+      fixture.detectChanges();
+
+      expect(getLicenseRequestsChip()).toBeNull();
+      const icon = getLicenseRequestsIcon();
+      expect(icon.classList.contains('mat-badge-hidden')).toBe(false);
+      expect(icon.querySelector('.mat-badge-content')?.textContent?.trim()).toBe('3');
+    });
+
+    it('hides both the chip and the icon badge when the count is zero', () => {
+      fixture.componentRef.setInput('licenseRequestsCount', 0);
+      fixture.detectChanges();
+
+      expect(getLicenseRequestsChip()).toBeNull();
+      expect(getLicenseRequestsIcon().classList.contains('mat-badge-hidden')).toBe(true);
+    });
+
+    it('keeps the icon badge hidden when collapsed with a zero count', () => {
+      fixture.componentRef.setInput('licenseRequestsCount', 0);
+      component['onToggleSidenav']();
+      fixture.detectChanges();
+
+      expect(getLicenseRequestsIcon().classList.contains('mat-badge-hidden')).toBe(true);
+    });
+  });
+
   describe('onToggleSidenav', () => {
     it('toggles the drawer open state on handset instead of collapsing it', async () => {
       breakpointState$.next({ matches: true, breakpoints: {} });
