@@ -69,9 +69,61 @@ jobs:
           path: coverage/enclave-web/lcov.info
           retention-days: 1
 
+  e2e:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright Chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright OS dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Run e2e and accessibility tests
+        run: npx playwright test
+
+      - name: Upload Playwright report (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Generate Sonar test execution report
+        run: node scripts/playwright-to-sonar-report.mjs
+
+      - name: Upload Sonar test execution report
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-sonar-report
+          path: sonar-report/e2e-tests.xml
+          retention-days: 1
+
   sonar:
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [test, e2e]
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       SONAR_HOST_URL: https://sonarcloud.io
@@ -86,6 +138,12 @@ jobs:
         with:
           name: coverage
           path: coverage/enclave-web
+
+      - name: Download Sonar test execution report
+        uses: actions/download-artifact@v8
+        with:
+          name: e2e-sonar-report
+          path: sonar-report
 
       - name: SonarQube Cloud Scan
         uses: SonarSource/sonarqube-scan-action@v8
