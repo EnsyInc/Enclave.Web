@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -6,8 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [MatIconModule],
   templateUrl: './ensy-icon.html',
   styleUrl: './ensy-icon.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EnsyIcon {
-  @Input({ required: true }) name: string = '';
-  @Input() color?: string;
+  readonly name = input.required<string>();
+  readonly color = input<string>();
 }

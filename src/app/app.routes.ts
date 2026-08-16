@@ -1,9 +1,4 @@
 import { Routes } from '@angular/router';
-import { Dashboard } from './features/admin/dashboard/dashboard';
-import { Licenses } from './features/admin/licenses/licenses';
-import { LicenseRequests } from './features/admin/license-requests/license-requests';
-import { Organizations } from './features/admin/organizations/organizations';
-import { Products } from './features/admin/products/products';
 
 export const routes: Routes = [
   {
@@ -19,35 +14,40 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        component: Dashboard,
+        loadComponent: () =>
+          import('./features/admin/dashboard/dashboard').then((m) => m.Dashboard),
         data: {
           breadcrumb: 'Dashboard',
         },
       },
       {
         path: 'products',
-        component: Products,
+        loadComponent: () => import('./features/admin/products/products').then((m) => m.Products),
         data: {
           breadcrumb: 'Products',
         },
       },
       {
         path: 'organizations',
-        component: Organizations,
+        loadComponent: () =>
+          import('./features/admin/organizations/organizations').then((m) => m.Organizations),
         data: {
           breadcrumb: 'Organizations',
         },
       },
       {
         path: 'licenses',
-        component: Licenses,
+        loadComponent: () => import('./features/admin/licenses/licenses').then((m) => m.Licenses),
         data: {
           breadcrumb: 'Licenses',
         },
       },
       {
         path: 'license-requests',
-        component: LicenseRequests,
+        loadComponent: () =>
+          import('./features/admin/license-requests/license-requests').then(
+            (m) => m.LicenseRequests,
+          ),
         data: {
           breadcrumb: 'License Requests',
         },

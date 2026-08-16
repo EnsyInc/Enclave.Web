@@ -1,4 +1,4 @@
-import { Component, inject, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -25,6 +25,7 @@ export const SIDENAV_STORAGE_KEY = 'enclave-sidenav-collapsed';
   ],
   templateUrl: './app-shell.html',
   styleUrl: './app-shell.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppShell {
   private readonly breakpointObserver = inject(BreakpointObserver);
@@ -37,12 +38,12 @@ export class AppShell {
   protected readonly sidenavContentHidden = signal(this.getInitialSidenavCollapseState());
   private animationFrameId?: number;
 
-  @ViewChild('drawer') private readonly drawer!: MatSidenav;
-  @ViewChild(MatSidenavContainer) private readonly sidenavContainer!: MatSidenavContainer;
+  private readonly drawer = viewChild.required<MatSidenav>('drawer');
+  private readonly sidenavContainer = viewChild.required(MatSidenavContainer);
 
   protected onToggleSidenav(): void {
     if (this.isHandset()) {
-      this.drawer.toggle();
+      this.drawer().toggle();
     } else {
       this.sidenavCollapsed.update((v) => !v);
       localStorage.setItem(SIDENAV_STORAGE_KEY, this.sidenavCollapsed().toString());
@@ -66,7 +67,7 @@ export class AppShell {
       this.sidenavContentHidden.set(false);
     }
     const step = () => {
-      this.sidenavContainer.updateContentMargins();
+      this.sidenavContainer().updateContentMargins();
       this.animationFrameId = requestAnimationFrame(step);
     };
     this.animationFrameId = requestAnimationFrame(step);
@@ -79,7 +80,7 @@ export class AppShell {
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
     }
-    this.sidenavContainer.updateContentMargins();
+    this.sidenavContainer().updateContentMargins();
     if (this.sidenavCollapsed()) {
       // Collapsing: only remove the labels from layout once the rail has
       // finished narrowing, so they clip smoothly with the width instead of

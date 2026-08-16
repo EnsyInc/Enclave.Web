@@ -1,4 +1,4 @@
-import { Component, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs';
@@ -12,6 +12,7 @@ import { ThemeService } from '../../theme/theme.service';
   imports: [MatButtonModule, EnsyIcon, MatDivider],
   templateUrl: './app-header.html',
   styleUrl: './app-header.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppHeader {
   protected readonly userName: string = 'John Doe';

@@ -2,6 +2,10 @@
 
 Guidance for Claude Code (and other agents) working in this repository.
 
+## Workflow
+
+- **Don't run `ng serve`/`npm start` or `ng build` yourself unless explicitly asked.** The user keeps their own `ng serve` running (via the VS Code "ng serve" launch config / "npm: start" task) with auto-rebuild on every file change, and uses that to tell you if a change broke something — a Claude-run build duplicates a check the user is already doing, and a Claude-started dev server can conflict with theirs. `tsc --noEmit`, `prettier`, and unit tests (`ng test`) are still fine to run directly, since the dev server doesn't cover those.
+
 ## Reusable building blocks
 
 ### `EnsyIcon` (`src/app/core/icons/ensy-icon/`)
