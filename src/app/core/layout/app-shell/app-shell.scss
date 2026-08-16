@@ -58,6 +58,33 @@ mat-nav-list {
 
 mat-sidenav {
   border-radius: 0;
+
+  &.collapsed {
+    --mat-sidenav-container-width: 5rem;
+
+    .brand-text,
+    .section-label,
+    [matListItemTitle] {
+      display: none;
+    }
+
+    .brand {
+      justify-content: center;
+    }
+
+    a {
+      justify-content: center;
+
+      &.mdc-list-item--with-leading-icon {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+
+    .mdc-list-item__content {
+      display: none;
+    }
+  }
 }
 
 .mat-drawer-side {

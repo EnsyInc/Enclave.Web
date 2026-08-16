@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs';
@@ -20,9 +20,10 @@ export class AppHeader {
     .split(' ')
     .map(n => n[0])
     .join('');
+    protected readonly themeService: ThemeService = inject(ThemeService);
+    protected readonly toggleSidenav = output<void>();
 
-  private readonly router: Router = inject(Router);
-  protected readonly themeService: ThemeService = inject(ThemeService);
+    private readonly router: Router = inject(Router);
 
   private findDeepestBreadcrumb(): string | undefined {
     let route = this.router.routerState.root;

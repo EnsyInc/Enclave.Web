@@ -1,6 +1,9 @@
 <div class="app-header">
     <div class="app-header-left">
-        <button matIconButton><ensy-icon name="sidenav" /></button>
+        <button matIconButton (click)="toggleSidenav.emit()">
+            <ensy-icon name="sidenav" />
+        </button>
+
         <div class="breadcrumb">
             <span>Enclave</span>
             @if (breadcrumb()){
