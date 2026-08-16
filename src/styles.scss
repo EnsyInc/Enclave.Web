@@ -10,7 +10,8 @@
   transition:
     background-color var(--theme-transition-duration) ease,
     color var(--theme-transition-duration) ease,
-    border-color var(--theme-transition-duration) ease !important;
+    border-color var(--theme-transition-duration) ease,
+    width var(--theme-transition-duration) ease !important;
 }
 
 html {

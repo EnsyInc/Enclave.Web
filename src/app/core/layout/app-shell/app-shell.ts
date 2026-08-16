@@ -1,4 +1,4 @@
-import { afterNextRender, Component, inject, Injector, signal, ViewChild } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -26,13 +26,13 @@ import { AppHeader } from '../app-header/app-header';
 })
 export class AppShell {
   private readonly breakpointObserver = inject(BreakpointObserver);
-  private readonly injector = inject(Injector);
   
   protected readonly isHandset = toSignal(
     this.breakpointObserver.observe(Breakpoints.Handset).pipe(map((state) => state.matches)),
     { requireSync: true },
   );
   protected readonly sidenavCollapsed = signal(false);
+  private animationFrameId?: number;
 
   @ViewChild('drawer') private readonly drawer!: MatSidenav;
   @ViewChild(MatSidenavContainer) private readonly sidenavContainer!: MatSidenavContainer;
@@ -42,7 +42,27 @@ export class AppShell {
       this.drawer.toggle();
     } else {
       this.sidenavCollapsed.update(v => !v);
-      afterNextRender(() => this.sidenavContainer.updateContentMargins(), { injector: this.injector });
     }
+  }
+
+  protected onSidenavTransitionStart(event: TransitionEvent): void {
+    if (event.propertyName !== 'width') {
+      return;
+    }
+    const step = () => {
+      this.sidenavContainer.updateContentMargins();
+      this.animationFrameId = requestAnimationFrame(step);
+    };
+    this.animationFrameId = requestAnimationFrame(step);
+  }
+
+  protected onSidenavTransitionEnd(event: TransitionEvent): void {
+    if (event.propertyName !== 'width') {
+      return;
+    }
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+    }
+    this.sidenavContainer.updateContentMargins();
   }
 }

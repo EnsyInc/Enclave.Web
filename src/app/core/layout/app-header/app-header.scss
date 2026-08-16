@@ -17,6 +17,12 @@
 mat-divider {
   margin-top: 0;
   margin-bottom: 1rem;
+  
+  &.mat-divider-vertical {
+    height: 1.5rem;
+    margin: 0;
+    border-color: var(--color-text);
+  }
 }
 
 .app-header {
