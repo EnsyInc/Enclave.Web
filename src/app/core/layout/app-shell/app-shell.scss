@@ -49,40 +49,18 @@
   white-space: nowrap;
 }
 
-mat-divider {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: var(--color-border);
-}
-
 .brand,
 mat-nav-list {
-  padding-inline: var(--sidenav-padding);
-}
-
-mat-sidenav {
-  border-radius: 0;
-
-  &.collapsed {
-    --mat-sidenav-container-width: 5rem;
-  }
-
-  &.content-hidden {
-    .brand-text,
-    [matListItemTitle],
-    .mdc-list-item__content {
-      display: none;
-    }
-  }
+  padding-inline: var(--content-padding);
 }
 
 .mat-drawer-side {
-  border-right-width: 0px;
+  border-right-width: 0;
 }
 
 mat-sidenav-container {
   --header-height: 4.5rem;
-  --sidenav-padding: 1rem;
+  --content-padding: 1rem;
   height: 100%;
 
   a {
@@ -100,9 +78,13 @@ mat-sidenav-container {
       color: var(--color-text);
     }
 
+    // padding-left and .mdc-list-item__start's margin-inline below are solved
+    // together: they place the icon's center at the same x-position whether
+    // the sidenav is collapsed or expanded. Change one without the other and
+    // the icon will drift between the two states.
     &.mdc-list-item--with-leading-icon {
       padding-left: 0.75rem;
-      padding-right: var(--sidenav-padding);
+      padding-right: var(--content-padding);
     }
   }
 
@@ -116,6 +98,22 @@ mat-sidenav-container {
       font-weight: 400;
       overflow: hidden;
       white-space: nowrap;
+    }
+  }
+}
+
+mat-sidenav {
+  border-radius: 0;
+
+  &.collapsed {
+    --mat-sidenav-container-width: 5rem;
+  }
+
+  &.content-hidden {
+    .brand-text,
+    [matListItemTitle],
+    .mdc-list-item__content {
+      display: none;
     }
   }
 }
