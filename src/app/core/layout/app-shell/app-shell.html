@@ -38,8 +38,17 @@
         <span matListItemTitle>Licenses</span>
       </a>
       <a mat-list-item routerLink="/admin/license-requests" routerLinkActive="active">
-        <ensy-labs-icon name="license-requests" matListItemIcon />
+        <ensy-labs-icon
+          [matBadge]="licenseRequestsCount()"
+          matBadgeSize="small"
+          [matBadgeHidden]="!licenseRequestsCount() || !sidenavCollapsed()"
+          name="license-requests"
+          matListItemIcon
+        />
         <span matListItemTitle>License Requests</span>
+        @if (licenseRequestsCount() > 0 && !sidenavCollapsed()) {
+          <span matListItemMeta class="license-requests-span">{{ licenseRequestsCount() }}</span>
+        }
       </a>
     </mat-nav-list>
   </mat-sidenav>
