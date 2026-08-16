@@ -1,0 +1,30 @@
+<mat-sidenav-container>
+    
+    <mat-sidenav #drawer [mode]="isHandset() ? 'over' : 'side'" [opened]="!isHandset()">
+        <mat-nav-list>
+            <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="active">
+                <ensy-icon name="dashboard" matListItemIcon />
+                <span matListItemTitle>Dashboard</span>
+            </a>
+            <a mat-list-item routerLink="/admin/products" routerLinkActive="active">
+                <ensy-icon name="products" matListItemIcon />
+                <span matListItemTitle>Products</span>
+            </a>
+            <a mat-list-item routerLink="/admin/organizations" routerLinkActive="active">
+                <ensy-icon name="organizations" matListItemIcon />
+                <span matListItemTitle>Organizations</span>
+            </a>
+            <a mat-list-item routerLink="/admin/licenses" routerLinkActive="active">
+                <ensy-icon name="licenses" matListItemIcon />
+                <span matListItemTitle>Licenses</span>
+            </a>
+            <a mat-list-item routerLink="/admin/license-requests" routerLinkActive="active">
+                <ensy-icon name="license-requests" matListItemIcon />
+                <span matListItemTitle>License Requests</span>
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet />
+    </mat-sidenav-content>
+</mat-sidenav-container>

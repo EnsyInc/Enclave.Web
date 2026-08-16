@@ -1,0 +1,21 @@
+:host {
+    display: block;
+    height: 100dvh;
+}
+
+mat-sidenav-container {
+    height: 100%;
+
+    a {
+        &.active {
+            background-color: var(--color-border);
+            ensy-icon {
+                color: var(--color-primary);
+            }
+        }
+
+        ensy-icon {
+            color: var(--color-text)
+        }
+    }
+}
