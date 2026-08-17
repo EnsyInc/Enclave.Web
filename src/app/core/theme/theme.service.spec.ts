@@ -90,4 +90,59 @@ describe('ThemeService', () => {
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     expect(storage.getItem(STORAGE_KEY)).toBe('dark');
   });
+
+  describe('theme-transitioning class', () => {
+    let service: ThemeService;
+
+    beforeEach(() => {
+      vi.stubGlobal('localStorage', createStorageMock({ [STORAGE_KEY]: 'dark' }));
+      service = TestBed.inject(ThemeService);
+    });
+
+    afterEach(() => {
+      document.documentElement.classList.remove('theme-transitioning');
+    });
+
+    it('adds theme-transitioning to the document root while the theme change animates', () => {
+      service.setTheme('light');
+
+      expect(document.documentElement.classList.contains('theme-transitioning')).toBe(true);
+    });
+
+    it('removes theme-transitioning once the body background-color transition ends', () => {
+      service.setTheme('light');
+
+      document.body.dispatchEvent(
+        new TransitionEvent('transitionend', { propertyName: 'background-color' }),
+      );
+
+      expect(document.documentElement.classList.contains('theme-transitioning')).toBe(false);
+    });
+
+    it('ignores transitionend events for properties other than background-color', () => {
+      service.setTheme('light');
+
+      document.body.dispatchEvent(
+        new TransitionEvent('transitionend', { propertyName: 'opacity' }),
+      );
+
+      expect(document.documentElement.classList.contains('theme-transitioning')).toBe(true);
+    });
+
+    it('ignores transitionend events that did not originate on the body', () => {
+      service.setTheme('light');
+      const child = document.createElement('div');
+      document.body.appendChild(child);
+
+      child.dispatchEvent(
+        new TransitionEvent('transitionend', {
+          propertyName: 'background-color',
+          bubbles: true,
+        }),
+      );
+
+      expect(document.documentElement.classList.contains('theme-transitioning')).toBe(true);
+      child.remove();
+    });
+  });
 });

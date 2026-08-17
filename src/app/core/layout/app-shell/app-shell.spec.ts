@@ -139,6 +139,23 @@ describe('AppShell', () => {
 
       expect(getLicenseRequestsIcon().classList.contains('mat-badge-hidden')).toBe(true);
     });
+
+    it('names the pending count in the nav link aria-label when there are pending requests', () => {
+      const link: HTMLElement = fixture.debugElement.nativeElement.querySelector(
+        'a[routerLink="/admin/license-requests"]',
+      );
+      expect(link.getAttribute('aria-label')).toBe('License Requests, 3 pending');
+    });
+
+    it('omits the count from the nav link aria-label when there are none', () => {
+      fixture.componentRef.setInput('licenseRequestsCount', 0);
+      fixture.detectChanges();
+
+      const link: HTMLElement = fixture.debugElement.nativeElement.querySelector(
+        'a[routerLink="/admin/license-requests"]',
+      );
+      expect(link.getAttribute('aria-label')).toBe('License Requests');
+    });
   });
 
   describe('onToggleSidenav', () => {

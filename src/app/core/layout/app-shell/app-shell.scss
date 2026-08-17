@@ -72,6 +72,10 @@ mat-nav-list {
   padding-inline: var(--content-padding);
 }
 
+.main-content {
+  padding: 0.5rem 2rem;
+}
+
 .mat-drawer-side {
   border-right-width: 0;
 }
@@ -138,9 +142,15 @@ mat-sidenav-container {
   }
 }
 
+mat-sidenav-content {
+  transition: none !important;
+}
+
 mat-sidenav {
+  transition: width var(--theme-transition-duration) ease !important;
   border-radius: 0;
   --mat-sidenav-container-width: 20rem;
+  background-color: var(--color-card);
 
   &.collapsed {
     --mat-sidenav-container-width: 5rem;
@@ -153,4 +163,12 @@ mat-sidenav {
       display: none;
     }
   }
+}
+
+:host-context(.theme-transitioning) mat-sidenav {
+  transition:
+    width var(--theme-transition-duration) ease,
+    background-color var(--theme-transition-duration) ease,
+    color var(--theme-transition-duration) ease,
+    border-color var(--theme-transition-duration) ease !important;
 }

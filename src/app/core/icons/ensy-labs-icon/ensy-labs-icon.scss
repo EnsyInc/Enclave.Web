@@ -1,5 +1,9 @@
 :host {
+  --ensy-labs-icon-size: 1.5rem;
+  --ensy-labs-icon-width: var(--ensy-labs-icon-size);
+  --ensy-labs-icon-height: var(--ensy-labs-icon-size);
+
   display: inline-block;
-  width: var(--ensy-labs-icon-size, 1.5rem);
-  height: var(--ensy-labs-icon-size, 1.5rem);
+  width: var(--ensy-labs-icon-width);
+  height: var(--ensy-labs-icon-height);
 }
