@@ -5,8 +5,8 @@ import { provideRouter, Router, RouterOutlet } from '@angular/router';
 import { vi } from 'vitest';
 
 import { AppHeader } from './app-header';
-import { routes } from '../../../app.routes';
-import { ThemeService } from '../../theme/theme.service';
+import { routes } from '@enclave/app.routes';
+import { ThemeService } from '@enclave-core/theme/theme.service';
 
 @Component({
   imports: [AppHeader, RouterOutlet],

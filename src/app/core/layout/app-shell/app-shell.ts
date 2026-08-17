@@ -14,8 +14,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSidenav, MatSidenavContainer, MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { EnsyLabsIcon } from '../../icons/ensy-labs-icon/ensy-labs-icon';
-import { AppHeader } from '../app-header/app-header';
+import { EnsyLabsIcon } from '@enclave-core/icons/ensy-labs-icon/ensy-labs-icon';
+import { AppHeader } from '@enclave-core/layout/app-header/app-header';
 
 export const SIDENAV_STORAGE_KEY = 'enclave-sidenav-collapsed';
 

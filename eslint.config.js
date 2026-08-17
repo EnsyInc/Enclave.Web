@@ -31,12 +31,36 @@ module.exports = defineConfig([
           style: 'kebab-case',
         },
       ],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['./*', '../*'],
+              message:
+                "Relative imports ('./', '../') are forbidden. Use a path alias instead (@enclave/*, @enclave-core/*, @enclave-features/*).",
+            },
+          ],
+        },
+      ],
     },
   },
   {
     files: ['**/*.spec.ts'],
     rules: {
       '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions'] }],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['../*'],
+              message:
+                "Parent-relative imports ('../') are forbidden. Use a path alias instead (@enclave/*, @enclave-core/*, @enclave-features/*).",
+            },
+          ],
+        },
+      ],
     },
   },
   {
