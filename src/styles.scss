@@ -33,10 +33,11 @@ html {
       background: var(--color-bg),
       on-background: var(--color-text),
       surface: var(--color-surface),
+      surface-container: var(--color-surface),
       on-surface: var(--color-text),
       outline: var(--color-border),
-      error: var(--color-danger),
-      on-error: var(--color-danger-text),
+      error: var(--color-error),
+      on-error: var(--color-error-text),
     )
   );
 }

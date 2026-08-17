@@ -90,9 +90,34 @@
       [class.upcoming]="element.status === 'Upcoming'"
     >
       <div class="product-actions">
-        <button matIconButton>
+        <button
+          matIconButton
+          [matMenuTriggerFor]="productActionsMenu"
+          [attr.aria-label]="element.name + ' actions'"
+        >
           <ensy-labs-icon name="more-horizontal" color="var(--color-text)" />
         </button>
+
+        <mat-menu #productActionsMenu class="product-action-menu">
+          <button mat-menu-item>
+            <div>
+              <ensy-labs-icon name="edit" color="var(--color-text)" />
+              <span>Details</span>
+            </div>
+          </button>
+          <button mat-menu-item>
+            <div>
+              <ensy-labs-icon name="edit" color="var(--color-text)" />
+              <span>Edit</span>
+            </div>
+          </button>
+          <button mat-menu-item>
+            <div>
+              <ensy-labs-icon name="delete" color="var(--color-text)" />
+              <span>Delete</span>
+            </div>
+          </button>
+        </mat-menu>
       </div>
     </td>
   </ng-container>

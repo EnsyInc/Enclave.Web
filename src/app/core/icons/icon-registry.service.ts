@@ -16,6 +16,8 @@ export const SVG_ICONS = [
   'organizations',
   'licenses',
   'license-requests',
+  'edit',
+  'delete',
 ];
 
 @Injectable({ providedIn: 'root' })

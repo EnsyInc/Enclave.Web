@@ -139,7 +139,21 @@
     visibility: hidden;
   }
 
-  tr:hover .product-actions {
+  tr:hover .product-actions,
+  tr:focus-within .product-actions {
     visibility: visible;
+  }
+}
+
+::ng-deep .product-action-menu {
+  button div {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 0.5rem;
+
+    span {
+      align-content: center;
+    }
   }
 }

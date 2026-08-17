@@ -10,6 +10,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
@@ -56,6 +57,7 @@ function toProduct([name, status, description]: ProductSeed): ProductModel {
   imports: [
     MatButtonModule,
     MatInputModule,
+    MatMenuModule,
     MatTableModule,
     EnsyLabsIcon,
     EnclaveStatus,
