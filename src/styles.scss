@@ -4,16 +4,18 @@
 @use '@fontsource-variable/inter';
 @use '@fontsource-variable/geist-mono';
 
-*,
-*::before,
-*::after {
+:root {
   --theme-transition-duration: 0.3s;
+}
 
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
   transition:
     background-color var(--theme-transition-duration) ease,
     color var(--theme-transition-duration) ease,
-    border-color var(--theme-transition-duration) ease,
-    width var(--theme-transition-duration) ease !important;
+    border-color var(--theme-transition-duration) ease
+      !important;
 }
 
 html {

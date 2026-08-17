@@ -142,9 +142,18 @@ mat-sidenav-container {
   }
 }
 
+mat-sidenav-content {
+  transition:
+    none !important;
+}
+
 mat-sidenav {
+  transition: 
+    width var(--theme-transition-duration) ease
+      !important;
   border-radius: 0;
   --mat-sidenav-container-width: 20rem;
+  background-color: var(--color-card);
 
   &.collapsed {
     --mat-sidenav-container-width: 5rem;

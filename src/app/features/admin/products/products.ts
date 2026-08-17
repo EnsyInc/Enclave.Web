@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, input, viewChild } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { ProductModel } from '@enclave-core/models/product-model';
 import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
@@ -9,17 +10,18 @@ import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-s
 @Component({
   selector: 'enclave-products',
   imports: [
-    MatButtonModule, 
+    MatButtonModule,
     MatInputModule,
-    MatTableModule, 
+    MatTableModule,
     EnsyLabsIcon,
     EnclaveStatus,
-  ],
+    MatSortModule,
+],
   templateUrl: './products.html',
   styleUrl: './products.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Products {
+export class Products implements AfterViewInit{
   readonly productsList = input<ProductModel[]>([
     {
       id: crypto.randomUUID(),
@@ -61,5 +63,16 @@ export class Products {
   readonly activeProductsCount = computed(
     () => this.productsList().filter((p) => p.status === 'Active').length,
   );
-  readonly displayedColumns = ['name', 'description', 'status', 'action']
+  readonly productsDataSource = computed(() => new MatTableDataSource(this.productsList()));
+  readonly productSort = viewChild(MatSort);
+  readonly displayedColumns = ['name', 'description', 'status', 'action'];
+
+  ngAfterViewInit(): void {
+    this.productsDataSource().sort = this.productSort();
+  }
+
+  protected applyProductFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.productsDataSource().filter = filterValue.trim().toLowerCase();
+  }
 }

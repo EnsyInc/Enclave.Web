@@ -17,6 +17,17 @@ export class ThemeService {
   }
 
   setTheme(theme: Theme): void {
+    const root = document.documentElement;
+    root.classList.add('theme-transitioning');
+
+    const onTransitionEnd = (event: TransitionEvent) => {
+      if (event.target === document.body && event.propertyName == 'background-color') {
+        root.classList.remove('theme-transitioning');
+        document.body.removeEventListener('transitionend', onTransitionEnd);
+      }
+    };
+    document.body.addEventListener('transitionend', onTransitionEnd);
+
     this.theme.set(theme);
     this.applyTheme(theme);
     localStorage.setItem(STORAGE_KEY, theme);

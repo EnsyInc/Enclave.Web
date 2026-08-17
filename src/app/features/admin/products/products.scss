@@ -80,7 +80,7 @@
   }
 
   .upcoming {
-    color: var(--color-secondary-text);
+    color: var(--color-primary);
   }
 
   .product-name {
@@ -104,13 +104,17 @@
     }
   }
 
+  td enclave-status {
+    --enclave-status-color: var(--color-secondary);
+  }
+
   td.retired enclave-status {
     --enclave-status-color: var(--color-text-muted);
     --enclave-status-border-color: var(--color-border);
   }
 
   td.upcoming enclave-status {
-    --enclave-status-color: var(--color-secondary-text);
+    --enclave-status-color: var(--color-primary);
   }
 
   .product-actions {
