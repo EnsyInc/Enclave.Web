@@ -1,7 +1,6 @@
 :host {
   --enclave-status-color: var(--color-primary);
-  // --enclave-status-background-color: transparent;
-  --enclave-status-background-color: var(--color-bg);
+  --enclave-status-background-color: transparent;
   --enclave-status-icon-color: var(--enclave-status-color);
   --enclave-status-border-color: var(--enclave-status-color);
   --enclave-status-text-color: var(--enclave-status-color);

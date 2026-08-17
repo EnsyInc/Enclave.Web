@@ -7,7 +7,6 @@ import { IconRegistryService } from '@enclave-core/icons/icon-registry.service';
   selector: 'enclave-root',
   imports: [AppShell],
   templateUrl: './app.html',
-  styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {

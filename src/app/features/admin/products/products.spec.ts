@@ -64,7 +64,7 @@ describe('Products', () => {
 
     const rows: NodeListOf<HTMLElement> =
       fixture.debugElement.nativeElement.querySelectorAll('tr[mat-row]');
-    expect(rows.length).toBe(3);
+    expect(rows).toHaveLength(3);
   });
 
   it('shows a fallback message for a product with no description', async () => {
@@ -100,7 +100,7 @@ describe('Products', () => {
     const rows: HTMLElement[] = Array.from(
       fixture.debugElement.nativeElement.querySelectorAll('tr[mat-row]'),
     );
-    expect(rows.length).toBe(1);
+    expect(rows).toHaveLength(1);
     expect(rows[0].textContent).toContain('Alpha');
   });
 

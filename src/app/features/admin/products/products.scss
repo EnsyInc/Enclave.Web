@@ -118,6 +118,10 @@
     }
   }
 
+  enclave-status {
+    --enclave-status-background-color: var(--color-bg);
+  }
+
   td enclave-status {
     --enclave-status-color: var(--color-secondary);
   }

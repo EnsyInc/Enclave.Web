@@ -19,6 +19,8 @@
   <mat-form-field>
     <ensy-labs-icon matPrefix name="search" />
     <input
+      id="product-search-input"
+      aria-label="Search Products"
       autocomplete="off"
       #productSearchInput
       (keyup)="applyProductFilter($event)"
