@@ -1,4 +1,11 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, input, viewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  viewChild,
+} from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -16,12 +23,12 @@ import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-s
     EnsyLabsIcon,
     EnclaveStatus,
     MatSortModule,
-],
+  ],
   templateUrl: './products.html',
   styleUrl: './products.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Products implements AfterViewInit{
+export class Products implements AfterViewInit {
   readonly productsList = input<ProductModel[]>([
     {
       id: crypto.randomUUID(),
