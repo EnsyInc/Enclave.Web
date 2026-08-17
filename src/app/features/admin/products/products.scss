@@ -68,6 +68,20 @@
 .products-table {
   border: 1px solid var(--color-border);
 
+  table-layout: fixed;
+  .mat-column-name {
+    width: 20%;
+  }
+  .mat-column-description {
+    width: 54%;
+  }
+  .mat-column-status {
+    width: 25%;
+  }
+  .mat-column-action {
+    width: 1%;
+  }
+
   th {
     font-family: var(--font-mono);
     font-weight: 600;
