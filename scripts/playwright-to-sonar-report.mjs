@@ -8,8 +8,28 @@ const repoRoot = process.cwd();
 const report = JSON.parse(readFileSync(inputPath, 'utf-8'));
 const testDir = resolve(repoRoot, report.config.rootDir);
 
+// Playwright's expect() diffs (e.g. toEqual mismatches) are colorized with ANSI
+// escape codes, which end up in error.message/stack in the JSON report. Raw
+// control characters are illegal in XML 1.0 regardless of entity-escaping, so
+// SonarQube's parser rejects the whole file the first time a failure's message
+// contains one — strip them before escaping the rest.
+function stripAnsi(value) {
+  const ESC = String.fromCharCode(0x1b);
+  const CSI = String.fromCharCode(0x9b);
+  const pattern = new RegExp(
+    `[${ESC}${CSI}][[\\]()#;?]*(?:(?:(?:[a-zA-Z\\d]*(?:;[a-zA-Z\\d]*)*)?\\x07)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))`,
+    'g',
+  );
+  return String(value).replace(pattern, '');
+}
+
+function stripIllegalXmlChars(value) {
+  // eslint-disable-next-line no-control-regex
+  return String(value).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
+}
+
 function escapeXml(value) {
-  return String(value)
+  return stripIllegalXmlChars(stripAnsi(value))
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
