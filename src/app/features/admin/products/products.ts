@@ -14,6 +14,37 @@ import { ProductModel } from '@enclave-core/models/product-model';
 import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
 import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-status';
 
+type ProductSeed = readonly [name: string, status: ProductModel['status'], description?: string];
+
+const PRODUCT_SEEDS: readonly ProductSeed[] = [
+  [
+    'Enclave Core',
+    'Active',
+    'Seat-based license engine with entitlement checks and offline grace periods.',
+  ],
+  [
+    'Vault Analytics',
+    'Active',
+    'Usage telemetry and seat utilization reporting across every organization.',
+  ],
+  ['Perimeter SSO', 'Active', 'SAML and OIDC single sign-on for customer workspaces..'],
+  [
+    'Keyring CLI',
+    'Upcoming',
+    'Command-line tool for issuing, rotating and revoking license keys in CI.',
+  ],
+  [
+    'Ledger Export',
+    'Retired',
+    'Scheduled CSV and Parquet exports of license events to object storage..',
+  ],
+  ['Beacon Alerts', 'Retired'],
+];
+
+function toProduct([name, status, description]: ProductSeed): ProductModel {
+  return { id: crypto.randomUUID(), name, status, description };
+}
+
 @Component({
   selector: 'enclave-products',
   imports: [
@@ -29,43 +60,7 @@ import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-s
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Products implements AfterViewInit {
-  readonly productsList = input<ProductModel[]>([
-    {
-      id: crypto.randomUUID(),
-      name: 'Enclave Core',
-      description: 'Seat-based license engine with entitlement checks and offline grace periods.',
-      status: 'Active',
-    },
-    {
-      id: crypto.randomUUID(),
-      name: 'Vault Analytics',
-      description: 'Usage telemetry and seat utilization reporting across every organization.',
-      status: 'Active',
-    },
-    {
-      id: crypto.randomUUID(),
-      name: 'Perimeter SSO',
-      description: 'SAML and OIDC single sign-on for customer workspaces..',
-      status: 'Active',
-    },
-    {
-      id: crypto.randomUUID(),
-      name: 'Keyring CLI',
-      description: 'Command-line tool for issuing, rotating and revoking license keys in CI.',
-      status: 'Upcoming',
-    },
-    {
-      id: crypto.randomUUID(),
-      name: 'Ledger Export',
-      description: 'Scheduled CSV and Parquet exports of license events to object storage..',
-      status: 'Retired',
-    },
-    {
-      id: crypto.randomUUID(),
-      name: 'Beacon Alerts',
-      status: 'Retired',
-    },
-  ]);
+  readonly productsList = input<ProductModel[]>(PRODUCT_SEEDS.map(toProduct));
   readonly productsCount = computed(() => this.productsList().length);
   readonly activeProductsCount = computed(
     () => this.productsList().filter((p) => p.status === 'Active').length,
