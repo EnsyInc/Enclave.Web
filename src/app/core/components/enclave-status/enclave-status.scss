@@ -1,5 +1,7 @@
 :host {
   --enclave-status-color: var(--color-primary);
+  // --enclave-status-background-color: transparent;
+  --enclave-status-background-color: var(--color-bg);
   --enclave-status-icon-color: var(--enclave-status-color);
   --enclave-status-border-color: var(--enclave-status-color);
   --enclave-status-text-color: var(--enclave-status-color);
@@ -15,6 +17,7 @@
   gap: 0.5rem;
   padding: 0.25rem 3rem;
   border: 1px solid var(--enclave-status-border-color);
+  background-color: var(--enclave-status-background-color);
   border-radius: 0.25rem;
   color: var(--enclave-status-text-color);
   text-transform: uppercase;
