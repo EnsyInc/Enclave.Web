@@ -1,1 +1,27 @@
-<p>products works!</p>
+<div class="products-header">
+  <div class="header-left">
+    <span class="page-name">Products</span>
+    <span class="page-overview"
+      >{{ productsCount() }} in the catalogue - {{ activeProductsCount() }} active</span
+    >
+  </div>
+  <div class="header-right">
+    <button matButton>
+      <div class="add-product">
+        <ensy-labs-icon matPrefix name="add" />
+        <span>Create Product</span>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div class="products-search">
+  <form>
+    <mat-form-field>
+      <ensy-labs-icon matPrefix name="search" />
+      <input placeholder="Search Products" type="text" matInput />
+    </mat-form-field>
+  </form>
+</div>
+
+<!-- table -->

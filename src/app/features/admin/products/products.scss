@@ -1,0 +1,61 @@
+@use '@angular/material' as mat;
+
+.products-header {
+  display: flex;
+  justify-content: space-between;
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+
+    .page-name {
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    .page-overview {
+      font-family: var(--font-mono);
+      color: var(--color-text-muted);
+    }
+  }
+
+  .header-right {
+    padding-right: 2rem;
+    justify-content: center;
+    align-content: center;
+
+    button {
+      color: var(--color-text);
+      border-radius: 0.5rem;
+
+      .add-product {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        gap: 0.25rem;
+
+        span {
+          align-content: center;
+        }
+      }
+    }
+  }
+}
+
+.products-search {
+  padding: 1rem 0;
+
+  mat-form-field {
+    --mat-form-field-filled-container-color: var(--color-card);
+    --mat-form-field-filled-active-indicator-color: var(--color-border);
+    width: 18rem;
+
+    @include mat.form-field-density(-5);
+
+    ::ng-deep .mat-mdc-form-field-icon-prefix {
+      padding-left: 0.5rem;
+    }
+  }
+}
