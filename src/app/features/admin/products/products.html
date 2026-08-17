@@ -22,10 +22,10 @@
       id="product-search-input"
       aria-label="Search Products"
       autocomplete="off"
-      #productSearchInput
       (keyup)="applyProductFilter($event)"
       placeholder="Search Products"
       type="text"
+      [value]="searchTerm()"
       matInput
     />
   </mat-form-field>
@@ -102,8 +102,8 @@
 
   <tr class="mat-row" *matNoDataRow>
     <td class="mat-cell" [colSpan]="displayedColumns.length">
-      @if (productSearchInput.value) {
-        No data matching the search term "{{ productSearchInput.value }}".
+      @if (searchTerm()) {
+        No data matching the search term "{{ searchTerm() }}".
       } @else {
         No products yet. Press the "Create Product" button above to add one.
       }
