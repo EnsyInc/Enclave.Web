@@ -14,6 +14,14 @@ export class IconRegistryService {
     );
 
     this.iconRegistry.addSvgIcon(
+      'dot',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('icons/dot.svg'),
+    );
+    this.iconRegistry.addSvgIcon(
+      'more-horizontal',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('icons/more-horizontal.svg'),
+    );
+    this.iconRegistry.addSvgIcon(
       'add',
       this.domSanitizer.bypassSecurityTrustResourceUrl('icons/add.svg'),
     );
