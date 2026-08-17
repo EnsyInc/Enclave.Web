@@ -148,7 +148,7 @@ mat-sidenav-content {
 }
 
 mat-sidenav {
-  transition: 
+  transition:
     width var(--theme-transition-duration) ease
       !important;
   border-radius: 0;
@@ -166,4 +166,13 @@ mat-sidenav {
       display: none;
     }
   }
+}
+
+:host-context(.theme-transitioning) mat-sidenav {
+  transition:
+    width var(--theme-transition-duration) ease,
+    background-color var(--theme-transition-duration) ease,
+    color var(--theme-transition-duration) ease,
+    border-color var(--theme-transition-duration) ease
+      !important;
 }
