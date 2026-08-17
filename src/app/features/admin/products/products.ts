@@ -4,7 +4,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { ProductModel } from '@enclave-core/models/product-model';
 import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
-import { EnclaveStatus } from '@enclave/core/components/status/status';
+import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-status';
 
 @Component({
   selector: 'enclave-products',

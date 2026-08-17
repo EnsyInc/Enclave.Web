@@ -6,8 +6,8 @@ import { EnsyLabsIcon } from "@enclave/core/icons/ensy-labs-icon/ensy-labs-icon"
   imports: [
     EnsyLabsIcon
   ],
-  templateUrl: './status.html',
-  styleUrl: './status.scss',
+  templateUrl: './enclave-status.html',
+  styleUrl: './enclave-status.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EnclaveStatus {
