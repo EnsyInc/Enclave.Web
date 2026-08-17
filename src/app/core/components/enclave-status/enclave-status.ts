@@ -11,4 +11,5 @@ import { EnsyLabsIcon } from "@enclave/core/icons/ensy-labs-icon/ensy-labs-icon"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EnclaveStatus {
+  protected readonly iconName = input('dot');
 }
