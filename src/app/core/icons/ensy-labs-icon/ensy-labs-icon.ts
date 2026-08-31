@@ -10,5 +10,4 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class EnsyLabsIcon {
   readonly name = input.required<string>();
-  readonly color = input<string>();
 }

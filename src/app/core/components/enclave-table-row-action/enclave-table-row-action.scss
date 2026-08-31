@@ -1,4 +1,12 @@
+ensy-labs-icon {
+  --ensy-labs-icon-color: var(--color-text);
+}
+
 ::ng-deep .more-actions-menu {
+  ensy-labs-icon {
+    --ensy-labs-icon-color: var(--color-text);
+  }
+
   button div {
     display: flex;
     align-items: center;

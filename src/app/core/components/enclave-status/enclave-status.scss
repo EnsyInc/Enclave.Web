@@ -24,10 +24,10 @@
   .status-icon {
     --ensy-labs-icon-width: 0.5rem;
     --ensy-labs-icon-height: 1rem;
+    --ensy-labs-icon-color: var(--enclave-status-icon-color);
 
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--enclave-status-icon-color);
   }
 }

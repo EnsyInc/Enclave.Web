@@ -3,6 +3,10 @@
 .search-bar {
   padding: 1rem 0;
 
+  ensy-labs-icon {
+    --ensy-labs-icon-color: var(--color-text-muted);
+  }
+
   mat-form-field {
     --mat-form-field-filled-container-color: var(--color-card);
     --mat-form-field-filled-active-indicator-color: var(--color-border);

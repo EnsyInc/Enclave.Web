@@ -20,13 +20,16 @@
   }
 
   .header-right {
-    padding-right: 2rem;
     justify-content: center;
     align-content: center;
 
     button {
       color: var(--color-text);
       border-radius: 0.5rem;
+
+      ensy-labs-icon {
+        color: var(--color-text);
+      }
 
       .primary-action-button {
         display: flex;

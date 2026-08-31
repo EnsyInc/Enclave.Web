@@ -4,6 +4,10 @@
   font-weight: 700;
 }
 
+ensy-labs-icon {
+  --ensy-labs-icon-color: var(--color-text-muted);
+}
+
 mat-divider.mat-divider-vertical {
   height: 1.5rem;
   margin: 0;
