@@ -1,7 +1,19 @@
-.products-table {
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.products-table-container {
+  flex: 0 1 auto;
+  max-height: 100%;
+  overflow: auto;
   border: 1px solid var(--color-border);
   background-color: var(--color-card);
+}
 
+.products-table {
   table-layout: fixed;
   .mat-column-name {
     width: 20%;
@@ -21,6 +33,10 @@
     font-weight: 600;
     text-transform: uppercase;
     color: var(--color-text-muted);
+
+    &[mat-sort-header] {
+      user-select: none;
+    }
   }
 
   .retired {
