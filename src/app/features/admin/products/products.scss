@@ -50,12 +50,12 @@
     --enclave-status-color: var(--color-secondary);
   }
 
-  td.retired enclave-status {
+  tr.retired enclave-status {
     --enclave-status-color: var(--color-text-muted);
     --enclave-status-border-color: var(--color-border);
   }
 
-  td.upcoming enclave-status {
+  tr.upcoming enclave-status {
     --enclave-status-color: var(--color-primary);
   }
 
