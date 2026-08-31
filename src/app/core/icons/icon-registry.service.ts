@@ -9,6 +9,7 @@ export const SVG_ICONS = [
   'add',
   'search',
   'chevrons-up-down',
+  'sun',
   'moon',
   'sidenav',
   'dashboard',
@@ -18,6 +19,7 @@ export const SVG_ICONS = [
   'license-requests',
   'edit',
   'delete',
+  'details',
 ];
 
 @Injectable({ providedIn: 'root' })

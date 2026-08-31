@@ -31,6 +31,7 @@ describe('IconRegistryService', () => {
       ['add', 'icons/add.svg'],
       ['search', 'icons/search.svg'],
       ['chevrons-up-down', 'icons/chevrons-up-down.svg'],
+      ['sun', 'icons/sun.svg'],
       ['moon', 'icons/moon.svg'],
       ['sidenav', 'icons/sidenav.svg'],
       ['dashboard', 'icons/dashboard.svg'],
@@ -40,6 +41,7 @@ describe('IconRegistryService', () => {
       ['license-requests', 'icons/license-requests.svg'],
       ['edit', 'icons/edit.svg'],
       ['delete', 'icons/delete.svg'],
+      ['details', 'icons/details.svg'],
     ];
 
     expect(addSvgIconSpy).toHaveBeenCalledTimes(expected.length);
