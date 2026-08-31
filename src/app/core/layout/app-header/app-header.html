@@ -28,7 +28,8 @@
 
     <mat-divider vertical></mat-divider>
     <div class="user-info">
-      <div class="user-avatar">{{ userInitials }}</div>
+      <enclave-avatar class="user-avatar" [name]="userName" [maxInitials]="2" />
+
       <div class="user-details">
         <div class="user-name">{{ userName }}</div>
         <div class="user-role">{{ userRole }}</div>

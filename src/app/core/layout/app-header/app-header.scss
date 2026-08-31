@@ -1,16 +1,7 @@
 .user-avatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 0.5rem;
-  background-color: var(--color-primary);
-  text-transform: uppercase;
-  color: var(--color-primary-text);
-  font-family: var(--font-mono);
+  --enclave-avatar-color: var(--color-primary-text);
+  --enclave-avatar-bg-color: var(--color-primary);
   font-weight: 700;
-  font-size: 1rem;
 }
 
 mat-divider.mat-divider-vertical {

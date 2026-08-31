@@ -18,6 +18,7 @@ import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-s
 import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/enclave-page-header';
 import { EnclaveTableRowAction } from '@enclave/core/components/enclave-table-row-action/enclave-table-row-action';
 import { EnclaveSearchBarFilter } from '@enclave/core/components/enclave-search-bar-filter/enclave-search-bar-filter';
+import { EnclaveAvatar } from "@enclave/core/components/enclave-avatar/enclave-avatar";
 
 type ProductSeed = readonly [name: string, status: ProductModel['status'], description?: string];
 
@@ -63,7 +64,8 @@ function toProduct([name, status, description]: ProductSeed): ProductModel {
     EnclaveStatus,
     EnclaveTableRowAction,
     MatSortModule,
-  ],
+    EnclaveAvatar
+],
   templateUrl: './products.html',
   styleUrl: './products.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

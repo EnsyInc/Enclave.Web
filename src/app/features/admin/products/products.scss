@@ -37,16 +37,7 @@
     justify-content: left;
     gap: 0.5rem;
 
-    .product-name-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 2rem;
-      height: 2rem;
-      background-color: var(--color-border);
-      border-radius: 0.25rem;
-      text-transform: uppercase;
-      color: var(--color-secondary-text);
+    enclave-avatar {
       font-weight: 600;
     }
   }

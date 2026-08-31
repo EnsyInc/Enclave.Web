@@ -17,7 +17,7 @@
       [class.upcoming]="element.status === 'Upcoming'"
     >
       <div class="product-name">
-        <span class="product-name-icon">{{ element.name[0] }}</span>
+        <enclave-avatar [name]="element.name" />
         <span>{{ element.name }}</span>
       </div>
     </td>
