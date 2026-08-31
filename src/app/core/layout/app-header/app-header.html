@@ -1,7 +1,7 @@
 <div class="app-header">
   <div class="app-header-left">
     <button matIconButton (click)="toggleSidenav.emit()" aria-label="Toggle navigation">
-      <ensy-labs-icon name="sidenav" color="var(--color-text-muted)" />
+      <ensy-labs-icon name="sidenav" />
     </button>
 
     <div class="breadcrumb">
@@ -19,18 +19,23 @@
 
   <div class="app-header-right">
     <button matIconButton (click)="themeService.toggle()" aria-label="Toggle theme">
-      <ensy-labs-icon name="moon" color="var(--color-text-muted)" />
+      @if (themeService.theme() === 'dark') {
+        <ensy-labs-icon name="moon" />
+      } @else {
+        <ensy-labs-icon name="sun" />
+      }
     </button>
 
     <mat-divider vertical></mat-divider>
     <div class="user-info">
-      <div class="user-avatar">{{ userInitials }}</div>
+      <enclave-avatar class="user-avatar" [name]="userName" [maxInitials]="2" />
+
       <div class="user-details">
         <div class="user-name">{{ userName }}</div>
         <div class="user-role">{{ userRole }}</div>
       </div>
       <button matIconButton aria-label="Expand user menu">
-        <ensy-labs-icon name="chevrons-up-down" color="var(--color-text-muted)" />
+        <ensy-labs-icon name="chevrons-up-down" />
       </button>
     </div>
   </div>

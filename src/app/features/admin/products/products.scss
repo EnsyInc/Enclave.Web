@@ -1,70 +1,3 @@
-@use '@angular/material' as mat;
-
-.products-header {
-  display: flex;
-  justify-content: space-between;
-
-  .header-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-
-    .page-name {
-      font-size: 2rem;
-      font-weight: 600;
-    }
-
-    .page-overview {
-      font-family: var(--font-mono);
-      color: var(--color-text-muted);
-    }
-  }
-
-  .header-right {
-    padding-right: 2rem;
-    justify-content: center;
-    align-content: center;
-
-    button {
-      color: var(--color-text);
-      border-radius: 0.5rem;
-
-      .add-product {
-        display: flex;
-        justify-content: center;
-        align-content: center;
-        gap: 0.25rem;
-
-        span {
-          align-content: center;
-        }
-      }
-    }
-  }
-}
-
-.products-search {
-  padding: 1rem 0;
-
-  mat-form-field {
-    --mat-form-field-filled-container-color: var(--color-card);
-    --mat-form-field-filled-active-indicator-color: var(--color-border);
-    width: 18rem;
-    border: 1px solid var(--color-border);
-
-    @include mat.form-field-density(-5);
-
-    ::ng-deep .mat-mdc-form-field-icon-prefix {
-      padding-left: 0.5rem;
-    }
-
-    ::ng-deep .mat-mdc-form-field-subscript-wrapper {
-      display: none;
-    }
-  }
-}
-
 .products-table {
   border: 1px solid var(--color-border);
   background-color: var(--color-card);
@@ -104,16 +37,7 @@
     justify-content: left;
     gap: 0.5rem;
 
-    .product-name-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 2rem;
-      height: 2rem;
-      background-color: var(--color-border);
-      border-radius: 0.25rem;
-      text-transform: uppercase;
-      color: var(--color-secondary-text);
+    enclave-avatar {
       font-weight: 600;
     }
   }
@@ -126,12 +50,12 @@
     --enclave-status-color: var(--color-secondary);
   }
 
-  td.retired enclave-status {
+  tr.retired enclave-status {
     --enclave-status-color: var(--color-text-muted);
     --enclave-status-border-color: var(--color-border);
   }
 
-  td.upcoming enclave-status {
+  tr.upcoming enclave-status {
     --enclave-status-color: var(--color-primary);
   }
 
@@ -139,7 +63,8 @@
     visibility: hidden;
   }
 
-  tr:hover .product-actions {
+  tr:hover .product-actions,
+  tr:focus-within .product-actions {
     visibility: visible;
   }
 }

@@ -45,6 +45,7 @@
 .logo {
   height: 2.25rem;
   width: 2.25rem;
+  --ensy-labs-icon-color: var(--color-primary);
 }
 
 .brand-name {
@@ -92,12 +93,12 @@ mat-sidenav-container {
       background-color: var(--color-border);
 
       ensy-labs-icon {
-        color: var(--color-primary);
+        --ensy-labs-icon-color: var(--color-primary);
       }
     }
 
     ensy-labs-icon {
-      color: var(--color-text);
+      --ensy-labs-icon-color: var(--color-text);
 
       ::ng-deep .mat-badge-content {
         background-color: var(--color-primary);

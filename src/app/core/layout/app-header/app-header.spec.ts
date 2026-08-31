@@ -7,6 +7,7 @@ import { vi } from 'vitest';
 import { AppHeader } from './app-header';
 import { routes } from '@enclave/app.routes';
 import { ThemeService } from '@enclave-core/theme/theme.service';
+import { EnclaveAvatar } from '@enclave/core/components/enclave-avatar/enclave-avatar';
 
 @Component({
   imports: [AppHeader, RouterOutlet],
@@ -39,8 +40,12 @@ describe('AppHeader', () => {
     expect(component).toBeTruthy();
   });
 
-  it('derives initials from the user name', () => {
-    expect(component['userInitials']).toBe('JD');
+  it('passes the user name to the avatar, asking for two initials', () => {
+    const avatar = hostFixture.debugElement.query(By.directive(EnclaveAvatar))
+      .componentInstance as EnclaveAvatar;
+
+    expect(avatar.name()).toBe('John Doe');
+    expect(avatar.maxInitials()).toBe(2);
   });
 
   it('emits toggleSidenav when the menu button is clicked', () => {

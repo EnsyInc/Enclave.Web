@@ -1,0 +1,17 @@
+<div class="enclave-page-header">
+  <div class="header-left">
+    <span class="page-title">{{ title() }}</span>
+    <span class="page-subtitle">{{ subTitle() }}</span>
+  </div>
+
+  @if (actionIcon() && actionText()) {
+    <div class="header-right">
+      <button matButton (click)="actionButtonClick.emit()">
+        <div class="primary-action-button">
+          <ensy-labs-icon matPrefix [name]="actionIcon()!" />
+          <span>{{ actionText()! }}</span>
+        </div>
+      </button>
+    </div>
+  }
+</div>

@@ -1,47 +1,18 @@
-<div class="products-header">
-  <div class="header-left">
-    <span class="page-name">Products</span>
-    <span class="page-overview"
-      >{{ productsCount() }} in the catalogue - {{ activeProductsCount() }} active</span
-    >
-  </div>
-  <div class="header-right">
-    <button matButton>
-      <div class="add-product">
-        <ensy-labs-icon matPrefix name="add" />
-        <span>Create Product</span>
-      </div>
-    </button>
-  </div>
-</div>
+<enclave-page-header
+  title="Products"
+  [subTitle]="`${productsCount()} in the catalogue - ${activeProductsCount()} active`"
+  actionIcon="add"
+  actionText="Create Product"
+/>
 
-<div class="products-search">
-  <mat-form-field>
-    <ensy-labs-icon matPrefix name="search" />
-    <input
-      id="product-search-input"
-      aria-label="Search Products"
-      autocomplete="off"
-      #productSearchInput
-      (keyup)="applyProductFilter($event)"
-      placeholder="Search Products"
-      type="text"
-      matInput
-    />
-  </mat-form-field>
-</div>
+<enclave-search-bar-filter searchPlaceholder="Search Products" />
 
 <table mat-table [dataSource]="productsDataSource()" class="products-table" matSort>
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-      [class.retired]="element.status === 'Retired'"
-      [class.upcoming]="element.status === 'Upcoming'"
-    >
+    <td mat-cell *matCellDef="let element">
       <div class="product-name">
-        <span class="product-name-icon">{{ element.name[0] }}</span>
+        <enclave-avatar [name]="element.name" />
         <span>{{ element.name }}</span>
       </div>
     </td>
@@ -49,12 +20,7 @@
 
   <ng-container matColumnDef="description">
     <th mat-header-cell *matHeaderCellDef>Description</th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-      [class.retired]="element.status === 'Retired'"
-      [class.upcoming]="element.status === 'Upcoming'"
-    >
+    <td mat-cell *matCellDef="let element">
       <div class="product-description">
         <span>
           @if (element.description) {
@@ -69,12 +35,7 @@
 
   <ng-container matColumnDef="status">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-      [class.retired]="element.status === 'Retired'"
-      [class.upcoming]="element.status === 'Upcoming'"
-    >
+    <td mat-cell *matCellDef="let element">
       <div class="product-status">
         <enclave-status>{{ element.status }}</enclave-status>
       </div>
@@ -83,27 +44,42 @@
 
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef></th>
-    <td
-      mat-cell
-      *matCellDef="let element"
-      [class.retired]="element.status === 'Retired'"
-      [class.upcoming]="element.status === 'Upcoming'"
-    >
-      <div class="product-actions">
-        <button matIconButton>
-          <ensy-labs-icon name="more-horizontal" color="var(--color-text)" />
+    <td mat-cell *matCellDef="let element">
+      <enclave-more-actions-menu [elementName]="element.name" class="product-actions">
+        <button mat-menu-item>
+          <div>
+            <ensy-labs-icon name="details" />
+            <span>Details</span>
+          </div>
         </button>
-      </div>
+        <button mat-menu-item>
+          <div>
+            <ensy-labs-icon name="edit" />
+            <span>Edit</span>
+          </div>
+        </button>
+        <button mat-menu-item>
+          <div>
+            <ensy-labs-icon name="delete" />
+            <span>Delete</span>
+          </div>
+        </button>
+      </enclave-more-actions-menu>
     </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  <tr
+    mat-row
+    [class.retired]="element.status === 'Retired'"
+    [class.upcoming]="element.status === 'Upcoming'"
+    *matRowDef="let element; columns: displayedColumns"
+  ></tr>
 
   <tr class="mat-row" *matNoDataRow>
     <td class="mat-cell" [colSpan]="displayedColumns.length">
-      @if (productSearchInput.value) {
-        No data matching the search term "{{ productSearchInput.value }}".
+      @if (productSearch().searchText()) {
+        No data matching the search term "{{ productSearch().searchText() }}".
       } @else {
         No products yet. Press the "Create Product" button above to add one.
       }

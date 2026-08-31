@@ -30,21 +30,4 @@ describe('EnsyLabsIcon', () => {
     const matIcon = fixture.debugElement.query(By.directive(MatIcon)).componentInstance as MatIcon;
     expect(matIcon.svgIcon).toBe('dashboard');
   });
-
-  it('applies the color input as inline style on the icon', async () => {
-    fixture.componentRef.setInput('name', 'dashboard');
-    fixture.componentRef.setInput('color', 'var(--color-primary)');
-    await fixture.whenStable();
-
-    const iconEl: HTMLElement = fixture.debugElement.query(By.directive(MatIcon)).nativeElement;
-    expect(iconEl.style.color).toBe('var(--color-primary)');
-  });
-
-  it('leaves color unset when no color input is provided', async () => {
-    fixture.componentRef.setInput('name', 'dashboard');
-    await fixture.whenStable();
-
-    const iconEl: HTMLElement = fixture.debugElement.query(By.directive(MatIcon)).nativeElement;
-    expect(iconEl.style.color).toBe('');
-  });
 });

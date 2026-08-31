@@ -5,6 +5,17 @@
 // when new colors arrive — both the explicit [data-theme] override and the
 // prefers-color-scheme fallback include the same mixin, so they can't drift.
 
+@mixin theme-common-tokens {
+  --color-success: #4b9360;
+  --color-success-text: #000000;
+  --color-warning: #c9961a;
+  --color-warning-text: #000000;
+  --color-error: #c46262;
+  --color-error-text: #000000;
+  --color-info: #5a86c8;
+  --color-info-text: #ffffff;
+}
+
 @mixin dark-theme-tokens {
   --color-bg: #14140c;
   --color-surface: #1b1b13;
@@ -17,8 +28,8 @@
   --color-primary-text: #14140c;
   --color-secondary: #b88416;
   --color-secondary-text: #b88416;
-  --color-danger: #dc2626;
-  --color-danger-text: #ffffff;
+
+  @include theme-common-tokens;
 }
 
 @mixin light-theme-tokens {
@@ -33,8 +44,8 @@
   --color-primary-text: #1c1c19;
   --color-secondary: #b88416;
   --color-secondary-text: #b88416;
-  --color-danger: #dc2626;
-  --color-danger-text: #ffffff;
+
+  @include theme-common-tokens;
 }
 
 // Dark is the default (bare :root) — see docs/UiUx/branding.md, "Dark mode

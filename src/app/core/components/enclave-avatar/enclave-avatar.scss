@@ -1,0 +1,18 @@
+:host {
+  --enclave-avatar-width: 2rem;
+  --enclave-avatar-height: var(--enclave-avatar-width);
+  --enclave-avatar-bg-color: var(--color-border);
+  --enclave-avatar-color: var(--color-secondary-text);
+}
+
+.avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--enclave-avatar-width);
+  height: var(--enclave-avatar-height);
+  background-color: var(--enclave-avatar-bg-color);
+  border-radius: 0.25rem;
+  text-transform: uppercase;
+  color: var(--enclave-avatar-color);
+}

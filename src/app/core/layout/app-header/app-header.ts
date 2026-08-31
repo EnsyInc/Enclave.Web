@@ -6,10 +6,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { EnsyLabsIcon } from '@enclave-core/icons/ensy-labs-icon/ensy-labs-icon';
 import { ThemeService } from '@enclave-core/theme/theme.service';
+import { EnclaveAvatar } from '@enclave/core/components/enclave-avatar/enclave-avatar';
 
 @Component({
   selector: 'enclave-header',
-  imports: [MatButtonModule, EnsyLabsIcon, MatDivider],
+  imports: [MatButtonModule, EnsyLabsIcon, EnclaveAvatar, MatDivider],
   templateUrl: './app-header.html',
   styleUrl: './app-header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,10 +18,6 @@ import { ThemeService } from '@enclave-core/theme/theme.service';
 export class AppHeader {
   protected readonly userName: string = 'John Doe';
   protected readonly userRole: string = 'Admin';
-  protected readonly userInitials: string = this.userName
-    .split(' ')
-    .map((n) => n[0])
-    .join('');
   protected readonly themeService: ThemeService = inject(ThemeService);
   protected readonly toggleSidenav = output<void>();
 

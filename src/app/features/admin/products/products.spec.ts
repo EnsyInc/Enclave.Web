@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatTableDataSource } from '@angular/material/table';
+import { By } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
+import { MatSortHeader } from '@angular/material/sort';
 import { ProductModel } from '@enclave-core/models/product-model';
+import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/enclave-page-header';
 
 import { Products } from './products';
 
@@ -17,6 +20,7 @@ describe('Products', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Products],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Products);
@@ -28,32 +32,38 @@ describe('Products', () => {
     expect(component).toBeTruthy();
   });
 
-  it('counts every product in the default catalogue', () => {
-    expect(component.productsCount()).toBe(6);
-  });
-
-  it('counts only the active products in the default catalogue', () => {
-    expect(component.activeProductsCount()).toBe(3);
-  });
-
-  it('recomputes both counts when the productsList input changes', () => {
-    fixture.componentRef.setInput('productsList', customProducts);
-
-    expect(component.productsCount()).toBe(3);
-    expect(component.activeProductsCount()).toBe(1);
-  });
-
-  it('wraps the current product list in a MatTableDataSource', () => {
-    fixture.componentRef.setInput('productsList', customProducts);
-
-    expect(component.productsDataSource()).toBeInstanceOf(MatTableDataSource);
-    expect(component.productsDataSource().data).toEqual(customProducts);
-  });
-
-  it('wires the table sort into the data source after the view initializes', () => {
+  it('shows the total and active product counts in the page header subtitle', () => {
     fixture.detectChanges();
 
-    expect(component.productsDataSource().sort).toBe(component.productSort());
+    const header = fixture.debugElement.query(By.directive(EnclavePageHeader))
+      .componentInstance as EnclavePageHeader;
+    expect(header.subTitle()).toBe('6 in the catalogue - 3 active');
+  });
+
+  it('updates the page header subtitle when the productsList input changes', () => {
+    fixture.componentRef.setInput('productsList', customProducts);
+    fixture.detectChanges();
+
+    const header = fixture.debugElement.query(By.directive(EnclavePageHeader))
+      .componentInstance as EnclavePageHeader;
+    expect(header.subTitle()).toBe('3 in the catalogue - 1 active');
+  });
+
+  it('marks the name column as sorted ascending when its header is clicked', async () => {
+    fixture.componentRef.setInput('productsList', customProducts);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const nameHeader: HTMLElement =
+      fixture.debugElement.nativeElement.querySelector('.mat-column-name');
+    const nameSortHeader = fixture.debugElement.queryAll(By.directive(MatSortHeader))[0];
+    nameSortHeader.triggerEventHandler('click', null);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(nameHeader.getAttribute('aria-sort')).toBe('ascending');
   });
 
   it('renders a table row for every product', async () => {
