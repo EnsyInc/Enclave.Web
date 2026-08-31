@@ -75,6 +75,11 @@ mat-nav-list {
 
 .main-content {
   padding: 0.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .mat-drawer-side {
@@ -145,6 +150,10 @@ mat-sidenav-container {
 
 mat-sidenav-content {
   transition: none !important;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 mat-sidenav {

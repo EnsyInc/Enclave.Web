@@ -8,12 +8,15 @@
   --theme-transition-duration: 0.3s;
 }
 
+.theme-transitioning body {
+  transition: color var(--theme-transition-duration) ease !important;
+}
+
 .theme-transitioning *,
 .theme-transitioning *::before,
 .theme-transitioning *::after {
   transition:
     background-color var(--theme-transition-duration) ease,
-    color var(--theme-transition-duration) ease,
     border-color var(--theme-transition-duration) ease !important;
 }
 
@@ -40,6 +43,23 @@ html {
       on-error: var(--color-error-text),
     )
   );
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 10rem;
+
+  &:hover {
+    background: var(--color-text-muted);
+  }
 }
 
 * {
