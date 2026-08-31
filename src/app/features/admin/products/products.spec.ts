@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angular/router';
 import { MatSortHeader } from '@angular/material/sort';
+import { of } from 'rxjs';
+import { vi } from 'vitest';
 import { ProductModel } from '@enclave-core/models/product-model';
 import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/enclave-page-header';
 
@@ -142,5 +144,114 @@ describe('Products', () => {
     expect(noDataCell.textContent).toContain(
       'No products yet. Press the "Create Product" button above to add one.',
     );
+  });
+});
+
+describe('Products sort query param persistence', () => {
+  let navigateSpy: ReturnType<typeof vi.fn>;
+
+  function createComponent(
+    initialQueryParams: Record<string, string> = {},
+  ): ComponentFixture<Products> {
+    navigateSpy = vi.fn().mockResolvedValue(true);
+
+    TestBed.configureTestingModule({
+      imports: [Products],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: { queryParamMap: convertToParamMap(initialQueryParams) },
+            // EnclaveSearchBarFilter, nested in the template, subscribes to this stream directly.
+            queryParamMap: of(convertToParamMap({})),
+          },
+        },
+        { provide: Router, useValue: { navigate: navigateSpy } },
+      ],
+    });
+
+    const fixture = TestBed.createComponent(Products);
+    fixture.componentRef.setInput('productsList', customProducts);
+    return fixture;
+  }
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('restores ascending sort on the name column from the sort query param', async () => {
+    const fixture = createComponent({ sort: 'name:asc' });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const nameHeader: HTMLElement =
+      fixture.debugElement.nativeElement.querySelector('.mat-column-name');
+    expect(nameHeader.getAttribute('aria-sort')).toBe('ascending');
+  });
+
+  it('restores descending sort on the status column from the sort query param', async () => {
+    const fixture = createComponent({ sort: 'status:desc' });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const statusHeader: HTMLElement =
+      fixture.debugElement.nativeElement.querySelector('.mat-column-status');
+    expect(statusHeader.getAttribute('aria-sort')).toBe('descending');
+  });
+
+  it.each([
+    ['missing the direction half', 'name'],
+    ['naming a non-sortable column', 'description:asc'],
+    ['using an unrecognized direction', 'name:sideways'],
+    ['with trailing garbage', 'name:asc:extra'],
+  ])('ignores a malformed sort query param (%s)', async (_label, sortParam) => {
+    const fixture = createComponent({ sort: sortParam });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const nameHeader: HTMLElement =
+      fixture.debugElement.nativeElement.querySelector('.mat-column-name');
+    expect(nameHeader.getAttribute('aria-sort')).toBe('none');
+  });
+
+  it('navigates with the sort query param set once the debounce elapses after a header click', () => {
+    vi.useFakeTimers();
+    const fixture = createComponent();
+    fixture.detectChanges();
+
+    const nameSortHeader = fixture.debugElement.queryAll(By.directive(MatSortHeader))[0];
+    nameSortHeader.triggerEventHandler('click', null);
+
+    vi.advanceTimersByTime(400);
+
+    expect(navigateSpy).toHaveBeenCalledWith([], {
+      relativeTo: expect.anything(),
+      queryParams: { sort: 'name:asc' },
+      queryParamsHandling: 'merge',
+    });
+  });
+
+  it('collapses rapid clicks into a single navigation with the final sort state', () => {
+    vi.useFakeTimers();
+    const fixture = createComponent();
+    fixture.detectChanges();
+
+    const nameSortHeader = fixture.debugElement.queryAll(By.directive(MatSortHeader))[0];
+    // Cycles asc -> desc -> none (disableClear defaults to false), all within the debounce window.
+    nameSortHeader.triggerEventHandler('click', null);
+    nameSortHeader.triggerEventHandler('click', null);
+    nameSortHeader.triggerEventHandler('click', null);
+
+    vi.advanceTimersByTime(400);
+
+    expect(navigateSpy).toHaveBeenCalledTimes(1);
+    expect(navigateSpy).toHaveBeenCalledWith([], {
+      relativeTo: expect.anything(),
+      queryParams: { sort: null },
+      queryParamsHandling: 'merge',
+    });
   });
 });

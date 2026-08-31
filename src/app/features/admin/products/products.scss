@@ -33,6 +33,10 @@
     font-weight: 600;
     text-transform: uppercase;
     color: var(--color-text-muted);
+
+    &[mat-sort-header] {
+      user-select: none;
+    }
   }
 
   .retired {
