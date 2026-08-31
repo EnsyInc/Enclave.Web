@@ -100,16 +100,3 @@
     visibility: visible;
   }
 }
-
-::ng-deep .product-action-menu {
-  button div {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    gap: 0.5rem;
-
-    span {
-      align-content: center;
-    }
-  }
-}

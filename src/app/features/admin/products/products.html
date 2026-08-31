@@ -79,36 +79,26 @@
       [class.retired]="element.status === 'Retired'"
       [class.upcoming]="element.status === 'Upcoming'"
     >
-      <div class="product-actions">
-        <button
-          matIconButton
-          [matMenuTriggerFor]="productActionsMenu"
-          [attr.aria-label]="element.name + ' actions'"
-        >
-          <ensy-labs-icon name="more-horizontal" color="var(--color-text)" />
+      <enclave-table-row-action [elementName]="element.name" class="product-actions">
+        <button mat-menu-item>
+          <div>
+            <ensy-labs-icon name="details" color="var(--color-text)" />
+            <span>Details</span>
+          </div>
         </button>
-
-        <mat-menu #productActionsMenu class="product-action-menu">
-          <button mat-menu-item>
-            <div>
-              <ensy-labs-icon name="details" color="var(--color-text)" />
-              <span>Details</span>
-            </div>
-          </button>
-          <button mat-menu-item>
-            <div>
-              <ensy-labs-icon name="edit" color="var(--color-text)" />
-              <span>Edit</span>
-            </div>
-          </button>
-          <button mat-menu-item>
-            <div>
-              <ensy-labs-icon name="delete" color="var(--color-text)" />
-              <span>Delete</span>
-            </div>
-          </button>
-        </mat-menu>
-      </div>
+        <button mat-menu-item>
+          <div>
+            <ensy-labs-icon name="edit" color="var(--color-text)" />
+            <span>Edit</span>
+          </div>
+        </button>
+        <button mat-menu-item>
+          <div>
+            <ensy-labs-icon name="delete" color="var(--color-text)" />
+            <span>Delete</span>
+          </div>
+        </button>
+      </enclave-table-row-action>
     </td>
   </ng-container>
 

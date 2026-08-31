@@ -19,7 +19,7 @@
 
   <div class="app-header-right">
     <button matIconButton (click)="themeService.toggle()" aria-label="Toggle theme">
-      @if (themeService.theme() == 'dark') {
+      @if (themeService.theme() === 'dark') {
         <ensy-labs-icon name="moon" color="var(--color-text-muted)" />
       } @else {
         <ensy-labs-icon name="sun" color="var(--color-text-muted)" />
