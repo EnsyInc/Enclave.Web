@@ -10,12 +10,7 @@ import { EnclaveAvatar } from '@enclave/core/components/enclave-avatar/enclave-a
 
 @Component({
   selector: 'enclave-header',
-  imports: [
-    MatButtonModule,
-     EnsyLabsIcon, 
-     EnclaveAvatar,
-     MatDivider
-    ],
+  imports: [MatButtonModule, EnsyLabsIcon, EnclaveAvatar, MatDivider],
   templateUrl: './app-header.html',
   styleUrl: './app-header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

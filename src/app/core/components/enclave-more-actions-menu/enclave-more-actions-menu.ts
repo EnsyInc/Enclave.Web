@@ -4,11 +4,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
 
 @Component({
-  selector: 'enclave-table-row-action',
+  selector: 'enclave-more-actions-menu',
   imports: [EnsyLabsIcon, MatMenuModule, MatButtonModule],
-  templateUrl: './enclave-table-row-action.html',
-  styleUrl: './enclave-table-row-action.scss',
+  templateUrl: './enclave-more-actions-menu.html',
+  styleUrl: './enclave-more-actions-menu.scss',
 })
-export class EnclaveTableRowAction {
+export class EnclaveMoreActionsMenu {
   public readonly elementName = input.required<string>();
 }

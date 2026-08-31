@@ -3,21 +3,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
-import { EnclaveTableRowAction } from './enclave-table-row-action';
+import { EnclaveMoreActionsMenu } from './enclave-more-actions-menu';
 import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
 
 @Component({
-  imports: [EnclaveTableRowAction],
+  imports: [EnclaveMoreActionsMenu],
   template: `
-    <enclave-table-row-action elementName="Widget">
+    <enclave-more-actions-menu elementName="Widget">
       <button mat-menu-item>Details</button>
       <button mat-menu-item>Delete</button>
-    </enclave-table-row-action>
+    </enclave-more-actions-menu>
   `,
 })
 class HostComponent {}
 
-describe('EnclaveTableRowAction', () => {
+describe('EnclaveMoreActionsMenu', () => {
   let fixture: ComponentFixture<HostComponent>;
   let overlayContainer: OverlayContainer;
 
@@ -36,7 +36,7 @@ describe('EnclaveTableRowAction', () => {
   });
 
   it('should create', () => {
-    const rowAction = fixture.debugElement.query(By.directive(EnclaveTableRowAction));
+    const rowAction = fixture.debugElement.query(By.directive(EnclaveMoreActionsMenu));
     expect(rowAction).toBeTruthy();
   });
 

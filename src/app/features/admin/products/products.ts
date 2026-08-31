@@ -16,9 +16,9 @@ import { ProductModel } from '@enclave-core/models/product-model';
 import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
 import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-status';
 import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/enclave-page-header';
-import { EnclaveTableRowAction } from '@enclave/core/components/enclave-table-row-action/enclave-table-row-action';
+import { EnclaveMoreActionsMenu } from '@enclave/core/components/enclave-more-actions-menu/enclave-more-actions-menu';
 import { EnclaveSearchBarFilter } from '@enclave/core/components/enclave-search-bar-filter/enclave-search-bar-filter';
-import { EnclaveAvatar } from "@enclave/core/components/enclave-avatar/enclave-avatar";
+import { EnclaveAvatar } from '@enclave/core/components/enclave-avatar/enclave-avatar';
 
 type ProductSeed = readonly [name: string, status: ProductModel['status'], description?: string];
 
@@ -62,10 +62,10 @@ function toProduct([name, status, description]: ProductSeed): ProductModel {
     EnclavePageHeader,
     EnclaveSearchBarFilter,
     EnclaveStatus,
-    EnclaveTableRowAction,
+    EnclaveMoreActionsMenu,
     MatSortModule,
-    EnclaveAvatar
-],
+    EnclaveAvatar,
+  ],
   templateUrl: './products.html',
   styleUrl: './products.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

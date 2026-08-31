@@ -65,7 +65,7 @@
       [class.retired]="element.status === 'Retired'"
       [class.upcoming]="element.status === 'Upcoming'"
     >
-      <enclave-table-row-action [elementName]="element.name" class="product-actions">
+      <enclave-more-actions-menu [elementName]="element.name" class="product-actions">
         <button mat-menu-item>
           <div>
             <ensy-labs-icon name="details" />
@@ -84,7 +84,7 @@
             <span>Delete</span>
           </div>
         </button>
-      </enclave-table-row-action>
+      </enclave-more-actions-menu>
     </td>
   </ng-container>
 
