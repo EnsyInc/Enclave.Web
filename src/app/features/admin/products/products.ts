@@ -4,9 +4,7 @@ import {
   Component,
   computed,
   effect,
-  inject,
   input,
-  signal,
   viewChild,
 } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
@@ -17,11 +15,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { ProductModel } from '@enclave-core/models/product-model';
 import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
 import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-status';
-import { ActivatedRoute, Router } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/enclave-page-header';
 import { EnclaveTableRowAction } from '@enclave/core/components/enclave-table-row-action/enclave-table-row-action';
+import { EnclaveSearchBarFilter } from '@enclave/core/components/enclave-search-bar-filter/enclave-search-bar-filter';
 
 type ProductSeed = readonly [name: string, status: ProductModel['status'], description?: string];
 
@@ -62,8 +58,9 @@ function toProduct([name, status, description]: ProductSeed): ProductModel {
     MatMenuModule,
     MatTableModule,
     EnsyLabsIcon,
-    EnclaveStatus,
     EnclavePageHeader,
+    EnclaveSearchBarFilter,
+    EnclaveStatus,
     EnclaveTableRowAction,
     MatSortModule,
   ],
@@ -72,9 +69,6 @@ function toProduct([name, status, description]: ProductSeed): ProductModel {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Products implements AfterViewInit {
-  private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
-
   protected readonly productsList = input<ProductModel[]>(PRODUCT_SEEDS.map(toProduct));
   protected readonly productsCount = computed(() => this.productsList().length);
   protected readonly activeProductsCount = computed(
@@ -85,45 +79,16 @@ export class Products implements AfterViewInit {
   );
   protected readonly productSort = viewChild(MatSort);
   protected readonly displayedColumns = ['name', 'description', 'status', 'action'];
-  protected readonly searchTerm = signal('');
-  private readonly searchInput$ = new Subject<string>();
+  protected readonly productSearch = viewChild.required(EnclaveSearchBarFilter);
 
   constructor() {
-    // Initial state load from URL and responsiveness to url changes
-    this.route.queryParamMap.pipe(takeUntilDestroyed()).subscribe((params) => {
-      this.searchTerm.set(params.get('search') ?? '');
-    });
-
     // Table filtering
     effect(() => {
-      this.productsDataSource().filter = this.searchTerm().trim().toLowerCase();
+      this.productsDataSource().filter = this.productSearch().searchText().toLowerCase();
     });
-
-    // SearchInput => navigation (after debounce)
-    this.searchInput$
-      .pipe(debounceTime(400), distinctUntilChanged(), takeUntilDestroyed())
-      .subscribe((search) => {
-        if (search !== this.searchTerm()) {
-          return;
-        }
-
-        this.router.navigate([], {
-          relativeTo: this.route,
-          queryParams: {
-            search: search || null,
-          },
-          queryParamsHandling: 'merge',
-        });
-      });
   }
 
   ngAfterViewInit(): void {
     this.productsDataSource().sort = this.productSort();
-  }
-
-  protected applyProductFilter(event: Event) {
-    const inputValue = (event.target as HTMLInputElement).value;
-    this.searchTerm.set(inputValue);
-    this.searchInput$.next(inputValue);
   }
 }

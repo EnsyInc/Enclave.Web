@@ -1,0 +1,15 @@
+<div class="search-bar">
+  <mat-form-field>
+    <ensy-labs-icon matPrefix name="search" />
+    <input
+      id="search-bar-input"
+      [aria-label]="searchPlaceholder()"
+      autocomplete="off"
+      (keyup)="applySearchTerm($event)"
+      [placeholder]="searchPlaceholder()"
+      type="text"
+      [value]="searchText()"
+      matInput
+    />
+  </mat-form-field>
+</div>

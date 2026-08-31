@@ -5,21 +5,7 @@
   actionText="Create Product"
 />
 
-<div class="products-search">
-  <mat-form-field>
-    <ensy-labs-icon matPrefix name="search" />
-    <input
-      id="product-search-input"
-      aria-label="Search Products"
-      autocomplete="off"
-      (keyup)="applyProductFilter($event)"
-      placeholder="Search Products"
-      type="text"
-      [value]="searchTerm()"
-      matInput
-    />
-  </mat-form-field>
-</div>
+<enclave-search-bar-filter searchPlaceholder="Search Products" />
 
 <table mat-table [dataSource]="productsDataSource()" class="products-table" matSort>
   <ng-container matColumnDef="name">
@@ -107,8 +93,8 @@
 
   <tr class="mat-row" *matNoDataRow>
     <td class="mat-cell" [colSpan]="displayedColumns.length">
-      @if (searchTerm()) {
-        No data matching the search term "{{ searchTerm() }}".
+      @if (productSearch().searchText()) {
+        No data matching the search term "{{ productSearch().searchText() }}".
       } @else {
         No products yet. Press the "Create Product" button above to add one.
       }
