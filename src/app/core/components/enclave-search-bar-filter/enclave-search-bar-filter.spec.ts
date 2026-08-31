@@ -52,6 +52,25 @@ describe('EnclaveSearchBarFilter', () => {
     expect(component.searchText()).toBe('widgets');
   });
 
+  it('writes an external query param change into the input DOM value', () => {
+    const input: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
+
+    queryParamMap$.next(convertToParamMap({ search: 'widgets' }));
+    fixture.detectChanges();
+
+    expect(input.value).toBe('widgets');
+  });
+
+  it('does not overwrite the DOM value while the user is typing', () => {
+    const input: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
+
+    input.value = 'wid';
+    input.dispatchEvent(new Event('keyup'));
+    fixture.detectChanges();
+
+    expect(input.value).toBe('wid');
+  });
+
   it('updates searchText immediately on keyup, before the debounce elapses', () => {
     const input: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
     input.value = 'widgets';

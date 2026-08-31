@@ -2,13 +2,13 @@
   <mat-form-field>
     <ensy-labs-icon matPrefix name="search" />
     <input
+      #searchInput
       id="search-bar-input"
       [aria-label]="searchPlaceholder()"
       autocomplete="off"
       (keyup)="applySearchTerm($event)"
       [placeholder]="searchPlaceholder()"
       type="text"
-      [value]="searchText()"
       matInput
     />
   </mat-form-field>
