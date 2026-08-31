@@ -20,6 +20,7 @@ import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-s
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/enclave-page-header';
 
 type ProductSeed = readonly [name: string, status: ProductModel['status'], description?: string];
 
@@ -61,6 +62,7 @@ function toProduct([name, status, description]: ProductSeed): ProductModel {
     MatTableModule,
     EnsyLabsIcon,
     EnclaveStatus,
+    EnclavePageHeader,
     MatSortModule,
   ],
   templateUrl: './products.html',
