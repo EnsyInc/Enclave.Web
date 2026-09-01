@@ -48,6 +48,7 @@ A toast notification pattern used platform-wide (not Licensing-specific) for sur
 | Screen                 | Purpose                                                                 |
 | ---------------------- | ----------------------------------------------------------------------- |
 | Products list          | Browse/manage the product catalog                                       |
+| Product detail         | View a single product's details                                         |
 | Product form           | Create or edit a product                                                |
 | Organizations list     | Browse/manage customer organizations                                    |
 | Organization detail    | View an org's info, users, and licenses; entry point to grant a license |
@@ -59,7 +60,9 @@ A toast notification pattern used platform-wide (not Licensing-specific) for sur
 
 ### Per-screen detail
 
-**Products list** — Data: Name, Status (`Active`/`Retired`). Actions: search bar, Create Product (above the table), Edit, Retire, Delete per row. Empty state: "No products yet — create your first product."
+**Products list** — Data: Name, Status (`Active`/`Retired`/`Upcoming`). Actions: search bar, Create Product (above the table), Details, Edit, Delete per row. Empty state: "No products yet. Press the "Create Product" button above to add one."
+
+**Product detail** — View a single product's full details. Entry point for the per-row Details action.
 
 **Product form** — Fields: Name (required), Description. Opens as an overlay on the current page.
 

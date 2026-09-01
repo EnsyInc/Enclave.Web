@@ -42,6 +42,7 @@ describe('IconRegistryService', () => {
       ['edit', 'icons/edit.svg'],
       ['delete', 'icons/delete.svg'],
       ['details', 'icons/details.svg'],
+      ['close', 'icons/close.svg'],
     ];
 
     expect(addSvgIconSpy).toHaveBeenCalledTimes(expected.length);

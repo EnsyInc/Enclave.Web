@@ -1,0 +1,53 @@
+<div class="header">
+  <div class="left">
+    @if (product()) {
+      <span class="action">Edit</span>
+      <span class="title">Edit Product</span>
+    } @else {
+      <span class="action">Create</span>
+      <span class="title">Create Product</span>
+    }
+  </div>
+
+  <button mat-icon-button mat-dialog-close class="close-button">
+    <ensy-labs-icon name="close"></ensy-labs-icon>
+  </button>
+</div>
+
+<mat-divider />
+
+<mat-dialog-content>
+  <form id="product-form" [formGroup]="form" (ngSubmit)="save()">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Enter product name" formControlName="name" />
+      <mat-error>Name is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="Enter product description" formControlName="description" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        @for (status of productStatuses; track status) {
+          <mat-option [value]="status">{{ status }}</mat-option>
+        }
+      </mat-select>
+      <mat-error>Status is required</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button form="product-form">
+    @if (product()) {
+      Save
+    } @else {
+      Create Product
+    }
+  </button>
+</mat-dialog-actions>

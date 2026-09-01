@@ -11,9 +11,11 @@
         <span>{{ section() }}</span>
       }
       @if (breadcrumb()) {
-        <span>/</span>
+        @for (crumb of breadcrumb(); track crumb) {
+          <span>/</span>
+          <span>{{ crumb }}</span>
+        }
       }
-      <span class="active-breadcrumb-item">{{ breadcrumb() }}</span>
     </div>
   </div>
 

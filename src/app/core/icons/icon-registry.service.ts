@@ -20,6 +20,7 @@ export const SVG_ICONS = [
   'edit',
   'delete',
   'details',
+  'close',
 ];
 
 @Injectable({ providedIn: 'root' })
