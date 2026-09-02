@@ -14,7 +14,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
-import { ProductModel, ProductsService } from '@enclave/core';
+import { ProductModel } from '@enclave/domain/models';
+import { ProductsService } from '@enclave/domain/services';
 import { EnsyLabsIcon } from '@enclave/core/icons';
 import {
   ConfirmationDialogService,

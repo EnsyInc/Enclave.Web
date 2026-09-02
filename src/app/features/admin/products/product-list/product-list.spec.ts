@@ -4,7 +4,8 @@ import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angul
 import { MatSortHeader } from '@angular/material/sort';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
-import { ProductModel, ProductsService } from '@enclave/core';
+import { ProductModel } from '@enclave/domain/models';
+import { ProductsService } from '@enclave/domain/services';
 import { ConfirmationDialogService, EnclavePageHeader } from '@enclave/core/components';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 

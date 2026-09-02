@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { vi } from 'vitest';
-import { DIALOG_BACKDROP_CLASS, DIALOG_PANEL_CLASS, ProductModel } from '@enclave/core';
+import { DIALOG_BACKDROP_CLASS, DIALOG_PANEL_CLASS } from '@enclave/core';
+import { ProductModel } from '@enclave/domain/models';
 
 import { ProductFormService } from './product-form.service';
 import { EnclaveProductForm } from './product-form';

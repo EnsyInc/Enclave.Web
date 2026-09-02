@@ -1,5 +1,5 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { ProductsService } from '@enclave/core';
+import { ProductsService } from '@enclave/domain/services';
 import { EnclaveAvatar, EnclaveStatus } from '@enclave/core/components';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 import { MatTabsModule } from '@angular/material/tabs';

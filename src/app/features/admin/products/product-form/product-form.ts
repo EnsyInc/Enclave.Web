@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { PRODUCT_STATUSES, ProductModel, ProductStatus } from '@enclave/core';
+import { PRODUCT_STATUSES, ProductModel, ProductStatus } from '@enclave/domain/models';
 import { MatDivider } from '@angular/material/divider';
 import { EnsyLabsIcon } from '@enclave/core/icons';
 import { MatButtonModule } from '@angular/material/button';
