@@ -5,22 +5,22 @@ import {
   DIALOG_BACKDROP_CLASS,
   DIALOG_PANEL_CLASS,
 } from '@enclave/core/dialog/dialog-panel-classes';
-import { EnclaveProductFormOverlay } from '@enclave/features/admin/product-form-overlay/product-form-overlay';
+import { EnclaveProductForm } from '@enclave/features/admin/products/product-form/product-form';
 
 @Injectable({ providedIn: 'root' })
-export class ProductFormOverlayService {
+export class ProductFormService {
   private readonly dialog = inject(MatDialog);
 
-  public openCreate(): MatDialogRef<EnclaveProductFormOverlay> {
-    return this.dialog.open(EnclaveProductFormOverlay, {
+  public openCreate(): MatDialogRef<EnclaveProductForm> {
+    return this.dialog.open(EnclaveProductForm, {
       ariaLabel: 'Create Product',
       backdropClass: DIALOG_BACKDROP_CLASS,
       panelClass: DIALOG_PANEL_CLASS,
     });
   }
 
-  public openEdit(product: ProductModel): MatDialogRef<EnclaveProductFormOverlay> {
-    return this.dialog.open(EnclaveProductFormOverlay, {
+  public openEdit(product: ProductModel): MatDialogRef<EnclaveProductForm> {
+    return this.dialog.open(EnclaveProductForm, {
       data: product,
       ariaLabel: 'Edit Product',
       backdropClass: DIALOG_BACKDROP_CLASS,

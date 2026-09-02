@@ -25,7 +25,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs';
 import { ProductsService } from '@enclave/core/services/products.service';
-import { ProductFormOverlayService } from '@enclave/features/admin/product-form-overlay/product-form-overlay.service';
+import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 import { ConfirmationDialogService } from '@enclave/core/components/confirmation-dialog/confirmation-dialog.service';
 
 const SORTABLE_COLUMNS = ['name', 'status'] as const;
@@ -35,7 +35,7 @@ const SORT_DIRECTIONS = ['asc', 'desc'] as const;
 type SortDirection = (typeof SORT_DIRECTIONS)[number];
 
 @Component({
-  selector: 'enclave-products',
+  selector: 'enclave-product-list',
   imports: [
     MatButtonModule,
     MatInputModule,
@@ -50,16 +50,16 @@ type SortDirection = (typeof SORT_DIRECTIONS)[number];
     EnclaveAvatar,
     RouterLink,
   ],
-  templateUrl: './products.html',
-  styleUrl: './products.scss',
+  templateUrl: './product-list.html',
+  styleUrl: './product-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Products implements AfterViewInit {
+export class ProductList implements AfterViewInit {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   private readonly productsService = inject(ProductsService);
-  private readonly productFormOverlay = inject(ProductFormOverlayService);
+  private readonly productForm = inject(ProductFormService);
   private readonly confirmDialog = inject(ConfirmationDialogService);
 
   protected readonly productsList = signal<ProductModel[]>([]);
@@ -136,11 +136,11 @@ export class Products implements AfterViewInit {
   }
 
   protected openCreateProductFormDialog(): void {
-    this.productFormOverlay.openCreate();
+    this.productForm.openCreate();
   }
 
   protected openEditProductFormDialog(product: ProductModel): void {
-    this.productFormOverlay.openEdit(product);
+    this.productForm.openEdit(product);
   }
 
   protected openDeleteProductDialog(product: ProductModel): void {

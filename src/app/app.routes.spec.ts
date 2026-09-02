@@ -6,8 +6,8 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { routes } from './app.routes';
 import { EnclaveTitleStrategy } from './core/routing/enclave-title-strategy';
 import { Dashboard } from './features/admin/dashboard/dashboard';
-import { Products } from './features/admin/products/products';
-import { ProductDetails } from './features/admin/product-details/product-details';
+import { ProductList } from './features/admin/products/product-list/product-list';
+import { ProductDetails } from './features/admin/products/product-details/product-details';
 import { Organizations } from './features/admin/organizations/organizations';
 import { Licenses } from './features/admin/licenses/licenses';
 import { LicenseRequests } from './features/admin/license-requests/license-requests';
@@ -33,7 +33,7 @@ describe('app routes', () => {
 
   it.each([
     ['/admin/dashboard', Dashboard, 'Dashboard'],
-    ['/admin/products', Products, 'Products'],
+    ['/admin/products', ProductList, 'Products'],
     ['/admin/organizations', Organizations, 'Organizations'],
     ['/admin/licenses', Licenses, 'Licenses'],
     ['/admin/license-requests', LicenseRequests, 'License Requests'],

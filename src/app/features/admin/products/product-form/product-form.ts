@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'enclave-product-form-overlay',
+  selector: 'enclave-product-form',
   imports: [
     MatButtonModule,
     MatDialogModule,
@@ -21,12 +21,12 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
     MatSelectModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './product-form-overlay.html',
-  styleUrl: './product-form-overlay.scss',
+  templateUrl: './product-form.html',
+  styleUrl: './product-form.scss',
 })
-export class EnclaveProductFormOverlay {
+export class EnclaveProductForm {
   private readonly data = inject<ProductModel | undefined>(MAT_DIALOG_DATA);
-  private readonly dialogRef = inject(MatDialogRef<EnclaveProductFormOverlay>);
+  private readonly dialogRef = inject(MatDialogRef<EnclaveProductForm>);
 
   protected readonly productStatuses = PRODUCT_STATUSES;
   protected readonly product = computed(() => this.data);

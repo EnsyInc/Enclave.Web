@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 import { ProductModel } from '@enclave/core/models/product.model';
 import { ProductsService } from '@enclave/core/services/products.service';
-import { ProductFormOverlayService } from '@enclave/features/admin/product-form-overlay/product-form-overlay.service';
+import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 
 import { ProductDetails } from './product-details';
 
@@ -25,7 +25,7 @@ describe('ProductDetails', () => {
       imports: [ProductDetails],
       providers: [
         { provide: ProductsService, useValue: { getProductById: () => product } },
-        { provide: ProductFormOverlayService, useValue: { openCreate: vi.fn(), openEdit } },
+        { provide: ProductFormService, useValue: { openCreate: vi.fn(), openEdit } },
       ],
     }).compileComponents();
 

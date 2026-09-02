@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import {
   productDetailsBreadcrumbResolver,
   productDetailsTitleResolver,
-} from '@enclave/features/admin/product-details/product-breadcrumb.resolver';
+} from '@enclave/features/admin/products/product-details/product-breadcrumb.resolver';
 
 export const routes: Routes = [
   {
@@ -28,7 +28,9 @@ export const routes: Routes = [
       {
         path: 'products',
         loadComponent: () =>
-          import('@enclave/features/admin/products/products').then((m) => m.Products),
+          import('@enclave/features/admin/products/product-list/product-list').then(
+            (m) => m.ProductList,
+          ),
         title: 'Products',
         data: {
           breadcrumb: 'Products',
@@ -38,7 +40,7 @@ export const routes: Routes = [
       {
         path: 'products/:productId',
         loadComponent: () =>
-          import('@enclave/features/admin/product-details/product-details').then(
+          import('@enclave/features/admin/products/product-details/product-details').then(
             (m) => m.ProductDetails,
           ),
         title: productDetailsTitleResolver,

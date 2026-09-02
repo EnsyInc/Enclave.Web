@@ -7,27 +7,27 @@ import {
   DIALOG_PANEL_CLASS,
 } from '@enclave/core/dialog/dialog-panel-classes';
 
-import { ProductFormOverlayService } from './product-form-overlay.service';
-import { EnclaveProductFormOverlay } from './product-form-overlay';
+import { ProductFormService } from './product-form.service';
+import { EnclaveProductForm } from './product-form';
 
 const product: ProductModel = { id: '1', name: 'Enclave Core', status: 'Active' };
 
-describe('ProductFormOverlayService', () => {
+describe('ProductFormService', () => {
   let open: ReturnType<typeof vi.fn>;
-  let service: ProductFormOverlayService;
+  let service: ProductFormService;
 
   beforeEach(() => {
     open = vi.fn();
     TestBed.configureTestingModule({
       providers: [{ provide: MatDialog, useValue: { open } }],
     });
-    service = TestBed.inject(ProductFormOverlayService);
+    service = TestBed.inject(ProductFormService);
   });
 
   it('openCreate opens the form dialog with no data', () => {
     service.openCreate();
 
-    expect(open).toHaveBeenCalledExactlyOnceWith(EnclaveProductFormOverlay, {
+    expect(open).toHaveBeenCalledExactlyOnceWith(EnclaveProductForm, {
       ariaLabel: 'Create Product',
       backdropClass: DIALOG_BACKDROP_CLASS,
       panelClass: DIALOG_PANEL_CLASS,
@@ -37,7 +37,7 @@ describe('ProductFormOverlayService', () => {
   it('openEdit opens the form dialog pre-filled with the given product', () => {
     service.openEdit(product);
 
-    expect(open).toHaveBeenCalledExactlyOnceWith(EnclaveProductFormOverlay, {
+    expect(open).toHaveBeenCalledExactlyOnceWith(EnclaveProductForm, {
       data: product,
       ariaLabel: 'Edit Product',
       backdropClass: DIALOG_BACKDROP_CLASS,
