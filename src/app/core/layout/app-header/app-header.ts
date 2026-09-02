@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Router, NavigationEnd, RedirectCommand } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
@@ -28,12 +28,7 @@ export class AppHeader {
     let breadcrumb: string[] = [];
     while (route.firstChild) {
       route = route.firstChild;
-      const next = route.snapshot.data['breadcrumb'];
-      if (next) {
-        if (next instanceof RedirectCommand) {
-          this.router.navigate([next]);
-        }
-
+      if (route.snapshot.data['breadcrumb']) {
         breadcrumb = [
           ...breadcrumb,
           ...(Array.isArray(route.snapshot.data['breadcrumb'])
