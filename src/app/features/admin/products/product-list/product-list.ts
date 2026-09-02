@@ -14,19 +14,20 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
-import { ProductModel } from '@enclave/core/models/product.model';
-import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
-import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-status';
-import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/enclave-page-header';
-import { EnclaveMoreActionsMenu } from '@enclave/core/components/enclave-more-actions-menu/enclave-more-actions-menu';
-import { EnclaveSearchBarFilter } from '@enclave/core/components/enclave-search-bar-filter/enclave-search-bar-filter';
-import { EnclaveAvatar } from '@enclave/core/components/enclave-avatar/enclave-avatar';
+import { ProductModel, ProductsService } from '@enclave/core';
+import { EnsyLabsIcon } from '@enclave/core/icons';
+import {
+  ConfirmationDialogService,
+  EnclaveAvatar,
+  EnclaveMoreActionsMenu,
+  EnclavePageHeader,
+  EnclaveSearchBarFilter,
+  EnclaveStatus,
+} from '@enclave/core/components';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs';
-import { ProductsService } from '@enclave/core/services/products.service';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
-import { ConfirmationDialogService } from '@enclave/core/components/enclave-confirmation-dialog/enclave-confirmation-dialog.service';
 
 const SORTABLE_COLUMNS = ['name', 'status'] as const;
 type SortableColumns = (typeof SORTABLE_COLUMNS)[number];

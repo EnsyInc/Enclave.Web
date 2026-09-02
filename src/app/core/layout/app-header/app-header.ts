@@ -4,9 +4,9 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
-import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
-import { ThemeService } from '@enclave/core/theme/theme.service';
-import { EnclaveAvatar } from '@enclave/core/components/enclave-avatar/enclave-avatar';
+import { EnsyLabsIcon } from '@enclave/core/icons';
+import { ThemeService } from '@enclave/core';
+import { EnclaveAvatar } from '@enclave/core/components';
 
 @Component({
   selector: 'enclave-header',

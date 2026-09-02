@@ -1,10 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ProductModel } from '@enclave/core/models/product.model';
-import {
-  DIALOG_BACKDROP_CLASS,
-  DIALOG_PANEL_CLASS,
-} from '@enclave/core/dialog/dialog-panel-classes';
+import { DIALOG_BACKDROP_CLASS, DIALOG_PANEL_CLASS, ProductModel } from '@enclave/core';
 import { EnclaveProductForm } from '@enclave/features/admin/products/product-form/product-form';
 
 @Injectable({ providedIn: 'root' })

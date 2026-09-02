@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { vi } from 'vitest';
 
 import { EnclavePageHeader } from './enclave-page-header';
-import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
+import { EnsyLabsIcon } from '@enclave/core/icons';
 
 describe('EnclavePageHeader', () => {
   let component: EnclavePageHeader;

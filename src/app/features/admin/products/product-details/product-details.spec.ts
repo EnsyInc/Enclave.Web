@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
-import { ProductModel } from '@enclave/core/models/product.model';
-import { ProductsService } from '@enclave/core/services/products.service';
+import { ProductModel, ProductsService } from '@enclave/core';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 
 import { ProductDetails } from './product-details';

@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { EnclaveStatus } from './enclave-status';
-import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
+import { EnsyLabsIcon } from '@enclave/core/icons';
 
 @Component({
   imports: [EnclaveStatus],

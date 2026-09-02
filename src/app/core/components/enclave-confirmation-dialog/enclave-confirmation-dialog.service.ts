@@ -5,10 +5,7 @@ import {
   EnclaveConfirmationDialog,
   ConfirmationDialogData,
 } from '@enclave/core/components/enclave-confirmation-dialog/enclave-confirmation-dialog';
-import {
-  DIALOG_BACKDROP_CLASS,
-  DIALOG_PANEL_CLASS,
-} from '@enclave/core/dialog/dialog-panel-classes';
+import { DIALOG_BACKDROP_CLASS, DIALOG_PANEL_CLASS } from '@enclave/core';
 
 @Injectable({ providedIn: 'root' })
 export class ConfirmationDialogService {

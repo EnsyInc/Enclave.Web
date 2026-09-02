@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
+import { EnsyLabsIcon } from '@enclave/core/icons';
 
 @Component({
   selector: 'enclave-status',

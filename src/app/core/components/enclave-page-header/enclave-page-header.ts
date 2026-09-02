@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
+import { EnsyLabsIcon } from '@enclave/core/icons';
 
 @Component({
   selector: 'enclave-page-header',
