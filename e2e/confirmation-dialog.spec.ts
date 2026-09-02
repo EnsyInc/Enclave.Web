@@ -12,9 +12,7 @@ async function openDeleteDialog(page: Page): Promise<void> {
   await page.getByRole('menuitem', { name: 'Delete' }).click();
 }
 
-test('opens the delete confirmation dialog with the product name highlighted', async ({
-  page,
-}) => {
+test('opens the delete confirmation dialog with the product name highlighted', async ({ page }) => {
   await openDeleteDialog(page);
 
   const dialog = page.getByRole('dialog');

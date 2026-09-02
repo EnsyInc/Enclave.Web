@@ -86,10 +86,7 @@ for (const theme of themes) {
   }) => {
     // Known color-contrast violation on the mat-label text in both themes -- same pending
     // UI/UX color decision as the Products list issue above.
-    test.fixme(
-      true,
-      'Pending UI/UX color-contrast fix for form-field label color (both themes)',
-    );
+    test.fixme(true, 'Pending UI/UX color-contrast fix for form-field label color (both themes)');
 
     await page.addInitScript((theme) => localStorage.setItem('enclave-theme', theme), theme);
     await page.goto('/admin/products');

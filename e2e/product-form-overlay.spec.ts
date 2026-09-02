@@ -15,9 +15,7 @@ test('opens the create dialog with an empty form', async ({ page }) => {
   await expect(dialog.getByLabel('Description')).toHaveValue('');
 });
 
-test('blocks save and shows validation errors when required fields are empty', async ({
-  page,
-}) => {
+test('blocks save and shows validation errors when required fields are empty', async ({ page }) => {
   await page.getByRole('button', { name: 'Create Product' }).click();
   const dialog = page.getByRole('dialog');
 
