@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { provideRouter, Router, RouterOutlet } from '@angular/router';
+import { provideRouter, Router, RouterOutlet, withComponentInputBinding } from '@angular/router';
 import { vi } from 'vitest';
 
 import { AppHeader } from './app-header';
@@ -26,8 +26,9 @@ describe('AppHeader', () => {
     await TestBed.configureTestingModule({
       imports: [HostComponent],
       // Real app routes (not an empty array) so the breadcrumb tests below can
-      // navigate to routes that actually carry `data.breadcrumb`.
-      providers: [provideRouter(routes)],
+      // navigate to routes that actually carry `data.breadcrumb`. Input binding
+      // is required too: ProductDetails reads its :productId param as an input.
+      providers: [provideRouter(routes, withComponentInputBinding())],
     }).compileComponents();
 
     hostFixture = TestBed.createComponent(HostComponent);
@@ -69,7 +70,7 @@ describe('AppHeader', () => {
   });
 
   it('has no breadcrumb before any route has been activated', () => {
-    expect(component['breadcrumb']()).toBeUndefined();
+    expect(component['breadcrumb']()).toEqual([]);
   });
 
   it('shows the active route breadcrumb once navigation resolves', async () => {
@@ -77,7 +78,7 @@ describe('AppHeader', () => {
     await router.navigateByUrl('/admin/products');
     await hostFixture.whenStable();
 
-    expect(component['breadcrumb']()).toBe('Products');
+    expect(component['breadcrumb']()).toEqual(['Products']);
   });
 
   it('updates the breadcrumb again on subsequent navigation', async () => {
@@ -88,7 +89,15 @@ describe('AppHeader', () => {
     await router.navigateByUrl('/admin/licenses');
     await hostFixture.whenStable();
 
-    expect(component['breadcrumb']()).toBe('Licenses');
+    expect(component['breadcrumb']()).toEqual(['Licenses']);
+  });
+
+  it('shows every segment of a multi-part breadcrumb (product detail resolver)', async () => {
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/admin/products/1');
+    await hostFixture.whenStable();
+
+    expect(component['breadcrumb']()).toEqual(['Products', 'Enclave Core']);
   });
 
   it('has no section before any route has been activated', () => {
@@ -113,5 +122,17 @@ describe('AppHeader', () => {
       .textContent.replace(/\s+/g, '')
       .trim();
     expect(breadcrumbText).toBe('Enclave/Admin/Products');
+  });
+
+  it('renders every segment of a multi-part breadcrumb trail', async () => {
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/admin/products/1');
+    await hostFixture.whenStable();
+
+    const breadcrumbText: string = hostFixture.debugElement.nativeElement
+      .querySelector('.breadcrumb')
+      .textContent.replace(/\s+/g, '')
+      .trim();
+    expect(breadcrumbText).toBe('Enclave/Admin/Products/EnclaveCore');
   });
 });
