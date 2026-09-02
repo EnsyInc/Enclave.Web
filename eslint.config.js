@@ -64,12 +64,6 @@ module.exports = defineConfig([
     },
   },
   {
-    files: ['**/index.ts'],
-    rules: {
-      'no-restricted-imports': 'off',
-    },
-  },
-  {
     files: ['**/*.html'],
     extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
     rules: {},
