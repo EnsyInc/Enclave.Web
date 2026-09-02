@@ -75,14 +75,13 @@ export class Products implements AfterViewInit {
   protected readonly productSearch = viewChild.required(EnclaveSearchBarFilter);
 
   constructor() {
-    // Table filtering
     effect(() => {
       this.productsDataSource().filter = this.productSearch().searchText().toLowerCase();
+      this.productsDataSource().sort = this.productSort();
     });
   }
 
   ngAfterViewInit(): void {
-    this.productsDataSource().sort = this.productSort();
     const restoredSort = this.parseSortQueryParam();
     if (restoredSort) {
       queueMicrotask(() => {

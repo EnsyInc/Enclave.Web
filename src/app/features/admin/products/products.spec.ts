@@ -18,6 +18,23 @@ const customProducts: ProductModel[] = [
   { id: '3', name: 'Gamma', status: 'Upcoming' },
 ];
 
+// Deliberately NOT alphabetical, and its name-order differs from its status-order.
+// customProducts (Alpha/Beta/Gamma) is already alphabetical by insertion order, so
+// asserting row order against it can't distinguish "actually sorted" from "coincidentally
+// already in order" -- exactly the gap that let a disconnected MatTableDataSource.sort
+// ship without a failing unit test (only caught by e2e, which uses real, unordered seed data).
+const unsortedProducts: ProductModel[] = [
+  { id: '1', name: 'Zeta', status: 'Retired' },
+  { id: '2', name: 'Mu', status: 'Upcoming' },
+  { id: '3', name: 'Alpha', status: 'Active' },
+];
+
+function rowNames(fixture: ComponentFixture<Products>): (string | undefined)[] {
+  return Array.from(
+    fixture.debugElement.nativeElement.querySelectorAll('tr[mat-row] .product-name a'),
+  ).map((el) => (el as HTMLElement).textContent?.trim());
+}
+
 interface FixtureOptions {
   products?: ProductModel[];
   queryParams?: Record<string, string>;
@@ -91,6 +108,27 @@ describe('Products', () => {
     fixture.detectChanges();
 
     expect(nameHeader.getAttribute('aria-sort')).toBe('ascending');
+  });
+
+  it('actually reorders the rows alphabetically by name when the header is clicked', async () => {
+    // Regression test: the header's aria-sort can flip to "ascending" while the table's
+    // MatTableDataSource is a completely different, unconnected instance (happens whenever
+    // .sort is assigned before productsList/productsDataSource has its real data) -- so this
+    // asserts the rendered row order itself, not just the header's own ARIA state.
+    const fixture = createFixture({ products: unsortedProducts });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(rowNames(fixture)).toEqual(['Zeta', 'Mu', 'Alpha']);
+
+    const nameSortHeader = fixture.debugElement.queryAll(By.directive(MatSortHeader))[0];
+    nameSortHeader.triggerEventHandler('click', null);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(rowNames(fixture)).toEqual(['Alpha', 'Mu', 'Zeta']);
   });
 
   it('renders a table row for every product', async () => {
@@ -267,7 +305,7 @@ describe('Products sort query param persistence', () => {
     navigateSpy = vi.fn().mockResolvedValue(true);
 
     return createFixture({
-      products: customProducts,
+      products: unsortedProducts,
       queryParams: initialQueryParams,
       router: { navigate: navigateSpy },
     });
@@ -286,6 +324,7 @@ describe('Products sort query param persistence', () => {
     const nameHeader: HTMLElement =
       fixture.debugElement.nativeElement.querySelector('.mat-column-name');
     expect(nameHeader.getAttribute('aria-sort')).toBe('ascending');
+    expect(rowNames(fixture)).toEqual(['Alpha', 'Mu', 'Zeta']);
   });
 
   it('restores descending sort on the status column from the sort query param', async () => {
@@ -297,6 +336,7 @@ describe('Products sort query param persistence', () => {
     const statusHeader: HTMLElement =
       fixture.debugElement.nativeElement.querySelector('.mat-column-status');
     expect(statusHeader.getAttribute('aria-sort')).toBe('descending');
+    expect(rowNames(fixture)).toEqual(['Mu', 'Zeta', 'Alpha']);
   });
 
   it.each([
