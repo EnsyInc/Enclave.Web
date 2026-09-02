@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+
 import { openEnclaveDialog } from '@enclave/core';
 import { ProductModel } from '@enclave/domain/models';
 import { EnclaveProductForm } from '@enclave/features/admin/products/product-form/product-form';

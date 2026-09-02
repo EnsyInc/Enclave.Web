@@ -1,6 +1,7 @@
 import { Component, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogClose } from '@angular/material/dialog';
+
 import { EnsyLabsIcon } from '@enclave/core/icons';
 
 @Component({

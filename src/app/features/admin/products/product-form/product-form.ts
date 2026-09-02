@@ -1,21 +1,22 @@
 import { Component, computed, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { PRODUCT_STATUSES, ProductModel, ProductStatus } from '@enclave/domain/models';
-import { MatDivider } from '@angular/material/divider';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDivider } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { EnclaveDialogHeader } from '@enclave/core/components/enclave-dialog-header/enclave-dialog-header';
+import { PRODUCT_STATUSES, ProductModel, ProductStatus } from '@enclave/domain/models';
 
 @Component({
   selector: 'enclave-product-form',
   imports: [
+    EnclaveDialogHeader,
     MatButtonModule,
     MatDialogModule,
     MatDivider,
-    EnclaveDialogHeader,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,

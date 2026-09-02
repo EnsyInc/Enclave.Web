@@ -2,8 +2,9 @@ import { Component, effect, ElementRef, inject, input, signal, viewChild } from 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { EnsyLabsIcon } from '@enclave/core/icons';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+
+import { EnsyLabsIcon } from '@enclave/core/icons';
 
 @Component({
   selector: 'enclave-search-bar-filter',

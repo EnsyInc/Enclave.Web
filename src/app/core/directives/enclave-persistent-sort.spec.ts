@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSort, MatSortHeader, MatSortModule } from '@angular/material/sort';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
-import { MatSort, MatSortHeader, MatSortModule } from '@angular/material/sort';
 import { vi } from 'vitest';
 
 import { EnclavePersistentSort } from './enclave-persistent-sort';
 
 @Component({
-  imports: [MatSortModule, EnclavePersistentSort],
+  imports: [EnclavePersistentSort, MatSortModule],
   template: `
     <table
       matSort

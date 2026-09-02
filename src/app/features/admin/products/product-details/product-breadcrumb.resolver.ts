@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { RedirectCommand, ResolveFn, Router } from '@angular/router';
+
 import { ProductsService } from '@enclave/domain/services';
 
 export const productDetailsBreadcrumbResolver: ResolveFn<string[]> = (route) => {

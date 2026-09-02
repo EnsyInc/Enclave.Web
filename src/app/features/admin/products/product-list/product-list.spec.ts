@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSortHeader } from '@angular/material/sort';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angular/router';
-import { MatSortHeader } from '@angular/material/sort';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
+
+import { ConfirmationDialogService, EnclavePageHeader } from '@enclave/core/components';
 import { ProductModel } from '@enclave/domain/models';
 import { ProductsService } from '@enclave/domain/services';
-import { ConfirmationDialogService, EnclavePageHeader } from '@enclave/core/components';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 
 import { ProductList } from './product-list';

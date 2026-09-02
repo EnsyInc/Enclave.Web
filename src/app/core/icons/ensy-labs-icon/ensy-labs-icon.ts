@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+
 import { IconName } from '@enclave/core/icons/icon-registry.service';
 
 @Component({

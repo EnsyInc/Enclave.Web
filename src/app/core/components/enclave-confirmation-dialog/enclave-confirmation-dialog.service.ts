@@ -1,11 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { map, Observable } from 'rxjs';
+
+import { openEnclaveDialog } from '@enclave/core';
 import {
   EnclaveConfirmationDialog,
   ConfirmationDialogData,
 } from '@enclave/core/components/enclave-confirmation-dialog/enclave-confirmation-dialog';
-import { openEnclaveDialog } from '@enclave/core';
 
 @Injectable({ providedIn: 'root' })
 export class ConfirmationDialogService {

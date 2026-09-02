@@ -1,23 +1,24 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { ProductsService } from '@enclave/domain/services';
-import { EnclaveAvatar, EnclaveStatus } from '@enclave/core/components';
-import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTabsModule } from '@angular/material/tabs';
+
+import { EnclaveAvatar, EnclaveStatus } from '@enclave/core/components';
 import { EnclaveDetailCard } from '@enclave/core/components/enclave-detail-card/enclave-detail-card';
-import { EnclaveDetailRow } from '@enclave/core/components/enclave-detail-row/enclave-detail-row';
 import { EnclaveDetailList } from '@enclave/core/components/enclave-detail-list/enclave-detail-list';
+import { EnclaveDetailRow } from '@enclave/core/components/enclave-detail-row/enclave-detail-row';
+import { ProductsService } from '@enclave/domain/services';
+import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 
 @Component({
   selector: 'enclave-product-details',
   imports: [
     EnclaveAvatar,
-    EnclaveStatus,
-    MatTabsModule,
     EnclaveDetailCard,
-    EnclaveDetailRow,
-    MatDividerModule,
     EnclaveDetailList,
+    EnclaveDetailRow,
+    EnclaveStatus,
+    MatDividerModule,
+    MatTabsModule,
   ],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',

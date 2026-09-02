@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { vi } from 'vitest';
+
 import { PRODUCT_STATUSES, ProductModel } from '@enclave/domain/models';
 
 import { EnclaveProductForm } from './product-form';

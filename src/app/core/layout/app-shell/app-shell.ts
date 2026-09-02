@@ -1,3 +1,4 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,13 +8,13 @@ import {
   viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { MatListModule } from '@angular/material/list';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
 import { MatSidenav, MatSidenavContainer, MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { map } from 'rxjs';
+
 import { EnsyLabsIcon } from '@enclave/core/icons';
 import { AppHeader } from '@enclave/core/layout/app-header/app-header';
 
@@ -26,11 +27,11 @@ export const SIDENAV_STORAGE_KEY = 'enclave-sidenav-collapsed';
     EnsyLabsIcon,
     MatBadgeModule,
     MatDividerModule,
-    MatSidenavModule,
     MatListModule,
-    RouterOutlet,
+    MatSidenavModule,
     RouterLink,
     RouterLinkActive,
+    RouterOutlet,
   ],
   templateUrl: './app-shell.html',
   styleUrl: './app-shell.scss',

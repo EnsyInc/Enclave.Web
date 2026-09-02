@@ -8,14 +8,13 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatButtonModule } from '@angular/material/button';
-import { ProductModel } from '@enclave/domain/models';
-import { ProductsService } from '@enclave/domain/services';
-import { EnsyLabsIcon } from '@enclave/core/icons';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { RouterLink } from '@angular/router';
+
 import {
   ConfirmationDialogService,
   EnclaveAvatar,
@@ -24,25 +23,27 @@ import {
   EnclaveSearchBarFilter,
   EnclaveStatus,
 } from '@enclave/core/components';
-import { RouterLink } from '@angular/router';
-import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 import { EnclavePersistentSort } from '@enclave/core/directives';
+import { EnsyLabsIcon } from '@enclave/core/icons';
+import { ProductModel } from '@enclave/domain/models';
+import { ProductsService } from '@enclave/domain/services';
+import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 
 @Component({
   selector: 'enclave-product-list',
   imports: [
+    EnclaveAvatar,
+    EnclaveMoreActionsMenu,
+    EnclavePageHeader,
+    EnclavePersistentSort,
+    EnclaveSearchBarFilter,
+    EnclaveStatus,
+    EnsyLabsIcon,
     MatButtonModule,
     MatInputModule,
     MatMenuModule,
-    MatTableModule,
-    EnsyLabsIcon,
-    EnclavePageHeader,
-    EnclaveSearchBarFilter,
-    EnclaveStatus,
-    EnclaveMoreActionsMenu,
     MatSortModule,
-    EnclaveAvatar,
-    EnclavePersistentSort,
+    MatTableModule,
     RouterLink,
   ],
   templateUrl: './product-list.html',

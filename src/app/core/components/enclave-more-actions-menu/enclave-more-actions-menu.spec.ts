@@ -1,10 +1,11 @@
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { OverlayContainer } from '@angular/cdk/overlay';
+
+import { EnsyLabsIcon } from '@enclave/core/icons';
 
 import { EnclaveMoreActionsMenu } from './enclave-more-actions-menu';
-import { EnsyLabsIcon } from '@enclave/core/icons';
 
 @Component({
   imports: [EnclaveMoreActionsMenu],

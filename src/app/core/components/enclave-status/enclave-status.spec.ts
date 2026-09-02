@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { EnclaveStatus } from './enclave-status';
 import { EnsyLabsIcon, IconName } from '@enclave/core/icons';
+
+import { EnclaveStatus } from './enclave-status';
 
 @Component({
   imports: [EnclaveStatus],

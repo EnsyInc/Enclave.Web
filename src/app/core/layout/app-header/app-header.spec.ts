@@ -4,10 +4,11 @@ import { By } from '@angular/platform-browser';
 import { provideRouter, Router, RouterOutlet, withComponentInputBinding } from '@angular/router';
 import { vi } from 'vitest';
 
-import { AppHeader } from './app-header';
 import { routes } from '@enclave/app.routes';
 import { ThemeService } from '@enclave/core';
 import { EnclaveAvatar } from '@enclave/core/components';
+
+import { AppHeader } from './app-header';
 
 @Component({
   imports: [AppHeader, RouterOutlet],

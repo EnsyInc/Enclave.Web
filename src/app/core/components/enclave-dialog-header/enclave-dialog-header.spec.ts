@@ -3,8 +3,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { vi } from 'vitest';
 
-import { EnclaveDialogHeader } from './enclave-dialog-header';
 import { EnsyLabsIcon, IconName } from '@enclave/core/icons';
+
+import { EnclaveDialogHeader } from './enclave-dialog-header';
 
 function createFixture(): {
   fixture: ComponentFixture<EnclaveDialogHeader>;

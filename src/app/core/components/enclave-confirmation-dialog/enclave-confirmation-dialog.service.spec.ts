@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom, of } from 'rxjs';
 import { vi } from 'vitest';
 
-import { ConfirmationDialogService } from './enclave-confirmation-dialog.service';
 import { ConfirmationDialogData } from './enclave-confirmation-dialog';
+import { ConfirmationDialogService } from './enclave-confirmation-dialog.service';
 
 const data: ConfirmationDialogData = {
   action: 'Delete',

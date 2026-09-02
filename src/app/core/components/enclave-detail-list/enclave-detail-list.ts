@@ -1,4 +1,5 @@
 import { Component, contentChildren, effect } from '@angular/core';
+
 import { EnclaveDetailRow } from '@enclave/core/components/enclave-detail-row/enclave-detail-row';
 
 @Component({

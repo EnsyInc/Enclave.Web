@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+
 import { EnsyLabsIcon, IconName } from '@enclave/core/icons';
 
 @Component({

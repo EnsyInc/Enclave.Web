@@ -4,7 +4,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'enclave-detail-row',
-  imports: [MatTooltipModule, MatDividerModule],
+  imports: [MatDividerModule, MatTooltipModule],
   templateUrl: './enclave-detail-row.html',
   styleUrl: './enclave-detail-row.scss',
 })

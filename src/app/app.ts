@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+
 import { ThemeService } from '@enclave/core';
-import { AppShell } from '@enclave/core/layout/app-shell/app-shell';
 import { IconRegistryService } from '@enclave/core/icons';
+import { AppShell } from '@enclave/core/layout/app-shell/app-shell';
 
 @Component({
   selector: 'enclave-root',

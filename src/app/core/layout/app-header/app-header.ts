@@ -1,16 +1,17 @@
 import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter, map } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
-import { EnsyLabsIcon } from '@enclave/core/icons';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter, map } from 'rxjs';
+
 import { ThemeService } from '@enclave/core';
 import { EnclaveAvatar } from '@enclave/core/components';
+import { EnsyLabsIcon } from '@enclave/core/icons';
 
 @Component({
   selector: 'enclave-header',
-  imports: [MatButtonModule, EnsyLabsIcon, EnclaveAvatar, MatDivider],
+  imports: [EnclaveAvatar, EnsyLabsIcon, MatButtonModule, MatDivider],
   templateUrl: './app-header.html',
   styleUrl: './app-header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

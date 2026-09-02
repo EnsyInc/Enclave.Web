@@ -3,8 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { vi } from 'vitest';
 
-import { EnclaveDetailCard } from './enclave-detail-card';
 import { EnsyLabsIcon, IconName } from '@enclave/core/icons';
+
+import { EnclaveDetailCard } from './enclave-detail-card';
 
 @Component({
   imports: [EnclaveDetailCard],
