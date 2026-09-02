@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { EnclaveStatus } from './enclave-status';
-import { EnsyLabsIcon } from '@enclave-core/icons/ensy-labs-icon/ensy-labs-icon';
+import { EnsyLabsIcon, IconName } from '@enclave/core/icons';
 
 @Component({
   imports: [EnclaveStatus],
@@ -31,7 +31,7 @@ describe('EnclaveStatus', () => {
   it('defaults to the dot icon', () => {
     const icon = fixture.debugElement.query(By.directive(EnsyLabsIcon))
       .componentInstance as EnsyLabsIcon;
-    expect(icon.name()).toBe('dot');
+    expect(icon.name()).toBe(IconName.Dot);
   });
 
   it('projects its content into the status label', () => {

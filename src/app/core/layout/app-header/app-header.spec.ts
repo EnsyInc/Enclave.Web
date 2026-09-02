@@ -6,8 +6,8 @@ import { vi } from 'vitest';
 
 import { AppHeader } from './app-header';
 import { routes } from '@enclave/app.routes';
-import { ThemeService } from '@enclave-core/theme/theme.service';
-import { EnclaveAvatar } from '@enclave/core/components/enclave-avatar/enclave-avatar';
+import { ThemeService } from '@enclave/core';
+import { EnclaveAvatar } from '@enclave/core/components';
 
 @Component({
   imports: [AppHeader, RouterOutlet],

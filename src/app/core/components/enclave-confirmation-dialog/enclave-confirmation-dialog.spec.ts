@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { vi } from 'vitest';
 
-import { ConfirmationDialog, ConfirmationDialogData } from './confirmation-dialog';
+import { EnclaveConfirmationDialog, ConfirmationDialogData } from './enclave-confirmation-dialog';
 
 const data: ConfirmationDialogData = {
   action: 'Delete',
@@ -12,23 +12,23 @@ const data: ConfirmationDialogData = {
 };
 
 function createFixture(): {
-  fixture: ComponentFixture<ConfirmationDialog>;
+  fixture: ComponentFixture<EnclaveConfirmationDialog>;
   close: ReturnType<typeof vi.fn>;
 } {
   const close = vi.fn();
 
   TestBed.configureTestingModule({
-    imports: [ConfirmationDialog],
+    imports: [EnclaveConfirmationDialog],
     providers: [
       { provide: MAT_DIALOG_DATA, useValue: data },
       { provide: MatDialogRef, useValue: { close } },
     ],
   });
 
-  return { fixture: TestBed.createComponent(ConfirmationDialog), close };
+  return { fixture: TestBed.createComponent(EnclaveConfirmationDialog), close };
 }
 
-describe('ConfirmationDialog', () => {
+describe('EnclaveConfirmationDialog', () => {
   it('renders the action, title, and confirm label from the dialog data', () => {
     const { fixture } = createFixture();
     fixture.detectChanges();

@@ -38,7 +38,7 @@ module.exports = defineConfig([
             {
               group: ['./*', '../*'],
               message:
-                "Relative imports ('./', '../') are forbidden. Use a path alias instead (@enclave/*, @enclave-core/*, @enclave-features/*).",
+                "Relative imports ('./', '../') are forbidden. Use a path alias instead (@enclave/*).",
             },
           ],
         },
@@ -56,11 +56,17 @@ module.exports = defineConfig([
             {
               group: ['../*'],
               message:
-                "Parent-relative imports ('../') are forbidden. Use a path alias instead (@enclave/*, @enclave-core/*, @enclave-features/*).",
+                "Parent-relative imports ('../') are forbidden. Use a path alias instead (@enclave/*).",
             },
           ],
         },
       ],
+    },
+  },
+  {
+    files: ['**/index.ts'],
+    rules: {
+      'no-restricted-imports': 'off',
     },
   },
   {

@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { vi } from 'vitest';
 
 import { EnclavePageHeader } from './enclave-page-header';
-import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
+import { EnsyLabsIcon, IconName } from '@enclave/core/icons';
 
 describe('EnclavePageHeader', () => {
   let component: EnclavePageHeader;
@@ -43,7 +43,7 @@ describe('EnclavePageHeader', () => {
   });
 
   it('does not render an action button when only actionIcon is provided', () => {
-    fixture.componentRef.setInput('actionIcon', 'add');
+    fixture.componentRef.setInput('actionIcon', IconName.Add);
     fixture.detectChanges();
 
     const button = fixture.debugElement.nativeElement.querySelector('button');
@@ -59,7 +59,7 @@ describe('EnclavePageHeader', () => {
   });
 
   it('renders an action button with the given icon and text when both are provided', () => {
-    fixture.componentRef.setInput('actionIcon', 'add');
+    fixture.componentRef.setInput('actionIcon', IconName.Add);
     fixture.componentRef.setInput('actionText', 'Create Product');
     fixture.detectChanges();
 
@@ -69,11 +69,11 @@ describe('EnclavePageHeader', () => {
 
     expect(button).toBeTruthy();
     expect(button.textContent?.trim()).toBe('Create Product');
-    expect(icon.name()).toBe('add');
+    expect(icon.name()).toBe(IconName.Add);
   });
 
   it('emits actionButtonClick when the action button is clicked', () => {
-    fixture.componentRef.setInput('actionIcon', 'add');
+    fixture.componentRef.setInput('actionIcon', IconName.Add);
     fixture.componentRef.setInput('actionText', 'Create Product');
     fixture.detectChanges();
 

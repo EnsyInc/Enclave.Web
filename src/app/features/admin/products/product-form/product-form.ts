@@ -1,8 +1,8 @@
 import { Component, computed, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { PRODUCT_STATUSES, ProductModel, ProductStatus } from '@enclave/core/models/product-model';
+import { PRODUCT_STATUSES, ProductModel, ProductStatus } from '@enclave/domain/models';
 import { MatDivider } from '@angular/material/divider';
-import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
+import { EnsyLabsIcon } from '@enclave/core/icons';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'enclave-product-form-overlay',
+  selector: 'enclave-product-form',
   imports: [
     MatButtonModule,
     MatDialogModule,
@@ -21,12 +21,12 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
     MatSelectModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './product-form-overlay.html',
-  styleUrl: './product-form-overlay.scss',
+  templateUrl: './product-form.html',
+  styleUrl: './product-form.scss',
 })
-export class EnclaveProductFormOverlay {
+export class EnclaveProductForm {
   private readonly data = inject<ProductModel | undefined>(MAT_DIALOG_DATA);
-  private readonly dialogRef = inject(MatDialogRef<EnclaveProductFormOverlay>);
+  private readonly dialogRef = inject(MatDialogRef<EnclaveProductForm>);
 
   protected readonly productStatuses = PRODUCT_STATUSES;
   protected readonly product = computed(() => this.data);

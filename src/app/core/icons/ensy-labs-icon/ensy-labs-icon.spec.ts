@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { MatIcon } from '@angular/material/icon';
 
 import { EnsyLabsIcon } from './ensy-labs-icon';
+import { IconName } from '@enclave/core/icons';
 
 describe('EnsyLabsIcon', () => {
   let component: EnsyLabsIcon;
@@ -18,16 +19,16 @@ describe('EnsyLabsIcon', () => {
   });
 
   it('should create', async () => {
-    fixture.componentRef.setInput('name', 'dashboard');
+    fixture.componentRef.setInput('name', IconName.Dashboard);
     await fixture.whenStable();
     expect(component).toBeTruthy();
   });
 
   it('forwards the name input to the underlying mat-icon as its svgIcon', async () => {
-    fixture.componentRef.setInput('name', 'dashboard');
+    fixture.componentRef.setInput('name', IconName.Dashboard);
     await fixture.whenStable();
 
     const matIcon = fixture.debugElement.query(By.directive(MatIcon)).componentInstance as MatIcon;
-    expect(matIcon.svgIcon).toBe('dashboard');
+    expect(matIcon.svgIcon).toBe(IconName.Dashboard);
   });
 });

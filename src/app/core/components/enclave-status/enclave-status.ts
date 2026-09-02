@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
+import { EnsyLabsIcon, IconName } from '@enclave/core/icons';
 
 @Component({
   selector: 'enclave-status',
@@ -9,5 +9,5 @@ import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EnclaveStatus {
-  protected readonly iconName = input('dot');
+  protected readonly iconName = input<IconName>(IconName.Dot);
 }

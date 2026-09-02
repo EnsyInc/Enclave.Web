@@ -4,13 +4,12 @@ import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angul
 import { MatSortHeader } from '@angular/material/sort';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
-import { ProductModel } from '@enclave-core/models/product-model';
-import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/enclave-page-header';
-import { ProductsService } from '@enclave/services/products-service';
-import { ProductFormDialogService } from '@enclave-features/admin/product-form-overlay/product-form-dialog.service';
-import { ConfirmationDialogService } from '@enclave/core/components/confirmation-dialog/confirmation-dialog.service';
+import { ProductModel } from '@enclave/domain/models';
+import { ProductsService } from '@enclave/domain/services';
+import { ConfirmationDialogService, EnclavePageHeader } from '@enclave/core/components';
+import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 
-import { Products } from './products';
+import { ProductList } from './product-list';
 
 const customProducts: ProductModel[] = [
   { id: '1', name: 'Alpha', description: 'First product', status: 'Active' },
@@ -29,7 +28,7 @@ const unsortedProducts: ProductModel[] = [
   { id: '3', name: 'Alpha', status: 'Active' },
 ];
 
-function rowNames(fixture: ComponentFixture<Products>): (string | undefined)[] {
+function rowNames(fixture: ComponentFixture<ProductList>): (string | undefined)[] {
   return Array.from(
     fixture.debugElement.nativeElement.querySelectorAll('tr[mat-row] .product-name a'),
   ).map((el) => (el as HTMLElement).textContent?.trim());
@@ -39,13 +38,13 @@ interface FixtureOptions {
   products?: ProductModel[];
   queryParams?: Record<string, string>;
   router?: { navigate: ReturnType<typeof vi.fn> };
-  productFormDialog?: Pick<ProductFormDialogService, 'openCreate' | 'openEdit'>;
+  productForm?: Pick<ProductFormService, 'openCreate' | 'openEdit'>;
   confirmDialog?: Pick<ConfirmationDialogService, 'open'>;
 }
 
-function createFixture(options: FixtureOptions = {}): ComponentFixture<Products> {
+function createFixture(options: FixtureOptions = {}): ComponentFixture<ProductList> {
   TestBed.configureTestingModule({
-    imports: [Products],
+    imports: [ProductList],
     providers: [
       options.router ? { provide: Router, useValue: options.router } : provideRouter([]),
       {
@@ -61,8 +60,8 @@ function createFixture(options: FixtureOptions = {}): ComponentFixture<Products>
         useValue: { getProducts: () => options.products ?? customProducts },
       },
       {
-        provide: ProductFormDialogService,
-        useValue: options.productFormDialog ?? { openCreate: vi.fn(), openEdit: vi.fn() },
+        provide: ProductFormService,
+        useValue: options.productForm ?? { openCreate: vi.fn(), openEdit: vi.fn() },
       },
       {
         provide: ConfirmationDialogService,
@@ -71,10 +70,10 @@ function createFixture(options: FixtureOptions = {}): ComponentFixture<Products>
     ],
   });
 
-  return TestBed.createComponent(Products);
+  return TestBed.createComponent(ProductList);
 }
 
-describe('Products', () => {
+describe('ProductList', () => {
   it('should create', async () => {
     const fixture = createFixture();
     await fixture.whenStable();
@@ -212,7 +211,7 @@ describe('Products', () => {
   describe('Create Product action', () => {
     it('opens the create-product dialog when the header action button is clicked', async () => {
       const openCreate = vi.fn();
-      const fixture = createFixture({ productFormDialog: { openCreate, openEdit: vi.fn() } });
+      const fixture = createFixture({ productForm: { openCreate, openEdit: vi.fn() } });
       fixture.detectChanges();
       await fixture.whenStable();
       fixture.detectChanges();
@@ -232,7 +231,7 @@ describe('Products', () => {
 
     it('opens the product form dialog pre-filled with the row product on Edit', async () => {
       const openEdit = vi.fn();
-      const fixture = createFixture({ productFormDialog: { openCreate: vi.fn(), openEdit } });
+      const fixture = createFixture({ productForm: { openCreate: vi.fn(), openEdit } });
       fixture.detectChanges();
       await fixture.whenStable();
 
@@ -296,12 +295,12 @@ describe('Products', () => {
   });
 });
 
-describe('Products sort query param persistence', () => {
+describe('ProductList sort query param persistence', () => {
   let navigateSpy: ReturnType<typeof vi.fn>;
 
   function createComponent(
     initialQueryParams: Record<string, string> = {},
-  ): ComponentFixture<Products> {
+  ): ComponentFixture<ProductList> {
     navigateSpy = vi.fn().mockResolvedValue(true);
 
     return createFixture({

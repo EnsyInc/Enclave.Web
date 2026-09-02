@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
+import { EnsyLabsIcon, IconName } from '@enclave/core/icons';
 
 @Component({
   selector: 'enclave-page-header',
@@ -11,7 +11,7 @@ import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon'
 export class EnclavePageHeader {
   public readonly title = input.required<string>();
   public readonly subTitle = input.required<string>();
-  public readonly actionIcon = input<string>();
+  public readonly actionIcon = input<IconName>();
   public readonly actionText = input<string>();
 
   public readonly actionButtonClick = output();

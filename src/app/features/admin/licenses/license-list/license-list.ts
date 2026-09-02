@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'enclave-licenses',
+  selector: 'enclave-license-list',
   imports: [],
-  templateUrl: './licenses.html',
-  styleUrl: './licenses.scss',
+  templateUrl: './license-list.html',
+  styleUrl: './license-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Licenses {}
+export class LicenseList {}

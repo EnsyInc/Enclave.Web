@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
 import { EnclaveMoreActionsMenu } from './enclave-more-actions-menu';
-import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
+import { EnsyLabsIcon } from '@enclave/core/icons';
 
 @Component({
   imports: [EnclaveMoreActionsMenu],

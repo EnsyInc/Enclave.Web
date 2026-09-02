@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { vi } from 'vitest';
-import { PRODUCT_STATUSES, ProductModel } from '@enclave-core/models/product-model';
+import { PRODUCT_STATUSES, ProductModel } from '@enclave/domain/models';
 
-import { EnclaveProductFormOverlay } from './product-form-overlay';
+import { EnclaveProductForm } from './product-form';
 
 const product: ProductModel = {
   id: '1',
@@ -13,23 +13,23 @@ const product: ProductModel = {
 };
 
 function createFixture(data: ProductModel | undefined): {
-  fixture: ComponentFixture<EnclaveProductFormOverlay>;
+  fixture: ComponentFixture<EnclaveProductForm>;
   close: ReturnType<typeof vi.fn>;
 } {
   const close = vi.fn();
 
   TestBed.configureTestingModule({
-    imports: [EnclaveProductFormOverlay],
+    imports: [EnclaveProductForm],
     providers: [
       { provide: MAT_DIALOG_DATA, useValue: data },
       { provide: MatDialogRef, useValue: { close } },
     ],
   });
 
-  return { fixture: TestBed.createComponent(EnclaveProductFormOverlay), close };
+  return { fixture: TestBed.createComponent(EnclaveProductForm), close };
 }
 
-describe('EnclaveProductFormOverlay', () => {
+describe('EnclaveProductForm', () => {
   describe('create mode (no dialog data)', () => {
     it('starts with an empty form', () => {
       const { fixture } = createFixture(undefined);

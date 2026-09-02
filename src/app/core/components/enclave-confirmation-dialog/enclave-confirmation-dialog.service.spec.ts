@@ -2,13 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom, of } from 'rxjs';
 import { vi } from 'vitest';
-import {
-  DIALOG_BACKDROP_CLASS,
-  DIALOG_PANEL_CLASS,
-} from '@enclave-core/dialog/dialog-panel-classes';
+import { DIALOG_BACKDROP_CLASS, DIALOG_PANEL_CLASS } from '@enclave/core';
 
-import { ConfirmationDialogService } from './confirmation-dialog.service';
-import { ConfirmationDialog, ConfirmationDialogData } from './confirmation-dialog';
+import { ConfirmationDialogService } from './enclave-confirmation-dialog.service';
+import { EnclaveConfirmationDialog, ConfirmationDialogData } from './enclave-confirmation-dialog';
 
 const data: ConfirmationDialogData = {
   action: 'Delete',
@@ -36,7 +33,7 @@ describe('ConfirmationDialogService', () => {
 
     service.open(data);
 
-    expect(open).toHaveBeenCalledExactlyOnceWith(ConfirmationDialog, {
+    expect(open).toHaveBeenCalledExactlyOnceWith(EnclaveConfirmationDialog, {
       data,
       ariaLabel: data.title,
       backdropClass: DIALOG_BACKDROP_CLASS,

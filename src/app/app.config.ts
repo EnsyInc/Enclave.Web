@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter, TitleStrategy, withComponentInputBinding } from '@angular/router';
 
 import { routes } from '@enclave/app.routes';
-import { EnclaveTitleStrategy } from '@enclave-core/routing/enclave-title-strategy';
+import { EnclaveTitleStrategy } from '@enclave/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [

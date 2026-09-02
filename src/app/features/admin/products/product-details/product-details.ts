@@ -1,12 +1,11 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { ProductsService } from '@enclave/services/products-service';
-import { EnclaveAvatar } from '@enclave/core/components/enclave-avatar/enclave-avatar';
-import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-status';
-import { ProductFormDialogService } from '@enclave/features/admin/product-form-overlay/product-form-dialog.service';
+import { ProductsService } from '@enclave/domain/services';
+import { EnclaveAvatar, EnclaveStatus } from '@enclave/core/components';
+import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
+import { EnsyLabsIcon } from '@enclave/core/icons';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -27,7 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class ProductDetails {
   private readonly productsService = inject(ProductsService);
-  private readonly productFormDialog = inject(ProductFormDialogService);
+  private readonly productForm = inject(ProductFormService);
 
   protected readonly productId = input.required<string>();
   protected readonly product = computed(() => {
@@ -35,6 +34,6 @@ export class ProductDetails {
   });
 
   protected openProductFormDialog(): void {
-    this.productFormDialog.openEdit(this.product());
+    this.productForm.openEdit(this.product());
   }
 }
