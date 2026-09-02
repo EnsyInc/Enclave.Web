@@ -1,4 +1,8 @@
 import { Routes } from '@angular/router';
+import {
+  productDetailsBreadcrumbResolver,
+  productDetailsTitleResolver,
+} from '@enclave-features/admin/product-details/product-breadcrumb.resolver';
 
 export const routes: Routes = [
   {
@@ -15,33 +19,49 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadComponent: () =>
-          import('./features/admin/dashboard/dashboard').then((m) => m.Dashboard),
-        title: 'Dashboard | Enclave',
+          import('@enclave-features/admin/dashboard/dashboard').then((m) => m.Dashboard),
+        title: 'Dashboard',
         data: {
           breadcrumb: 'Dashboard',
         },
       },
       {
         path: 'products',
-        loadComponent: () => import('./features/admin/products/products').then((m) => m.Products),
-        title: 'Products | Enclave',
+        loadComponent: () =>
+          import('@enclave-features/admin/products/products').then((m) => m.Products),
+        title: 'Products',
         data: {
           breadcrumb: 'Products',
+        },
+      },
+
+      {
+        path: 'products/:productId',
+        loadComponent: () =>
+          import('@enclave-features/admin/product-details/product-details').then(
+            (m) => m.ProductDetails,
+          ),
+        title: productDetailsTitleResolver,
+        resolve: {
+          breadcrumb: productDetailsBreadcrumbResolver,
         },
       },
       {
         path: 'organizations',
         loadComponent: () =>
-          import('./features/admin/organizations/organizations').then((m) => m.Organizations),
-        title: 'Organizations | Enclave',
+          import('@enclave-features/admin/organizations/organizations').then(
+            (m) => m.Organizations,
+          ),
+        title: 'Organizations',
         data: {
           breadcrumb: 'Organizations',
         },
       },
       {
         path: 'licenses',
-        loadComponent: () => import('./features/admin/licenses/licenses').then((m) => m.Licenses),
-        title: 'Licenses | Enclave',
+        loadComponent: () =>
+          import('@enclave-features/admin/licenses/licenses').then((m) => m.Licenses),
+        title: 'Licenses',
         data: {
           breadcrumb: 'Licenses',
         },
@@ -49,14 +69,24 @@ export const routes: Routes = [
       {
         path: 'license-requests',
         loadComponent: () =>
-          import('./features/admin/license-requests/license-requests').then(
+          import('@enclave-features/admin/license-requests/license-requests').then(
             (m) => m.LicenseRequests,
           ),
-        title: 'License Requests | Enclave',
+        title: 'License Requests',
         data: {
           breadcrumb: 'License Requests',
         },
       },
     ],
+  },
+  {
+    path: 'not-found',
+    loadComponent: () =>
+      import('@enclave-features/not-found-page/not-found-page').then((m) => m.NotFoundPage),
+    title: 'Page not found',
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found',
   },
 ];

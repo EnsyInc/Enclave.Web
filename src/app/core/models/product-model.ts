@@ -5,4 +5,5 @@ export interface ProductModel {
   status: ProductStatus;
 }
 
-export type ProductStatus = 'Active' | 'Retired' | 'Upcoming';
+export const PRODUCT_STATUSES = ['Active', 'Retired', 'Upcoming'] as const;
+export type ProductStatus = (typeof PRODUCT_STATUSES)[number];

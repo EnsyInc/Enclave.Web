@@ -23,12 +23,21 @@ export class AppHeader {
 
   private readonly router: Router = inject(Router);
 
-  private findDeepestBreadcrumb(): string | undefined {
+  private getBreadcrumb(): string[] {
     let route = this.router.routerState.root;
+    let breadcrumb: string[] = [];
     while (route.firstChild) {
       route = route.firstChild;
+      if (route.snapshot.data['breadcrumb']) {
+        breadcrumb = [
+          ...breadcrumb,
+          ...(Array.isArray(route.snapshot.data['breadcrumb'])
+            ? route.snapshot.data['breadcrumb']
+            : [route.snapshot.data['breadcrumb']]),
+        ];
+      }
     }
-    return route.snapshot.data['breadcrumb'];
+    return breadcrumb;
   }
 
   private findSection(): string | undefined {
@@ -44,9 +53,9 @@ export class AppHeader {
   protected readonly breadcrumb = toSignal(
     this.router.events.pipe(
       filter((e) => e instanceof NavigationEnd),
-      map(() => this.findDeepestBreadcrumb()),
+      map(() => this.getBreadcrumb()),
     ),
-    { initialValue: this.findDeepestBreadcrumb() },
+    { initialValue: this.getBreadcrumb() },
   );
 
   protected readonly section = toSignal(

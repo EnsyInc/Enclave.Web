@@ -1,0 +1,25 @@
+<div class="header">
+  <div class="left">
+    <span class="action">{{ dialogData.action }}</span>
+    <span class="title">{{ dialogData.title }}</span>
+  </div>
+
+  <button mat-icon-button mat-dialog-close class="close-button" aria-label="Close dialog">
+    <ensy-labs-icon name="close"></ensy-labs-icon>
+  </button>
+</div>
+
+<mat-divider />
+
+<mat-dialog-content>
+  <span [innerHTML]="dialogData.message"></span>
+</mat-dialog-content>
+
+<mat-divider />
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close class="cancel-button">Cancel</button>
+  <button mat-button (click)="dialogRef.close(true)" class="confirm-button">
+    {{ dialogData.confirmLabel }}
+  </button>
+</mat-dialog-actions>

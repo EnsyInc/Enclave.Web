@@ -6,7 +6,7 @@ import {
   DestroyRef,
   effect,
   inject,
-  input,
+  signal,
   viewChild,
 } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
@@ -21,46 +21,18 @@ import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/
 import { EnclaveMoreActionsMenu } from '@enclave/core/components/enclave-more-actions-menu/enclave-more-actions-menu';
 import { EnclaveSearchBarFilter } from '@enclave/core/components/enclave-search-bar-filter/enclave-search-bar-filter';
 import { EnclaveAvatar } from '@enclave/core/components/enclave-avatar/enclave-avatar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs';
-
-type ProductSeed = readonly [name: string, status: ProductModel['status'], description?: string];
+import { ProductsService } from '@enclave/services/products-service';
+import { ProductFormDialogService } from '@enclave-features/admin/product-form-overlay/product-form-dialog.service';
+import { ConfirmationDialogService } from '@enclave/core/components/confirmation-dialog/confirmation-dialog.service';
 
 const SORTABLE_COLUMNS = ['name', 'status'] as const;
 type SortableColumns = (typeof SORTABLE_COLUMNS)[number];
 
 const SORT_DIRECTIONS = ['asc', 'desc'] as const;
 type SortDirection = (typeof SORT_DIRECTIONS)[number];
-
-const PRODUCT_SEEDS: readonly ProductSeed[] = [
-  [
-    'Enclave Core',
-    'Active',
-    'Seat-based license engine with entitlement checks and offline grace periods.',
-  ],
-  [
-    'Vault Analytics',
-    'Active',
-    'Usage telemetry and seat utilization reporting across every organization.',
-  ],
-  ['Perimeter SSO', 'Active', 'SAML and OIDC single sign-on for customer workspaces..'],
-  [
-    'Keyring CLI',
-    'Upcoming',
-    'Command-line tool for issuing, rotating and revoking license keys in CI.',
-  ],
-  [
-    'Ledger Export',
-    'Retired',
-    'Scheduled CSV and Parquet exports of license events to object storage..',
-  ],
-  ['Beacon Alerts', 'Retired'],
-];
-
-function toProduct([name, status, description]: ProductSeed): ProductModel {
-  return { id: crypto.randomUUID(), name, status, description };
-}
 
 @Component({
   selector: 'enclave-products',
@@ -76,6 +48,7 @@ function toProduct([name, status, description]: ProductSeed): ProductModel {
     EnclaveMoreActionsMenu,
     MatSortModule,
     EnclaveAvatar,
+    RouterLink,
   ],
   templateUrl: './products.html',
   styleUrl: './products.scss',
@@ -85,8 +58,11 @@ export class Products implements AfterViewInit {
   private readonly router = inject(Router);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly productsService = inject(ProductsService);
+  private readonly productFormDialog = inject(ProductFormDialogService);
+  private readonly confirmDialog = inject(ConfirmationDialogService);
 
-  protected readonly productsList = input<ProductModel[]>(PRODUCT_SEEDS.map(toProduct));
+  protected readonly productsList = signal<ProductModel[]>([]);
   protected readonly productsCount = computed(() => this.productsList().length);
   protected readonly activeProductsCount = computed(
     () => this.productsList().filter((p) => p.status === 'Active').length,
@@ -99,14 +75,13 @@ export class Products implements AfterViewInit {
   protected readonly productSearch = viewChild.required(EnclaveSearchBarFilter);
 
   constructor() {
-    // Table filtering
     effect(() => {
       this.productsDataSource().filter = this.productSearch().searchText().toLowerCase();
+      this.productsDataSource().sort = this.productSort();
     });
   }
 
   ngAfterViewInit(): void {
-    this.productsDataSource().sort = this.productSort();
     const restoredSort = this.parseSortQueryParam();
     if (restoredSort) {
       queueMicrotask(() => {
@@ -127,6 +102,12 @@ export class Products implements AfterViewInit {
           queryParamsHandling: 'merge',
         });
       });
+
+    this.populateProducts();
+  }
+
+  private populateProducts(): void {
+    this.productsList.set(this.productsService.getProducts());
   }
 
   // e.g. "?sort=name:asc" <-> { column: 'name', direction: 'asc' }
@@ -152,5 +133,30 @@ export class Products implements AfterViewInit {
 
   private parseSortDirection(direction: string): SortDirection | undefined {
     return SORT_DIRECTIONS.find((d) => d === direction);
+  }
+
+  protected openCreateProductFormDialog(): void {
+    this.productFormDialog.openCreate();
+  }
+
+  protected openEditProductFormDialog(product: ProductModel): void {
+    this.productFormDialog.openEdit(product);
+  }
+
+  protected openDeleteProductDialog(product: ProductModel): void {
+    this.confirmDialog
+      .open({
+        action: 'Delete',
+        title: `Delete "${product.name}"`,
+        message: `Are you sure you want to delete "<span class="highlight">${product.name}</span>"? This can't be undone.`,
+        confirmLabel: 'Delete',
+      })
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
+
+        console.log('Product deleted');
+      });
   }
 }

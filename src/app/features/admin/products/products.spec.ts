@@ -6,6 +6,9 @@ import { of } from 'rxjs';
 import { vi } from 'vitest';
 import { ProductModel } from '@enclave-core/models/product-model';
 import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/enclave-page-header';
+import { ProductsService } from '@enclave/services/products-service';
+import { ProductFormDialogService } from '@enclave-features/admin/product-form-overlay/product-form-dialog.service';
+import { ConfirmationDialogService } from '@enclave/core/components/confirmation-dialog/confirmation-dialog.service';
 
 import { Products } from './products';
 
@@ -15,35 +18,74 @@ const customProducts: ProductModel[] = [
   { id: '3', name: 'Gamma', status: 'Upcoming' },
 ];
 
+// Deliberately NOT alphabetical, and its name-order differs from its status-order.
+// customProducts (Alpha/Beta/Gamma) is already alphabetical by insertion order, so
+// asserting row order against it can't distinguish "actually sorted" from "coincidentally
+// already in order" -- exactly the gap that let a disconnected MatTableDataSource.sort
+// ship without a failing unit test (only caught by e2e, which uses real, unordered seed data).
+const unsortedProducts: ProductModel[] = [
+  { id: '1', name: 'Zeta', status: 'Retired' },
+  { id: '2', name: 'Mu', status: 'Upcoming' },
+  { id: '3', name: 'Alpha', status: 'Active' },
+];
+
+function rowNames(fixture: ComponentFixture<Products>): (string | undefined)[] {
+  return Array.from(
+    fixture.debugElement.nativeElement.querySelectorAll('tr[mat-row] .product-name a'),
+  ).map((el) => (el as HTMLElement).textContent?.trim());
+}
+
+interface FixtureOptions {
+  products?: ProductModel[];
+  queryParams?: Record<string, string>;
+  router?: { navigate: ReturnType<typeof vi.fn> };
+  productFormDialog?: Pick<ProductFormDialogService, 'openCreate' | 'openEdit'>;
+  confirmDialog?: Pick<ConfirmationDialogService, 'open'>;
+}
+
+function createFixture(options: FixtureOptions = {}): ComponentFixture<Products> {
+  TestBed.configureTestingModule({
+    imports: [Products],
+    providers: [
+      options.router ? { provide: Router, useValue: options.router } : provideRouter([]),
+      {
+        provide: ActivatedRoute,
+        useValue: {
+          snapshot: { queryParamMap: convertToParamMap(options.queryParams ?? {}) },
+          // EnclaveSearchBarFilter, nested in the template, subscribes to this stream directly.
+          queryParamMap: of(convertToParamMap({})),
+        },
+      },
+      {
+        provide: ProductsService,
+        useValue: { getProducts: () => options.products ?? customProducts },
+      },
+      {
+        provide: ProductFormDialogService,
+        useValue: options.productFormDialog ?? { openCreate: vi.fn(), openEdit: vi.fn() },
+      },
+      {
+        provide: ConfirmationDialogService,
+        useValue: options.confirmDialog ?? { open: vi.fn().mockReturnValue(of(false)) },
+      },
+    ],
+  });
+
+  return TestBed.createComponent(Products);
+}
+
 describe('Products', () => {
-  let component: Products;
-  let fixture: ComponentFixture<Products>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Products],
-      providers: [provideRouter([])],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(Products);
-    component = fixture.componentInstance;
+  it('should create', async () => {
+    const fixture = createFixture();
     await fixture.whenStable();
+
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('shows the total and active product counts in the page header subtitle', () => {
+  it('shows the total and active product counts in the page header subtitle', async () => {
+    const fixture = createFixture({ products: customProducts });
     fixture.detectChanges();
-
-    const header = fixture.debugElement.query(By.directive(EnclavePageHeader))
-      .componentInstance as EnclavePageHeader;
-    expect(header.subTitle()).toBe('6 in the catalogue - 3 active');
-  });
-
-  it('updates the page header subtitle when the productsList input changes', () => {
-    fixture.componentRef.setInput('productsList', customProducts);
+    await fixture.whenStable();
     fixture.detectChanges();
 
     const header = fixture.debugElement.query(By.directive(EnclavePageHeader))
@@ -52,7 +94,7 @@ describe('Products', () => {
   });
 
   it('marks the name column as sorted ascending when its header is clicked', async () => {
-    fixture.componentRef.setInput('productsList', customProducts);
+    const fixture = createFixture();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -68,8 +110,29 @@ describe('Products', () => {
     expect(nameHeader.getAttribute('aria-sort')).toBe('ascending');
   });
 
+  it('actually reorders the rows alphabetically by name when the header is clicked', async () => {
+    // Regression test: the header's aria-sort can flip to "ascending" while the table's
+    // MatTableDataSource is a completely different, unconnected instance (happens whenever
+    // .sort is assigned before productsList/productsDataSource has its real data) -- so this
+    // asserts the rendered row order itself, not just the header's own ARIA state.
+    const fixture = createFixture({ products: unsortedProducts });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(rowNames(fixture)).toEqual(['Zeta', 'Mu', 'Alpha']);
+
+    const nameSortHeader = fixture.debugElement.queryAll(By.directive(MatSortHeader))[0];
+    nameSortHeader.triggerEventHandler('click', null);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(rowNames(fixture)).toEqual(['Alpha', 'Mu', 'Zeta']);
+  });
+
   it('renders a table row for every product', async () => {
-    fixture.componentRef.setInput('productsList', customProducts);
+    const fixture = createFixture();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -80,7 +143,7 @@ describe('Products', () => {
   });
 
   it('shows a fallback message for a product with no description', async () => {
-    fixture.componentRef.setInput('productsList', customProducts);
+    const fixture = createFixture();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -96,7 +159,7 @@ describe('Products', () => {
   });
 
   it('filters rows to those matching the search term', async () => {
-    fixture.componentRef.setInput('productsList', customProducts);
+    const fixture = createFixture();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -117,7 +180,7 @@ describe('Products', () => {
   });
 
   it('shows a message naming the search term when nothing matches', async () => {
-    fixture.componentRef.setInput('productsList', customProducts);
+    const fixture = createFixture();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -135,7 +198,7 @@ describe('Products', () => {
   });
 
   it('shows the empty-catalogue message when there are no products and no search term', async () => {
-    fixture.componentRef.setInput('productsList', []);
+    const fixture = createFixture({ products: [] });
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -144,6 +207,92 @@ describe('Products', () => {
     expect(noDataCell.textContent).toContain(
       'No products yet. Press the "Create Product" button above to add one.',
     );
+  });
+
+  describe('Create Product action', () => {
+    it('opens the create-product dialog when the header action button is clicked', async () => {
+      const openCreate = vi.fn();
+      const fixture = createFixture({ productFormDialog: { openCreate, openEdit: vi.fn() } });
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const createButton: HTMLButtonElement =
+        fixture.debugElement.nativeElement.querySelector('.header-right button');
+      createButton.click();
+
+      expect(openCreate).toHaveBeenCalledOnce();
+    });
+  });
+
+  describe('row actions', () => {
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('opens the product form dialog pre-filled with the row product on Edit', async () => {
+      const openEdit = vi.fn();
+      const fixture = createFixture({ productFormDialog: { openCreate: vi.fn(), openEdit } });
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      fixture.componentInstance['openEditProductFormDialog'](customProducts[0]);
+
+      expect(openEdit).toHaveBeenCalledExactlyOnceWith(customProducts[0]);
+    });
+
+    it('links the product name to its detail route', async () => {
+      const fixture = createFixture();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      const nameLink: HTMLAnchorElement =
+        fixture.debugElement.nativeElement.querySelector('.product-name a');
+      expect(nameLink.getAttribute('href')).toBe('/admin/products/1');
+    });
+
+    it('opens the confirmation dialog with the product name on Delete', async () => {
+      const open = vi.fn().mockReturnValue(of(false));
+      const fixture = createFixture({ confirmDialog: { open } });
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      fixture.componentInstance['openDeleteProductDialog'](customProducts[0]);
+
+      expect(open).toHaveBeenCalledExactlyOnceWith({
+        action: 'Delete',
+        title: 'Delete "Alpha"',
+        message:
+          'Are you sure you want to delete "<span class="highlight">Alpha</span>"? ' +
+          "This can't be undone.",
+        confirmLabel: 'Delete',
+      });
+    });
+
+    it('logs the deletion once the user confirms (stubbed until real delete is wired up)', async () => {
+      const open = vi.fn().mockReturnValue(of(true));
+      const fixture = createFixture({ confirmDialog: { open } });
+      fixture.detectChanges();
+      await fixture.whenStable();
+      const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+
+      fixture.componentInstance['openDeleteProductDialog'](customProducts[0]);
+
+      expect(logSpy).toHaveBeenCalledWith('Product deleted');
+    });
+
+    it('does nothing when the user cancels the confirmation dialog', async () => {
+      const open = vi.fn().mockReturnValue(of(false));
+      const fixture = createFixture({ confirmDialog: { open } });
+      fixture.detectChanges();
+      await fixture.whenStable();
+      const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+
+      fixture.componentInstance['openDeleteProductDialog'](customProducts[0]);
+
+      expect(logSpy).not.toHaveBeenCalled();
+    });
   });
 });
 
@@ -155,24 +304,11 @@ describe('Products sort query param persistence', () => {
   ): ComponentFixture<Products> {
     navigateSpy = vi.fn().mockResolvedValue(true);
 
-    TestBed.configureTestingModule({
-      imports: [Products],
-      providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            snapshot: { queryParamMap: convertToParamMap(initialQueryParams) },
-            // EnclaveSearchBarFilter, nested in the template, subscribes to this stream directly.
-            queryParamMap: of(convertToParamMap({})),
-          },
-        },
-        { provide: Router, useValue: { navigate: navigateSpy } },
-      ],
+    return createFixture({
+      products: unsortedProducts,
+      queryParams: initialQueryParams,
+      router: { navigate: navigateSpy },
     });
-
-    const fixture = TestBed.createComponent(Products);
-    fixture.componentRef.setInput('productsList', customProducts);
-    return fixture;
   }
 
   afterEach(() => {
@@ -188,6 +324,7 @@ describe('Products sort query param persistence', () => {
     const nameHeader: HTMLElement =
       fixture.debugElement.nativeElement.querySelector('.mat-column-name');
     expect(nameHeader.getAttribute('aria-sort')).toBe('ascending');
+    expect(rowNames(fixture)).toEqual(['Alpha', 'Mu', 'Zeta']);
   });
 
   it('restores descending sort on the status column from the sort query param', async () => {
@@ -199,6 +336,7 @@ describe('Products sort query param persistence', () => {
     const statusHeader: HTMLElement =
       fixture.debugElement.nativeElement.querySelector('.mat-column-status');
     expect(statusHeader.getAttribute('aria-sort')).toBe('descending');
+    expect(rowNames(fixture)).toEqual(['Mu', 'Zeta', 'Alpha']);
   });
 
   it.each([

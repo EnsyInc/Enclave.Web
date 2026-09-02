@@ -38,6 +38,7 @@ html {
       surface: var(--color-surface),
       surface-container: var(--color-surface),
       on-surface: var(--color-text),
+      on-surface-variant: var(--color-text-muted),
       outline: var(--color-border),
       error: var(--color-error),
       on-error: var(--color-error-text),
@@ -82,4 +83,22 @@ mat-divider.mat-divider {
   margin-top: 0;
   margin-bottom: 1rem;
   border-color: var(--color-border);
+}
+
+.enclave-dialog-backdrop {
+  backdrop-filter: blur(4px);
+  background-color: color-mix(in srgb, var(--color-border) 10%, transparent);
+}
+
+.enclave-dialog-panel {
+  --mat-dialog-container-shape: 0.75rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

@@ -1,0 +1,62 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15rem;
+  padding: 1.5rem;
+
+  .left {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    gap: 0.5rem;
+
+    .action {
+      font-family: var(--font-mono);
+      font-weight: 400;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+
+      color: var(--color-text-muted);
+    }
+
+    .title {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 1rem;
+
+      color: var(--color-text);
+    }
+  }
+
+  button {
+    color: var(--color-text);
+    --ensy-labs-icon-size: 1rem;
+  }
+}
+
+mat-divider {
+  margin: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  mat-form-field {
+    width: 100%;
+
+    --mat-form-field-filled-container-color: var(--color-card);
+    --mat-form-field-filled-active-indicator-color: var(--color-border);
+  }
+}
+
+mat-dialog-actions {
+  background-color: var(--color-border);
+
+  button {
+    color: var(--color-text);
+  }
+}
