@@ -6,12 +6,11 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { routes } from './app.routes';
 import { EnclaveTitleStrategy } from './core/routing/enclave-title-strategy';
 import { Dashboard } from './features/admin/dashboard/dashboard';
-import { ProductList } from './features/admin/products/product-list/product-list';
-import { ProductDetails } from './features/admin/products/product-details/product-details';
-import { Organizations } from './features/admin/organizations/organizations';
-import { Licenses } from './features/admin/licenses/licenses';
-import { LicenseRequests } from './features/admin/license-requests/license-requests';
-import { NotFoundPage } from './features/not-found-page/not-found-page';
+import { ProductList, ProductDetails } from './features/admin/products';
+import { OrganizationList } from './features/admin/organizations/organization-list/organization-list';
+import { LicenseList } from './features/admin/licenses/license-list/license-list';
+import { LicenseRequestList } from './features/admin/license-requests/license-request-list/license-request-list';
+import { NotFoundPage } from './features';
 
 describe('app routes', () => {
   beforeEach(() => {
@@ -34,9 +33,9 @@ describe('app routes', () => {
   it.each([
     ['/admin/dashboard', Dashboard, 'Dashboard'],
     ['/admin/products', ProductList, 'Products'],
-    ['/admin/organizations', Organizations, 'Organizations'],
-    ['/admin/licenses', Licenses, 'Licenses'],
-    ['/admin/license-requests', LicenseRequests, 'License Requests'],
+    ['/admin/organizations', OrganizationList, 'Organizations'],
+    ['/admin/licenses', LicenseList, 'Licenses'],
+    ['/admin/license-requests', LicenseRequestList, 'License Requests'],
   ] as const)(
     'renders %s with the matching component and breadcrumb',
     async (url, expectedComponent, breadcrumb) => {

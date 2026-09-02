@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import {
   productDetailsBreadcrumbResolver,
   productDetailsTitleResolver,
-} from '@enclave/features/admin/products/product-details/product-breadcrumb.resolver';
+} from '@enclave/features/admin/products';
 
 export const routes: Routes = [
   {
@@ -51,8 +51,8 @@ export const routes: Routes = [
       {
         path: 'organizations',
         loadComponent: () =>
-          import('@enclave/features/admin/organizations/organizations').then(
-            (m) => m.Organizations,
+          import('@enclave/features/admin/organizations/organization-list/organization-list').then(
+            (m) => m.OrganizationList,
           ),
         title: 'Organizations',
         data: {
@@ -62,7 +62,9 @@ export const routes: Routes = [
       {
         path: 'licenses',
         loadComponent: () =>
-          import('@enclave/features/admin/licenses/licenses').then((m) => m.Licenses),
+          import('@enclave/features/admin/licenses/license-list/license-list').then(
+            (m) => m.LicenseList,
+          ),
         title: 'Licenses',
         data: {
           breadcrumb: 'Licenses',
@@ -71,8 +73,8 @@ export const routes: Routes = [
       {
         path: 'license-requests',
         loadComponent: () =>
-          import('@enclave/features/admin/license-requests/license-requests').then(
-            (m) => m.LicenseRequests,
+          import('@enclave/features/admin/license-requests/license-request-list/license-request-list').then(
+            (m) => m.LicenseRequestList,
           ),
         title: 'License Requests',
         data: {
