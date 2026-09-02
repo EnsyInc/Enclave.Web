@@ -1,14 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ProductModel } from '@enclave-core/models/product-model';
+import { ProductModel } from '@enclave/core/models/product.model';
 import {
   DIALOG_BACKDROP_CLASS,
   DIALOG_PANEL_CLASS,
-} from '@enclave-core/dialog/dialog-panel-classes';
-import { EnclaveProductFormOverlay } from '@enclave-features/admin/product-form-overlay/product-form-overlay';
+} from '@enclave/core/dialog/dialog-panel-classes';
+import { EnclaveProductFormOverlay } from '@enclave/features/admin/product-form-overlay/product-form-overlay';
 
 @Injectable({ providedIn: 'root' })
-export class ProductFormDialogService {
+export class ProductFormOverlayService {
   private readonly dialog = inject(MatDialog);
 
   public openCreate(): MatDialogRef<EnclaveProductFormOverlay> {

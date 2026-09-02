@@ -4,10 +4,10 @@ import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angul
 import { MatSortHeader } from '@angular/material/sort';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
-import { ProductModel } from '@enclave-core/models/product-model';
+import { ProductModel } from '@enclave/core/models/product.model';
 import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/enclave-page-header';
-import { ProductsService } from '@enclave/services/products-service';
-import { ProductFormDialogService } from '@enclave-features/admin/product-form-overlay/product-form-dialog.service';
+import { ProductsService } from '@enclave/core/services/products.service';
+import { ProductFormOverlayService } from '@enclave/features/admin/product-form-overlay/product-form-overlay.service';
 import { ConfirmationDialogService } from '@enclave/core/components/confirmation-dialog/confirmation-dialog.service';
 
 import { Products } from './products';
@@ -39,7 +39,7 @@ interface FixtureOptions {
   products?: ProductModel[];
   queryParams?: Record<string, string>;
   router?: { navigate: ReturnType<typeof vi.fn> };
-  productFormDialog?: Pick<ProductFormDialogService, 'openCreate' | 'openEdit'>;
+  productFormOverlay?: Pick<ProductFormOverlayService, 'openCreate' | 'openEdit'>;
   confirmDialog?: Pick<ConfirmationDialogService, 'open'>;
 }
 
@@ -61,8 +61,8 @@ function createFixture(options: FixtureOptions = {}): ComponentFixture<Products>
         useValue: { getProducts: () => options.products ?? customProducts },
       },
       {
-        provide: ProductFormDialogService,
-        useValue: options.productFormDialog ?? { openCreate: vi.fn(), openEdit: vi.fn() },
+        provide: ProductFormOverlayService,
+        useValue: options.productFormOverlay ?? { openCreate: vi.fn(), openEdit: vi.fn() },
       },
       {
         provide: ConfirmationDialogService,
@@ -212,7 +212,7 @@ describe('Products', () => {
   describe('Create Product action', () => {
     it('opens the create-product dialog when the header action button is clicked', async () => {
       const openCreate = vi.fn();
-      const fixture = createFixture({ productFormDialog: { openCreate, openEdit: vi.fn() } });
+      const fixture = createFixture({ productFormOverlay: { openCreate, openEdit: vi.fn() } });
       fixture.detectChanges();
       await fixture.whenStable();
       fixture.detectChanges();
@@ -232,7 +232,7 @@ describe('Products', () => {
 
     it('opens the product form dialog pre-filled with the row product on Edit', async () => {
       const openEdit = vi.fn();
-      const fixture = createFixture({ productFormDialog: { openCreate: vi.fn(), openEdit } });
+      const fixture = createFixture({ productFormOverlay: { openCreate: vi.fn(), openEdit } });
       fixture.detectChanges();
       await fixture.whenStable();
 

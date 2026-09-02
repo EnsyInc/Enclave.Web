@@ -1,8 +1,8 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { ProductsService } from '@enclave/services/products-service';
+import { ProductsService } from '@enclave/core/services/products.service';
 import { EnclaveAvatar } from '@enclave/core/components/enclave-avatar/enclave-avatar';
 import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-status';
-import { ProductFormDialogService } from '@enclave/features/admin/product-form-overlay/product-form-dialog.service';
+import { ProductFormOverlayService } from '@enclave/features/admin/product-form-overlay/product-form-overlay.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,7 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class ProductDetails {
   private readonly productsService = inject(ProductsService);
-  private readonly productFormDialog = inject(ProductFormDialogService);
+  private readonly productFormOverlay = inject(ProductFormOverlayService);
 
   protected readonly productId = input.required<string>();
   protected readonly product = computed(() => {
@@ -35,6 +35,6 @@ export class ProductDetails {
   });
 
   protected openProductFormDialog(): void {
-    this.productFormDialog.openEdit(this.product());
+    this.productFormOverlay.openEdit(this.product());
   }
 }

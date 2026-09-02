@@ -14,9 +14,7 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "@enclave/*": ["./src/app/*"],
-      "@enclave-core/*": ["./src/app/core/*"],
-      "@enclave-features/*": ["./src/app/features/*"]
+      "@enclave/*": ["./src/app/*"]
     }
   },
   "angularCompilerOptions": {

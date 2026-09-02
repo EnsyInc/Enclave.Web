@@ -4,11 +4,11 @@ import { map, Observable } from 'rxjs';
 import {
   ConfirmationDialog,
   ConfirmationDialogData,
-} from '@enclave-core/components/confirmation-dialog/confirmation-dialog';
+} from '@enclave/core/components/confirmation-dialog/confirmation-dialog';
 import {
   DIALOG_BACKDROP_CLASS,
   DIALOG_PANEL_CLASS,
-} from '@enclave-core/dialog/dialog-panel-classes';
+} from '@enclave/core/dialog/dialog-panel-classes';
 
 @Injectable({ providedIn: 'root' })
 export class ConfirmationDialogService {

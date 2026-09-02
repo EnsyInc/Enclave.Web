@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { RedirectCommand, ResolveFn, Router } from '@angular/router';
-import { ProductsService } from '@enclave/services/products-service';
+import { ProductsService } from '@enclave/core/services/products.service';
 
 export const productDetailsBreadcrumbResolver: ResolveFn<string[]> = (route) => {
   const productsService = inject(ProductsService);

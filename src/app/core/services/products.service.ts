@@ -1,5 +1,5 @@
 import { Service } from '@angular/core';
-import { ProductModel } from '@enclave/core/models/product-model';
+import { ProductModel } from '@enclave/core/models/product.model';
 
 @Service()
 export class ProductsService {

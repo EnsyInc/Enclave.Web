@@ -14,7 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
-import { ProductModel } from '@enclave-core/models/product-model';
+import { ProductModel } from '@enclave/core/models/product.model';
 import { EnsyLabsIcon } from '@enclave/core/icons/ensy-labs-icon/ensy-labs-icon';
 import { EnclaveStatus } from '@enclave/core/components/enclave-status/enclave-status';
 import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/enclave-page-header';
@@ -24,8 +24,8 @@ import { EnclaveAvatar } from '@enclave/core/components/enclave-avatar/enclave-a
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs';
-import { ProductsService } from '@enclave/services/products-service';
-import { ProductFormDialogService } from '@enclave-features/admin/product-form-overlay/product-form-dialog.service';
+import { ProductsService } from '@enclave/core/services/products.service';
+import { ProductFormOverlayService } from '@enclave/features/admin/product-form-overlay/product-form-overlay.service';
 import { ConfirmationDialogService } from '@enclave/core/components/confirmation-dialog/confirmation-dialog.service';
 
 const SORTABLE_COLUMNS = ['name', 'status'] as const;
@@ -59,7 +59,7 @@ export class Products implements AfterViewInit {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   private readonly productsService = inject(ProductsService);
-  private readonly productFormDialog = inject(ProductFormDialogService);
+  private readonly productFormOverlay = inject(ProductFormOverlayService);
   private readonly confirmDialog = inject(ConfirmationDialogService);
 
   protected readonly productsList = signal<ProductModel[]>([]);
@@ -136,11 +136,11 @@ export class Products implements AfterViewInit {
   }
 
   protected openCreateProductFormDialog(): void {
-    this.productFormDialog.openCreate();
+    this.productFormOverlay.openCreate();
   }
 
   protected openEditProductFormDialog(product: ProductModel): void {
-    this.productFormDialog.openEdit(product);
+    this.productFormOverlay.openEdit(product);
   }
 
   protected openDeleteProductDialog(product: ProductModel): void {

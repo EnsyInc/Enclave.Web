@@ -5,7 +5,7 @@ import { vi } from 'vitest';
 import {
   DIALOG_BACKDROP_CLASS,
   DIALOG_PANEL_CLASS,
-} from '@enclave-core/dialog/dialog-panel-classes';
+} from '@enclave/core/dialog/dialog-panel-classes';
 
 import { ConfirmationDialogService } from './confirmation-dialog.service';
 import { ConfirmationDialog, ConfirmationDialogData } from './confirmation-dialog';

@@ -1,27 +1,27 @@
 import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { vi } from 'vitest';
-import { ProductModel } from '@enclave-core/models/product-model';
+import { ProductModel } from '@enclave/core/models/product.model';
 import {
   DIALOG_BACKDROP_CLASS,
   DIALOG_PANEL_CLASS,
-} from '@enclave-core/dialog/dialog-panel-classes';
+} from '@enclave/core/dialog/dialog-panel-classes';
 
-import { ProductFormDialogService } from './product-form-dialog.service';
+import { ProductFormOverlayService } from './product-form-overlay.service';
 import { EnclaveProductFormOverlay } from './product-form-overlay';
 
 const product: ProductModel = { id: '1', name: 'Enclave Core', status: 'Active' };
 
-describe('ProductFormDialogService', () => {
+describe('ProductFormOverlayService', () => {
   let open: ReturnType<typeof vi.fn>;
-  let service: ProductFormDialogService;
+  let service: ProductFormOverlayService;
 
   beforeEach(() => {
     open = vi.fn();
     TestBed.configureTestingModule({
       providers: [{ provide: MatDialog, useValue: { open } }],
     });
-    service = TestBed.inject(ProductFormDialogService);
+    service = TestBed.inject(ProductFormOverlayService);
   });
 
   it('openCreate opens the form dialog with no data', () => {
