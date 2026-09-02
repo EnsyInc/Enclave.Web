@@ -1,8 +1,8 @@
 @switch (reason()) {
-  @case ('not-found') {
-    <h1>Page not found :(</h1>
-  }
   @case ('forbidden') {
     <h1>Forbidden >:(</h1>
+  }
+  @default {
+    <h1>Page not found :(</h1>
   }
 }
