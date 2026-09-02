@@ -26,7 +26,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs';
 import { ProductsService } from '@enclave/core/services/products.service';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
-import { ConfirmationDialogService } from '@enclave/core/components/confirmation-dialog/confirmation-dialog.service';
+import { ConfirmationDialogService } from '@enclave/core/components/enclave-confirmation-dialog/enclave-confirmation-dialog.service';
 
 const SORTABLE_COLUMNS = ['name', 'status'] as const;
 type SortableColumns = (typeof SORTABLE_COLUMNS)[number];

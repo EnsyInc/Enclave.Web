@@ -8,7 +8,7 @@ import { ProductModel } from '@enclave/core/models/product.model';
 import { EnclavePageHeader } from '@enclave/core/components/enclave-page-header/enclave-page-header';
 import { ProductsService } from '@enclave/core/services/products.service';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
-import { ConfirmationDialogService } from '@enclave/core/components/confirmation-dialog/confirmation-dialog.service';
+import { ConfirmationDialogService } from '@enclave/core/components/enclave-confirmation-dialog/enclave-confirmation-dialog.service';
 
 import { ProductList } from './product-list';
 

@@ -14,12 +14,12 @@ export interface ConfirmationDialogData {
 @Component({
   selector: 'enclave-confirmation-dialog',
   imports: [EnsyLabsIcon, MatDividerModule, MatDialogModule, MatButtonModule],
-  templateUrl: './confirmation-dialog.html',
-  styleUrl: './confirmation-dialog.scss',
+  templateUrl: './enclave-confirmation-dialog.html',
+  styleUrl: './enclave-confirmation-dialog.scss',
 })
-export class ConfirmationDialog {
+export class EnclaveConfirmationDialog {
   private readonly data = inject<ConfirmationDialogData>(MAT_DIALOG_DATA);
 
-  protected readonly dialogRef = inject(MatDialogRef<ConfirmationDialog>);
+  protected readonly dialogRef = inject(MatDialogRef<EnclaveConfirmationDialog>);
   protected readonly dialogData = this.data;
 }

@@ -2,9 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { map, Observable } from 'rxjs';
 import {
-  ConfirmationDialog,
+  EnclaveConfirmationDialog,
   ConfirmationDialogData,
-} from '@enclave/core/components/confirmation-dialog/confirmation-dialog';
+} from '@enclave/core/components/enclave-confirmation-dialog/enclave-confirmation-dialog';
 import {
   DIALOG_BACKDROP_CLASS,
   DIALOG_PANEL_CLASS,
@@ -16,7 +16,7 @@ export class ConfirmationDialogService {
 
   public open(data: ConfirmationDialogData): Observable<boolean> {
     return this.dialog
-      .open(ConfirmationDialog, {
+      .open(EnclaveConfirmationDialog, {
         data,
         ariaLabel: data.title,
         backdropClass: DIALOG_BACKDROP_CLASS,
