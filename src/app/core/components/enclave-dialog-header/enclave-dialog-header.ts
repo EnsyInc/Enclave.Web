@@ -5,11 +5,7 @@ import { EnsyLabsIcon } from '@enclave/core/icons';
 
 @Component({
   selector: 'enclave-dialog-header',
-  imports: [
-    EnsyLabsIcon, 
-    MatButtonModule,
-    MatDialogClose,
-  ],
+  imports: [EnsyLabsIcon, MatButtonModule, MatDialogClose],
   templateUrl: './enclave-dialog-header.html',
   styleUrl: './enclave-dialog-header.scss',
 })

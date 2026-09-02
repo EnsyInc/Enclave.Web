@@ -1,0 +1,29 @@
+.enclave-detail-card {
+  --mat-card-outlined-container-color: var(--color-card);
+  --mat-card-outlined-outline-color: var(--color-border);
+
+  mat-card-content {
+    padding: 0rem;
+  }
+
+  mat-card-actions {
+    min-height: 0;
+    padding: 0 1rem 0.5rem;
+
+    .card-action-button {
+      --mat-button-text-container-height: 1.5rem;
+
+      div {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: right;
+        color: var(--color-text);
+
+        span {
+          align-content: center;
+        }
+      }
+    }
+  }
+}

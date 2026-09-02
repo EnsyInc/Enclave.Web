@@ -49,13 +49,6 @@ mat-tab-group {
 .tab-content {
   padding: 1rem 0;
 
-  --mat-card-outlined-container-color: var(--color-card);
-  --mat-card-outlined-outline-color: var(--color-border);
-
-  mat-card-content {
-    padding: 0rem;
-  }
-
   .product-info {
     padding: 0.5rem 0;
     display: flex;
@@ -106,18 +99,6 @@ mat-tab-group {
           font-weight: 400;
         }
       }
-    }
-  }
-
-  .card-action-button div {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    justify-content: right;
-    color: var(--color-text);
-
-    span {
-      align-content: center;
     }
   }
 }

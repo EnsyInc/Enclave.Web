@@ -11,52 +11,43 @@
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
     <mat-tab label="Info">
       <div class="tab-content">
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-subtitle>Overview</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="product-info">
-              <mat-divider />
-              <div>
-                <span class="info-label">Name</span>
-                <span class="info-value">{{ product().name }}</span>
-              </div>
-              <mat-divider />
-              <div>
-                <span class="info-label">Description</span>
-                <span class="info-value" [matTooltip]="product().description">
-                  @if (product().description) {
-                    {{ product().description }}
-                  } @else {
-                    <i>No description</i>
-                  }
-                </span>
-              </div>
-              <mat-divider />
-              <div>
-                <span class="info-label">Status</span>
-                <span class="info-value">
-                  <enclave-status>{{ product().status }}</enclave-status>
-                </span>
-              </div>
-              <mat-divider />
-              <div>
-                <span class="info-label">Id</span>
-                <span class="info-value">{{ product().id }}</span>
-              </div>
-              <mat-divider />
+        <enclave-detail-card
+          actionButtonIcon="edit"
+          actionButtonText="Edit"
+          (actionButtonClicked)="openProductFormDialog()"
+        >
+          <div class="product-info">
+            <mat-divider />
+            <div>
+              <span class="info-label">Name</span>
+              <span class="info-value">{{ product().name }}</span>
             </div>
-          </mat-card-content>
-          <mat-card-actions align="end">
-            <button class="card-action-button" matButton (click)="openProductFormDialog()">
-              <div>
-                <ensy-labs-icon name="edit" />
-                <span>Edit</span>
-              </div>
-            </button>
-          </mat-card-actions>
-        </mat-card>
+            <mat-divider />
+            <div>
+              <span class="info-label">Description</span>
+              <span class="info-value" [matTooltip]="product().description">
+                @if (product().description) {
+                  {{ product().description }}
+                } @else {
+                  <i>No description</i>
+                }
+              </span>
+            </div>
+            <mat-divider />
+            <div>
+              <span class="info-label">Status</span>
+              <span class="info-value">
+                <enclave-status>{{ product().status }}</enclave-status>
+              </span>
+            </div>
+            <mat-divider />
+            <div>
+              <span class="info-label">Id</span>
+              <span class="info-value">{{ product().id }}</span>
+            </div>
+            <mat-divider />
+          </div>
+        </enclave-detail-card>
       </div>
     </mat-tab>
   </mat-tab-group>

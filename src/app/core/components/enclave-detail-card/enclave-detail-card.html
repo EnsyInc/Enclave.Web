@@ -1,0 +1,18 @@
+<mat-card appearance="outlined" class="enclave-detail-card">
+  <mat-card-header>
+    <mat-card-subtitle>Overview</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-content />
+  </mat-card-content>
+  @if (actionButtonIcon() && actionButtonText()) {
+    <mat-card-actions align="end">
+      <button class="card-action-button" matButton (click)="actionButtonClicked.emit()">
+        <div>
+          <ensy-labs-icon [name]="actionButtonIcon()!" />
+          <span>{{ actionButtonText() }}</span>
+        </div>
+      </button>
+    </mat-card-actions>
+  }
+</mat-card>
