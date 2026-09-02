@@ -4,8 +4,8 @@ import { EnclaveAvatar, EnclaveStatus } from '@enclave/core/components';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { EnclaveDetailCard } from '@enclave/core/components/enclave-detail-card/enclave-detail-card';
+import { EnclaveDetailRow } from '@enclave/core/components/enclave-detail-row/enclave-detail-row';
 
 @Component({
   selector: 'enclave-product-details',
@@ -14,8 +14,8 @@ import { EnclaveDetailCard } from '@enclave/core/components/enclave-detail-card/
     EnclaveStatus,
     MatTabsModule,
     EnclaveDetailCard,
+    EnclaveDetailRow,
     MatDividerModule,
-    MatTooltipModule,
   ],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',

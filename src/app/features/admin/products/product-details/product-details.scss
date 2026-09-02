@@ -58,47 +58,12 @@ mat-tab-group {
     mat-divider {
       margin: 0.5rem 0;
     }
+  }
 
-    div {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-      padding: 0 1rem;
-
-      span {
-        &.info-label {
-          max-width: 12rem;
-          width: 100%;
-
-          font-family: var(--font-mono);
-          font-weight: 400;
-          font-style: normal;
-          font-size: 0.75rem;
-          text-transform: uppercase;
-
-          color: var(--color-text-muted);
-        }
-
-        &.info-value {
-          flex: 1 1 0%;
-          min-width: 0;
-
-          font-family: var(--font-sans);
-          font-weight: 500;
-          font-size: 0.875rem;
-
-          color: var(--color-text);
-
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-
-        enclave-status {
-          font-size: 0.75rem;
-          font-weight: 400;
-        }
-      }
+  enclave-detail-row {
+    enclave-status {
+      font-size: 0.75rem;
+      font-weight: 400;
     }
   }
 }
