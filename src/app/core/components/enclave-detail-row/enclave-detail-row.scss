@@ -1,36 +1,46 @@
 .enclave-detail-row {
-  display: flex;
-  gap: 0.5rem;
+  justify-content: center;
   align-items: center;
-  padding: 0 1rem;
 
-  span {
-    &.info-label {
-      max-width: 12rem;
-      width: 100%;
+  .enclave-detail-row-content {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0 1rem;
+    min-height: var(--enclave-detail-row-min-height, 1.75rem);
 
-      font-family: var(--font-mono);
-      font-weight: 400;
-      font-style: normal;
-      font-size: 0.75rem;
-      text-transform: uppercase;
+    span {
+      &.info-label {
+        max-width: 12rem;
+        width: 100%;
 
-      color: var(--color-text-muted);
-    }
+        font-family: var(--font-mono);
+        font-weight: 400;
+        font-style: normal;
+        font-size: 0.75rem;
+        text-transform: uppercase;
 
-    &.info-value {
-      flex: 1 1 0%;
-      min-width: 0;
+        color: var(--color-text-muted);
+      }
 
-      font-family: var(--font-sans);
-      font-weight: 500;
-      font-size: 0.875rem;
+      &.info-value {
+        flex: 1 1 0%;
+        min-width: 0;
 
-      color: var(--color-text);
+        font-family: var(--font-sans);
+        font-weight: 500;
+        font-size: 0.875rem;
 
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+        color: var(--color-text);
+
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
   }
+}
+
+mat-divider {
+  margin: 0.5rem 0;
 }

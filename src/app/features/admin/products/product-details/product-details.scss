@@ -49,17 +49,6 @@ mat-tab-group {
 .tab-content {
   padding: 1rem 0;
 
-  .product-info {
-    padding: 0.5rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-
-    mat-divider {
-      margin: 0.5rem 0;
-    }
-  }
-
   enclave-detail-row {
     enclave-status {
       font-size: 0.75rem;

@@ -5,6 +5,10 @@ export type { ConfirmationDialogData } from './enclave-confirmation-dialog/encla
 export { ConfirmationDialogService } from './enclave-confirmation-dialog/enclave-confirmation-dialog.service';
 export { EnclaveDialogHeader } from './enclave-dialog-header/enclave-dialog-header';
 
+export { EnclaveDetailCard } from './enclave-detail-card/enclave-detail-card';
+export { EnclaveDetailList } from './enclave-detail-list/enclave-detail-list';
+export { EnclaveDetailRow } from './enclave-detail-row/enclave-detail-row';
+
 export { EnclaveMoreActionsMenu } from './enclave-more-actions-menu/enclave-more-actions-menu';
 export { EnclavePageHeader } from './enclave-page-header/enclave-page-header';
 export { EnclaveSearchBarFilter } from './enclave-search-bar-filter/enclave-search-bar-filter';

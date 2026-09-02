@@ -6,6 +6,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDividerModule } from '@angular/material/divider';
 import { EnclaveDetailCard } from '@enclave/core/components/enclave-detail-card/enclave-detail-card';
 import { EnclaveDetailRow } from '@enclave/core/components/enclave-detail-row/enclave-detail-row';
+import { EnclaveDetailList } from '@enclave/core/components/enclave-detail-list/enclave-detail-list';
 
 @Component({
   selector: 'enclave-product-details',
@@ -16,6 +17,7 @@ import { EnclaveDetailRow } from '@enclave/core/components/enclave-detail-row/en
     EnclaveDetailCard,
     EnclaveDetailRow,
     MatDividerModule,
+    EnclaveDetailList,
   ],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',

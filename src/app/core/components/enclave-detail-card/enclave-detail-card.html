@@ -3,7 +3,11 @@
     <mat-card-subtitle>Overview</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <ng-content />
+    <mat-divider />
+    <div class="enclave-detail-card-content">
+      <ng-content />
+    </div>
+    <mat-divider />
   </mat-card-content>
   @if (actionButtonIcon() && actionButtonText()) {
     <mat-card-actions align="end">

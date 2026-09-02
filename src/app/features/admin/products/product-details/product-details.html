@@ -17,27 +17,24 @@
           (actionButtonClicked)="openProductFormDialog()"
         >
           <div class="product-info">
-            <mat-divider />
-            <enclave-detail-row label="Name">
-              {{ product().name }}
-            </enclave-detail-row>
-            <mat-divider />
-            <enclave-detail-row label="Description" [valueTooltip]="product().description">
-              @if (product().description) {
-                {{ product().description }}
-              } @else {
-                <i>No description</i>
-              }
-            </enclave-detail-row>
-            <mat-divider />
-            <enclave-detail-row label="Status">
-              <enclave-status>{{ product().status }}</enclave-status>
-            </enclave-detail-row>
-            <mat-divider />
-            <enclave-detail-row label="Id">
-              {{ product().id }}
-            </enclave-detail-row>
-            <mat-divider />
+            <enclave-detail-list>
+              <enclave-detail-row label="Name">
+                {{ product().name }}
+              </enclave-detail-row>
+              <enclave-detail-row label="Description" [valueTooltip]="product().description">
+                @if (product().description) {
+                  {{ product().description }}
+                } @else {
+                  <i>No description</i>
+                }
+              </enclave-detail-row>
+              <enclave-detail-row label="Status">
+                <enclave-status>{{ product().status }}</enclave-status>
+              </enclave-detail-row>
+              <enclave-detail-row label="Id">
+                {{ product().id }}
+              </enclave-detail-row>
+            </enclave-detail-list>
           </div>
         </enclave-detail-card>
       </div>

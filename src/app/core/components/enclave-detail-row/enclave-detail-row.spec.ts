@@ -57,4 +57,23 @@ describe('EnclaveDetailRow', () => {
     const tooltip = fixture.debugElement.query(By.directive(MatTooltip)).injector.get(MatTooltip);
     expect(tooltip.message).toBe('Full description text');
   });
+
+  it('does not render a divider by default', () => {
+    fixture.detectChanges();
+
+    const divider = fixture.debugElement.nativeElement.querySelector('mat-divider');
+    expect(divider).toBeNull();
+  });
+
+  it('renders a divider once renderDivider is set to true', () => {
+    fixture.detectChanges();
+
+    const row = fixture.debugElement.query(By.directive(EnclaveDetailRow))
+      .componentInstance as EnclaveDetailRow;
+    row.renderDivider.set(true);
+    fixture.detectChanges();
+
+    const divider = fixture.debugElement.nativeElement.querySelector('mat-divider');
+    expect(divider).toBeTruthy();
+  });
 });

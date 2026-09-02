@@ -2,16 +2,33 @@
   --mat-card-outlined-container-color: var(--color-card);
   --mat-card-outlined-outline-color: var(--color-border);
 
+  --enclave-detail-card-header-vert-padding: 0.5rem;
+  --enclave-detail-card-band-min-height: 2rem;
+  --enclave-detail-row-min-height: var(--enclave-detail-card-band-min-height);
+
+  mat-card-header {
+    padding: var(--enclave-detail-card-header-vert-padding) 1rem;
+    min-height: calc(
+      var(--enclave-detail-card-header-vert-padding) * 2 +
+        var(--enclave-detail-card-band-min-height)
+    );
+    display: flex;
+    align-items: center;
+  }
+
   mat-card-content {
     padding: 0rem;
+
+    .enclave-detail-card-content {
+      padding: 0.5rem 0;
+    }
   }
 
   mat-card-actions {
     min-height: 0;
-    padding: 0 1rem 0.5rem;
 
     .card-action-button {
-      --mat-button-text-container-height: 1.5rem;
+      --mat-button-text-container-height: var(--enclave-detail-card-band-min-height);
 
       div {
         display: flex;
@@ -26,4 +43,8 @@
       }
     }
   }
+}
+
+mat-divider {
+  margin: 0;
 }
