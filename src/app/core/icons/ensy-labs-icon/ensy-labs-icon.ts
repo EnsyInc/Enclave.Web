@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { IconName } from '@enclave/core/icons/icon-registry.service';
 
 @Component({
   selector: 'ensy-labs-icon',
@@ -9,5 +10,5 @@ import { MatIconModule } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EnsyLabsIcon {
-  readonly name = input.required<string>();
+  readonly name = input.required<IconName>();
 }
