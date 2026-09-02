@@ -1,32 +1,3 @@
-.header {
-  display: flex;
-  justify-content: space-between;
-
-  padding: 1.5rem;
-
-  .left {
-    display: flex;
-    flex-direction: column;
-
-    .action {
-      font-family: var(--font-mono);
-      font-weight: 400;
-      font-size: 0.875rem;
-      text-transform: uppercase;
-
-      color: var(--color-text-muted);
-    }
-
-    .title {
-      font-family: var(--font-sans);
-      font-weight: 600;
-      font-size: 1rem;
-
-      color: var(--color-text);
-    }
-  }
-}
-
 mat-dialog-content {
   padding: 2rem !important;
 }

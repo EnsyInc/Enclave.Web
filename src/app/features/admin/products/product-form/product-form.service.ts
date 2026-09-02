@@ -13,6 +13,7 @@ export class ProductFormService {
       ariaLabel: 'Create Product',
       backdropClass: DIALOG_BACKDROP_CLASS,
       panelClass: DIALOG_PANEL_CLASS,
+      autoFocus: 'dialog',
     });
   }
 
@@ -22,6 +23,7 @@ export class ProductFormService {
       ariaLabel: 'Edit Product',
       backdropClass: DIALOG_BACKDROP_CLASS,
       panelClass: DIALOG_PANEL_CLASS,
+      autoFocus: 'dialog',
     });
   }
 }
