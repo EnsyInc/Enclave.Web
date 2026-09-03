@@ -15,14 +15,15 @@
 
 .products-table {
   table-layout: fixed;
+
   .mat-column-name {
     width: 20%;
   }
   .mat-column-description {
-    width: 54%;
+    width: 59%;
   }
   .mat-column-status {
-    width: 25%;
+    width: 20%;
   }
   .mat-column-action {
     width: 1%;
@@ -64,6 +65,7 @@
 
   td enclave-status {
     --enclave-status-color: var(--color-secondary);
+    --enclave-status-width: 100%;
   }
 
   tr.retired enclave-status {

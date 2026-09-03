@@ -1,6 +1,5 @@
 :host {
   --enclave-status-color: var(--color-primary);
-  --enclave-status-background-color: transparent;
   --enclave-status-icon-color: var(--enclave-status-color);
   --enclave-status-border-color: var(--enclave-status-color);
   --enclave-status-text-color: var(--enclave-status-color);
@@ -12,12 +11,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: fit-content;
   gap: 0.5rem;
+  
+  width: var(--enclave-status-width, fit-content);
   padding: 0.25rem 1rem;
-  border: 1px solid var(--enclave-status-border-color);
-  background-color: var(--enclave-status-background-color);
+
+  border-width: 1px;
+  border-style: var(--enclave-status-border-style, solid);
+  border-color: var(--enclave-status-border-color);
   border-radius: 0.25rem;
+
+  background-color: var(--enclave-status-background-color, transparent);
   color: var(--enclave-status-text-color);
   text-transform: uppercase;
 
