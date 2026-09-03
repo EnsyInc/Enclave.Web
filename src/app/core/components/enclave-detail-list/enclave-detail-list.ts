@@ -13,7 +13,7 @@ export class EnclaveDetailList {
   constructor() {
     effect(() => {
       this.rows().forEach((r, index) => {
-        r.renderDivider.set(index == this.rows().length - 1 ? false : true);
+        r.renderDivider.set(index !== this.rows().length - 1);
       });
     });
   }

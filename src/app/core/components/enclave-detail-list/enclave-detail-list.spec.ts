@@ -40,7 +40,7 @@ describe('EnclaveDetailList', () => {
     fixture.detectChanges();
 
     const rows = fixture.debugElement.queryAll(By.directive(EnclaveDetailRow));
-    expect(rows.length).toBe(3);
+    expect(rows).toHaveLength(3);
   });
 
   it('enables the divider on every row except the last', () => {
