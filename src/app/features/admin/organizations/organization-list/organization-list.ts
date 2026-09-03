@@ -8,19 +8,10 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { MatSort, MatSortHeader, MatSortModule } from '@angular/material/sort';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import {
   MatTableDataSource,
-  MatTable,
-  MatColumnDef,
-  MatHeaderCell,
-  MatHeaderRowDef,
-  MatCell,
-  MatCellDef,
-  MatHeaderRow,
-  MatRow,
-  MatRowDef,
-  MatHeaderCellDef,
   MatTableModule,
 } from '@angular/material/table';
 
@@ -31,10 +22,9 @@ import {
   EnclaveStatus,
 } from '@enclave/core/components';
 import { EnclavePersistentSort } from '@enclave/core/directives';
-import { OrganizationModel } from '@enclave/domain/models';
-import { OrganizationService } from '@enclave/domain/services';
 import { EnsyLabsIcon } from '@enclave/core/icons';
-import { MatButtonModule } from '@angular/material/button';
+import { OrganizationModel } from '@enclave/domain/models';
+import { OrganizationService, UserService } from '@enclave/domain/services';
 
 @Component({
   selector: 'enclave-organization-list',
@@ -43,11 +33,11 @@ import { MatButtonModule } from '@angular/material/button';
     EnclavePageHeader,
     EnclavePersistentSort,
     EnclaveSearchBarFilter,
-    MatTableModule,
-    MatButtonModule,
-    MatSortModule,
     EnclaveStatus,
     EnsyLabsIcon,
+    MatButtonModule,
+    MatSortModule,
+    MatTableModule,
   ],
   templateUrl: './organization-list.html',
   styleUrl: './organization-list.scss',
@@ -55,26 +45,30 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class OrganizationList implements AfterViewInit {
   private readonly orgService = inject(OrganizationService);
+  private readonly userService = inject(UserService);
 
-  protected readonly orgsList = signal<OrganizationModel[]>([]);
-  protected readonly orgsCount = computed(() => this.orgsList().length);
-  protected readonly orgsDataSource = computed(() => new MatTableDataSource(this.orgsList()));
-  protected readonly displayedColumns = ['name', 'status', 'primaryUserId', 'action'];
+  protected readonly orgList = signal<OrganizationModel[]>([]);
+  protected readonly orgRows = computed(() =>
+    this.orgList().map((org) => ({
+      ...org,
+      primaryContactEmail: this.userService.getUserById(org.primaryUserId)!.email,
+    })),
+  );
+  protected readonly orgCount = computed(() => this.orgRows().length);
+  protected readonly orgDataSource = computed(() => new MatTableDataSource(this.orgRows()));
+  protected readonly displayedColumns = ['name', 'status', 'primaryContactEmail', 'action'];
   protected readonly orgSearch = viewChild.required(EnclaveSearchBarFilter);
   protected readonly orgSort = viewChild.required(MatSort);
 
   constructor() {
     effect(() => {
-      this.orgsDataSource().filter = this.orgSearch().searchText().toLocaleLowerCase();
-      this.orgsDataSource().sort = this.orgSort();
+      this.orgDataSource().filter = this.orgSearch().searchText().toLocaleLowerCase();
+      this.orgDataSource().sort = this.orgSort();
     });
   }
 
   ngAfterViewInit(): void {
-    this.populateOrgs();
-  }
-
-  private populateOrgs(): void {
-    this.orgsList.set(this.orgService.getOrganizations());
+    // populate orgsList
+    this.orgList.set(this.orgService.getOrganizations());
   }
 }

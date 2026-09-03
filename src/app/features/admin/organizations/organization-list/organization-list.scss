@@ -22,8 +22,9 @@
   .mat-column-status {
     width: 33%;
   }
-  .mat-column-primaryUserId {
+  .mat-column-primaryContactEmail {
     width: 33%;
+    color: var(--color-text-muted);
   }
   .mat-column-action {
     width: 1%;
@@ -58,6 +59,14 @@
   td enclave-status {
     --enclave-status-color: var(--color-secondary);
     --enclave-status-width: 100%;
+  }
+
+  .deactivated {
+    color: var(--color-text-muted);
+  }
+
+  td.mat-column-name {
+    font-weight: 200;
   }
 
   tr.deactivated enclave-status {

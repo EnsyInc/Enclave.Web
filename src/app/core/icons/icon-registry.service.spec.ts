@@ -31,6 +31,7 @@ describe('IconRegistryService', () => {
       ['add', 'icons/add.svg'],
       ['search', 'icons/search.svg'],
       ['chevrons-up-down', 'icons/chevrons-up-down.svg'],
+      ['chevron-right', 'icons/chevron-right.svg'],
       ['sun', 'icons/sun.svg'],
       ['moon', 'icons/moon.svg'],
       ['sidenav', 'icons/sidenav.svg'],
