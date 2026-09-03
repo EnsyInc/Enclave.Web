@@ -57,12 +57,12 @@
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
         <enclave-more-actions-menu [elementName]="element.name" class="product-actions">
-          <a mat-menu-item [routerLink]="['/admin/products', element.id]">
+          <button mat-menu-item [routerLink]="['/admin/products', element.id]">
             <div>
               <ensy-labs-icon name="details" />
               <span>Details</span>
             </div>
-          </a>
+          </button>
           <button mat-menu-item (click)="openEditProductFormDialog(element)">
             <div>
               <ensy-labs-icon name="edit" />

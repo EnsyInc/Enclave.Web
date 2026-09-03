@@ -79,8 +79,12 @@
     visibility: hidden;
   }
 
-  tr:hover .org-actions,
-  tr:focus-within .org-actions {
+  tr:hover .org-actions {
     visibility: visible;
+  }
+
+  tr:hover {
+    background-color: var(--color-border);
+    cursor: pointer;
   }
 }

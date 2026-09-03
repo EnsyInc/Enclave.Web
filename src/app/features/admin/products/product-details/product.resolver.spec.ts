@@ -11,7 +11,7 @@ import {
 import {
   productDetailsBreadcrumbResolver,
   productDetailsTitleResolver,
-} from './product-breadcrumb.resolver';
+} from './product.resolver';
 
 function routeSnapshotFor(productId: string): ActivatedRouteSnapshot {
   return { paramMap: convertToParamMap({ productId }) } as ActivatedRouteSnapshot;

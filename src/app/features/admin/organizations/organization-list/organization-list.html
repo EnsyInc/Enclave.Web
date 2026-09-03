@@ -21,9 +21,7 @@
       <td mat-cell *matCellDef="let element">
         <div class="org-name">
           <enclave-avatar [name]="element.name" />
-          <a>
-            <span>{{ element.name }}</span>
-          </a>
+          <span>{{ element.name }}</span>
         </div>
       </td>
     </ng-container>
@@ -62,6 +60,7 @@
       mat-row
       *matRowDef="let element; columns: displayedColumns"
       [class.deactivated]="element.status === 'Deactivated'"
+      [routerLink]="['/admin/organizations', element.id]"
     ></tr>
 
     <tr class="mat-row" *matNoDataRow>
