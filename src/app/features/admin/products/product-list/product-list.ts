@@ -26,7 +26,7 @@ import {
 import { EnclavePersistentSort } from '@enclave/core/directives';
 import { EnsyLabsIcon } from '@enclave/core/icons';
 import { ProductModel } from '@enclave/domain/models';
-import { ProductsService } from '@enclave/domain/services';
+import { ProductService } from '@enclave/domain/services';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 
 @Component({
@@ -51,7 +51,7 @@ import { ProductFormService } from '@enclave/features/admin/products/product-for
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductList implements AfterViewInit {
-  private readonly productsService = inject(ProductsService);
+  private readonly productService = inject(ProductService);
   private readonly productForm = inject(ProductFormService);
   private readonly confirmDialog = inject(ConfirmationDialogService);
 
@@ -79,7 +79,7 @@ export class ProductList implements AfterViewInit {
   }
 
   private populateProducts(): void {
-    this.productsList.set(this.productsService.getProducts());
+    this.productsList.set(this.productService.getProducts());
   }
 
   protected openCreateProductFormDialog(): void {

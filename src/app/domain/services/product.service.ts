@@ -3,7 +3,7 @@ import { Service } from '@angular/core';
 import { ProductModel } from '@enclave/domain/models';
 
 @Service()
-export class ProductsService {
+export class ProductService {
   private readonly PRODUCT_SEEDS: ProductModel[] = [
     {
       id: '1',
