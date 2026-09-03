@@ -8,10 +8,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 
-import {
-  productDetailsBreadcrumbResolver,
-  productDetailsTitleResolver,
-} from './product.resolver';
+import { productDetailsBreadcrumbResolver, productDetailsTitleResolver } from './product.resolver';
 
 function routeSnapshotFor(productId: string): ActivatedRouteSnapshot {
   return { paramMap: convertToParamMap({ productId }) } as ActivatedRouteSnapshot;

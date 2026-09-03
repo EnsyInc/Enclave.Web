@@ -1,10 +1,13 @@
 import { Routes } from '@angular/router';
 
 import {
+  organizationDetailsBreadcrumbResolver,
+  organizationDetailsTitleResolver,
+} from '@enclave/features/admin/organizations';
+import {
   productDetailsBreadcrumbResolver,
   productDetailsTitleResolver,
 } from '@enclave/features/admin/products';
-import { organizationDetailsBreadcrumbResolver, organizationDetailsTitleResolver } from './features/admin/organizations';
 
 export const routes: Routes = [
   {
