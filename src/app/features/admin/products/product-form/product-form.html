@@ -1,42 +1,44 @@
-<enclave-dialog-header
-  [action]="product() ? 'Edit' : 'Create'"
-  [title]="product() ? 'Edit Product' : 'Create Product'"
-/>
+<div class="product-form-container">
+  <enclave-dialog-header
+    [action]="product() ? 'Edit' : 'Create'"
+    [title]="product() ? 'Edit Product' : 'Create Product'"
+  />
 
-<mat-divider />
+  <mat-divider />
 
-<mat-dialog-content>
-  <form id="product-form" [formGroup]="form" (ngSubmit)="save()">
-    <mat-form-field>
-      <mat-label>Name</mat-label>
-      <input matInput placeholder="Enter product name" formControlName="name" />
-      <mat-error>Name is required</mat-error>
-    </mat-form-field>
+  <mat-dialog-content>
+    <form id="product-form" [formGroup]="form" (ngSubmit)="save()">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Enter product name" formControlName="name" />
+        <mat-error>Name is required</mat-error>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Description</mat-label>
-      <input matInput placeholder="Enter product description" formControlName="description" />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input matInput placeholder="Enter product description" formControlName="description" />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Status</mat-label>
-      <mat-select formControlName="status">
-        @for (status of productStatuses; track status) {
-          <mat-option [value]="status">{{ status }}</mat-option>
-        }
-      </mat-select>
-      <mat-error>Status is required</mat-error>
-    </mat-form-field>
-  </form>
-</mat-dialog-content>
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          @for (status of productStatuses; track status) {
+            <mat-option [value]="status">{{ status }}</mat-option>
+          }
+        </mat-select>
+        <mat-error>Status is required</mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button form="product-form">
-    @if (product()) {
-      Save
-    } @else {
-      Create Product
-    }
-  </button>
-</mat-dialog-actions>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button form="product-form">
+      @if (product()) {
+        Save
+      } @else {
+        Create Product
+      }
+    </button>
+  </mat-dialog-actions>
+</div>

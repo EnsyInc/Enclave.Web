@@ -1,0 +1,86 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.orgs-table-container {
+  flex: 0 1 auto;
+  max-height: 100%;
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+}
+
+.orgs-table {
+  table-layout: fixed;
+
+  .mat-column-name {
+    width: 33%;
+  }
+  .mat-column-status {
+    width: 33%;
+  }
+  .mat-column-primaryContactEmail {
+    width: 33%;
+    color: var(--color-text-muted);
+  }
+  .mat-column-action {
+    width: 1%;
+  }
+
+  th {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+
+    &[mat-sort-header] {
+      user-select: none;
+    }
+  }
+
+  .org-name {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 0.5rem;
+
+    enclave-avatar {
+      font-weight: 600;
+    }
+  }
+
+  enclave-status {
+    --enclave-status-background-color: var(--color-bg);
+  }
+
+  td enclave-status {
+    --enclave-status-color: var(--color-secondary);
+    --enclave-status-width: 100%;
+  }
+
+  .deactivated {
+    color: var(--color-text-muted);
+  }
+
+  td.mat-column-name {
+    font-weight: 300;
+  }
+
+  tr.deactivated enclave-status {
+    --enclave-status-color: var(--color-text-muted);
+    --enclave-status-border-color: var(--color-border);
+    --enclave-status-border-style: dashed;
+  }
+
+  .org-actions {
+    visibility: hidden;
+  }
+
+  tr:hover .org-actions,
+  tr:focus-within .org-actions {
+    visibility: visible;
+  }
+}

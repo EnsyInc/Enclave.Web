@@ -9,6 +9,7 @@ export const IconName = {
   Add: 'add',
   Search: 'search',
   ChevronsUpDown: 'chevrons-up-down',
+  ChevronRight: 'chevron-right',
   Sun: 'sun',
   Moon: 'moon',
   Sidenav: 'sidenav',

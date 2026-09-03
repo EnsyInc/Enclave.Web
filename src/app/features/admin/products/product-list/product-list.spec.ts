@@ -7,7 +7,7 @@ import { vi } from 'vitest';
 
 import { ConfirmationDialogService, EnclavePageHeader } from '@enclave/core/components';
 import { ProductModel } from '@enclave/domain/models';
-import { ProductsService } from '@enclave/domain/services';
+import { ProductService } from '@enclave/domain/services';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 
 import { ProductList } from './product-list';
@@ -57,7 +57,7 @@ function createFixture(options: FixtureOptions = {}): ComponentFixture<ProductLi
         },
       },
       {
-        provide: ProductsService,
+        provide: ProductService,
         useValue: { getProducts: () => options.products ?? customProducts },
       },
       {
