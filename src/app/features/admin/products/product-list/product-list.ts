@@ -3,20 +3,18 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  DestroyRef,
   effect,
   inject,
   signal,
   viewChild,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { MatButtonModule } from '@angular/material/button';
-import { ProductModel } from '@enclave/domain/models';
-import { ProductsService } from '@enclave/domain/services';
-import { EnsyLabsIcon } from '@enclave/core/icons';
+import { RouterLink } from '@angular/router';
+
 import {
   ConfirmationDialogService,
   EnclaveAvatar,
@@ -25,31 +23,27 @@ import {
   EnclaveSearchBarFilter,
   EnclaveStatus,
 } from '@enclave/core/components';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { debounceTime } from 'rxjs';
+import { EnclavePersistentSort } from '@enclave/core/directives';
+import { EnsyLabsIcon } from '@enclave/core/icons';
+import { ProductModel } from '@enclave/domain/models';
+import { ProductsService } from '@enclave/domain/services';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
-
-const SORTABLE_COLUMNS = ['name', 'status'] as const;
-type SortableColumns = (typeof SORTABLE_COLUMNS)[number];
-
-const SORT_DIRECTIONS = ['asc', 'desc'] as const;
-type SortDirection = (typeof SORT_DIRECTIONS)[number];
 
 @Component({
   selector: 'enclave-product-list',
   imports: [
+    EnclaveAvatar,
+    EnclaveMoreActionsMenu,
+    EnclavePageHeader,
+    EnclavePersistentSort,
+    EnclaveSearchBarFilter,
+    EnclaveStatus,
+    EnsyLabsIcon,
     MatButtonModule,
     MatInputModule,
     MatMenuModule,
-    MatTableModule,
-    EnsyLabsIcon,
-    EnclavePageHeader,
-    EnclaveSearchBarFilter,
-    EnclaveStatus,
-    EnclaveMoreActionsMenu,
     MatSortModule,
-    EnclaveAvatar,
+    MatTableModule,
     RouterLink,
   ],
   templateUrl: './product-list.html',
@@ -57,9 +51,6 @@ type SortDirection = (typeof SORT_DIRECTIONS)[number];
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductList implements AfterViewInit {
-  private readonly router = inject(Router);
-  private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly destroyRef = inject(DestroyRef);
   private readonly productsService = inject(ProductsService);
   private readonly productForm = inject(ProductFormService);
   private readonly confirmDialog = inject(ConfirmationDialogService);
@@ -72,9 +63,9 @@ export class ProductList implements AfterViewInit {
   protected readonly productsDataSource = computed(
     () => new MatTableDataSource(this.productsList()),
   );
-  protected readonly productSort = viewChild.required(MatSort);
   protected readonly displayedColumns = ['name', 'description', 'status', 'action'];
   protected readonly productSearch = viewChild.required(EnclaveSearchBarFilter);
+  protected readonly productSort = viewChild.required(MatSort);
 
   constructor() {
     effect(() => {
@@ -84,57 +75,11 @@ export class ProductList implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const restoredSort = this.parseSortQueryParam();
-    if (restoredSort) {
-      queueMicrotask(() => {
-        this.productSort().sort({
-          id: restoredSort.column,
-          start: restoredSort.direction,
-          disableClear: false,
-        });
-      });
-    }
-
-    this.productSort()
-      .sortChange.pipe(debounceTime(400), takeUntilDestroyed(this.destroyRef))
-      .subscribe((sort) => {
-        this.router.navigate([], {
-          relativeTo: this.activatedRoute,
-          queryParams: { sort: this.buildSortQueryParam(sort) },
-          queryParamsHandling: 'merge',
-        });
-      });
-
     this.populateProducts();
   }
 
   private populateProducts(): void {
     this.productsList.set(this.productsService.getProducts());
-  }
-
-  // e.g. "?sort=name:asc" <-> { column: 'name', direction: 'asc' }
-  private parseSortQueryParam(): { column: SortableColumns; direction: SortDirection } | undefined {
-    const sortParam = this.activatedRoute.snapshot.queryParamMap.get('sort');
-    const [rawColumn, rawDirection, ...extra] = sortParam?.split(':') ?? [];
-    if (!rawColumn || !rawDirection || extra.length > 0) {
-      return undefined;
-    }
-
-    const column = this.parseSortColumn(rawColumn.trim().toLowerCase());
-    const direction = this.parseSortDirection(rawDirection.trim().toLowerCase());
-    return column && direction ? { column, direction } : undefined;
-  }
-
-  private buildSortQueryParam(sort: Sort): string | null {
-    return sort.active && sort.direction ? `${sort.active}:${sort.direction}` : null;
-  }
-
-  private parseSortColumn(column: string): SortableColumns | undefined {
-    return SORTABLE_COLUMNS.find((c) => c === column);
-  }
-
-  private parseSortDirection(direction: string): SortDirection | undefined {
-    return SORT_DIRECTIONS.find((d) => d === direction);
   }
 
   protected openCreateProductFormDialog(): void {

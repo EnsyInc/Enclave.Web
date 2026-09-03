@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSortHeader } from '@angular/material/sort';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angular/router';
-import { MatSortHeader } from '@angular/material/sort';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
+
+import { ConfirmationDialogService, EnclavePageHeader } from '@enclave/core/components';
 import { ProductModel } from '@enclave/domain/models';
 import { ProductsService } from '@enclave/domain/services';
-import { ConfirmationDialogService, EnclavePageHeader } from '@enclave/core/components';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 
 import { ProductList } from './product-list';
@@ -338,21 +339,11 @@ describe('ProductList sort query param persistence', () => {
     expect(rowNames(fixture)).toEqual(['Mu', 'Zeta', 'Alpha']);
   });
 
-  it.each([
-    ['missing the direction half', 'name'],
-    ['naming a non-sortable column', 'description:asc'],
-    ['using an unrecognized direction', 'name:sideways'],
-    ['with trailing garbage', 'name:asc:extra'],
-  ])('ignores a malformed sort query param (%s)', async (_label, sortParam) => {
-    const fixture = createComponent({ sort: sortParam });
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    const nameHeader: HTMLElement =
-      fixture.debugElement.nativeElement.querySelector('.mat-column-name');
-    expect(nameHeader.getAttribute('aria-sort')).toBe('none');
-  });
+  // Malformed-param handling and debounce-collapsing are exhaustively covered at the
+  // directive level (enclave-persistent-sort.spec.ts). These remaining tests are
+  // deliberately kept thin -- they exist only to prove ProductList's <table> actually has
+  // matSort/enclavePersistentSort wired up (correct sortableColumns, real row reordering,
+  // reachable Router.navigate), not to re-verify the directive's own parsing/debounce logic.
 
   it('navigates with the sort query param set once the debounce elapses after a header click', () => {
     vi.useFakeTimers();
@@ -367,27 +358,6 @@ describe('ProductList sort query param persistence', () => {
     expect(navigateSpy).toHaveBeenCalledWith([], {
       relativeTo: expect.anything(),
       queryParams: { sort: 'name:asc' },
-      queryParamsHandling: 'merge',
-    });
-  });
-
-  it('collapses rapid clicks into a single navigation with the final sort state', () => {
-    vi.useFakeTimers();
-    const fixture = createComponent();
-    fixture.detectChanges();
-
-    const nameSortHeader = fixture.debugElement.queryAll(By.directive(MatSortHeader))[0];
-    // Cycles asc -> desc -> none (disableClear defaults to false), all within the debounce window.
-    nameSortHeader.triggerEventHandler('click', null);
-    nameSortHeader.triggerEventHandler('click', null);
-    nameSortHeader.triggerEventHandler('click', null);
-
-    vi.advanceTimersByTime(400);
-
-    expect(navigateSpy).toHaveBeenCalledTimes(1);
-    expect(navigateSpy).toHaveBeenCalledWith([], {
-      relativeTo: expect.anything(),
-      queryParams: { sort: null },
       queryParamsHandling: 'merge',
     });
   });

@@ -3,6 +3,7 @@ const eslint = require('@eslint/js');
 const { defineConfig } = require('eslint/config');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
+const perfectionist = require('eslint-plugin-perfectionist');
 
 module.exports = defineConfig([
   {
@@ -14,7 +15,32 @@ module.exports = defineConfig([
       angular.configs.tsRecommended,
     ],
     processor: angular.processInlineTemplates,
+    plugins: {
+      perfectionist,
+    },
     rules: {
+      'perfectionist/sort-imports': [
+        'error',
+        {
+          type: 'alphabetical',
+          order: 'asc',
+          internalPattern: ['^@enclave/'],
+        },
+      ],
+      // Only sorts the array literal passed as a @Component's `imports` property -- every
+      // other array in the codebase (SORTABLE_COLUMNS, displayedColumns, route configs, etc.)
+      // is left untouched, since their order is semantically meaningful, not alphabetical.
+      'perfectionist/sort-arrays': [
+        'error',
+        {
+          type: 'alphabetical',
+          order: 'asc',
+          useConfigurationIf: {
+            matchesAstSelector:
+              "CallExpression[callee.name='Component'] > ObjectExpression > Property[key.name='imports'] > ArrayExpression",
+          },
+        },
+      ],
       '@angular-eslint/directive-selector': [
         'error',
         {

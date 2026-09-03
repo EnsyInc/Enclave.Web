@@ -1,0 +1,11 @@
+<div class="enclave-detail-row">
+  <div class="enclave-detail-row-content">
+    <span class="info-label">{{ label() }}</span>
+    <span class="info-value" [matTooltip]="valueTooltip()">
+      <ng-content />
+    </span>
+  </div>
+  @if (renderDivider()) {
+    <mat-divider />
+  }
+</div>

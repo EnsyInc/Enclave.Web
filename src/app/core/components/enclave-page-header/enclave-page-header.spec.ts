@@ -2,8 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { vi } from 'vitest';
 
-import { EnclavePageHeader } from './enclave-page-header';
 import { EnsyLabsIcon, IconName } from '@enclave/core/icons';
+
+import { EnclavePageHeader } from './enclave-page-header';
 
 describe('EnclavePageHeader', () => {
   let component: EnclavePageHeader;

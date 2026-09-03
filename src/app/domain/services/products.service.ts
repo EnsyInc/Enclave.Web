@@ -1,4 +1,5 @@
 import { Service } from '@angular/core';
+
 import { ProductModel } from '@enclave/domain/models';
 
 @Service()

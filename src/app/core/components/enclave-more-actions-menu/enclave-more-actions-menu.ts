@@ -1,11 +1,12 @@
 import { Component, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+
 import { EnsyLabsIcon } from '@enclave/core/icons';
 
 @Component({
   selector: 'enclave-more-actions-menu',
-  imports: [EnsyLabsIcon, MatMenuModule, MatButtonModule],
+  imports: [EnsyLabsIcon, MatButtonModule, MatMenuModule],
   templateUrl: './enclave-more-actions-menu.html',
   styleUrl: './enclave-more-actions-menu.scss',
 })

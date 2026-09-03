@@ -1,25 +1,24 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { ProductsService } from '@enclave/domain/services';
-import { EnclaveAvatar, EnclaveStatus } from '@enclave/core/components';
-import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { EnsyLabsIcon } from '@enclave/core/icons';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTabsModule } from '@angular/material/tabs';
+
+import { EnclaveAvatar, EnclaveStatus } from '@enclave/core/components';
+import { EnclaveDetailCard } from '@enclave/core/components/enclave-detail-card/enclave-detail-card';
+import { EnclaveDetailList } from '@enclave/core/components/enclave-detail-list/enclave-detail-list';
+import { EnclaveDetailRow } from '@enclave/core/components/enclave-detail-row/enclave-detail-row';
+import { ProductsService } from '@enclave/domain/services';
+import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 
 @Component({
   selector: 'enclave-product-details',
   imports: [
     EnclaveAvatar,
+    EnclaveDetailCard,
+    EnclaveDetailList,
+    EnclaveDetailRow,
     EnclaveStatus,
-    MatTabsModule,
-    MatCardModule,
-    MatButtonModule,
-    EnsyLabsIcon,
     MatDividerModule,
-    MatTooltipModule,
+    MatTabsModule,
   ],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',

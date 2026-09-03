@@ -2,7 +2,8 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { EnsyLabsIcon } from '@enclave/core/icons';
+
+import { EnclaveDialogHeader } from '@enclave/core/components/enclave-dialog-header/enclave-dialog-header';
 
 export interface ConfirmationDialogData {
   action: string;
@@ -13,7 +14,7 @@ export interface ConfirmationDialogData {
 
 @Component({
   selector: 'enclave-confirmation-dialog',
-  imports: [EnsyLabsIcon, MatDividerModule, MatDialogModule, MatButtonModule],
+  imports: [EnclaveDialogHeader, MatButtonModule, MatDialogModule, MatDividerModule],
   templateUrl: './enclave-confirmation-dialog.html',
   styleUrl: './enclave-confirmation-dialog.scss',
 })

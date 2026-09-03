@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { MatIcon } from '@angular/material/icon';
+import { By } from '@angular/platform-browser';
+
+import { IconName } from '@enclave/core/icons';
 
 import { EnsyLabsIcon } from './ensy-labs-icon';
-import { IconName } from '@enclave/core/icons';
 
 describe('EnsyLabsIcon', () => {
   let component: EnsyLabsIcon;

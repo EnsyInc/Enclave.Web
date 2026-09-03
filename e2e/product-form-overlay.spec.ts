@@ -15,6 +15,15 @@ test('opens the create dialog with an empty form', async ({ page }) => {
   await expect(dialog.getByLabel('Description')).toHaveValue('');
 });
 
+test('closes the dialog when the header close button is clicked', async ({ page }) => {
+  await page.getByRole('button', { name: 'Create Product' }).click();
+  const dialog = page.getByRole('dialog');
+
+  await dialog.getByRole('button', { name: 'Close dialog' }).click();
+
+  await expect(dialog).toBeHidden();
+});
+
 test('blocks save and shows validation errors when required fields are empty', async ({ page }) => {
   await page.getByRole('button', { name: 'Create Product' }).click();
   const dialog = page.getByRole('dialog');

@@ -1,18 +1,7 @@
-<div class="header">
-  <div class="left">
-    @if (product()) {
-      <span class="action">Edit</span>
-      <span class="title">Edit Product</span>
-    } @else {
-      <span class="action">Create</span>
-      <span class="title">Create Product</span>
-    }
-  </div>
-
-  <button mat-icon-button mat-dialog-close class="close-button" aria-label="Close dialog">
-    <ensy-labs-icon name="close"></ensy-labs-icon>
-  </button>
-</div>
+<enclave-dialog-header
+  [action]="product() ? 'Edit' : 'Create'"
+  [title]="product() ? 'Edit Product' : 'Create Product'"
+/>
 
 <mat-divider />
 

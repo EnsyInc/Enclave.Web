@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+
 import { STORAGE_KEY, ThemeService } from './theme.service';
 
 function createStorageMock(initial: Record<string, string> = {}): Storage {

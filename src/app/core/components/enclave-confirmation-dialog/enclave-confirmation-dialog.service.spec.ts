@@ -2,10 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom, of } from 'rxjs';
 import { vi } from 'vitest';
-import { DIALOG_BACKDROP_CLASS, DIALOG_PANEL_CLASS } from '@enclave/core';
 
+import { ConfirmationDialogData } from './enclave-confirmation-dialog';
 import { ConfirmationDialogService } from './enclave-confirmation-dialog.service';
-import { EnclaveConfirmationDialog, ConfirmationDialogData } from './enclave-confirmation-dialog';
 
 const data: ConfirmationDialogData = {
   action: 'Delete',
@@ -27,21 +26,11 @@ function createService(afterClosedValue: boolean | undefined): {
   return { service: TestBed.inject(ConfirmationDialogService), open };
 }
 
+// Dialog-open wiring (component/ariaLabel/data/backdropClass/panelClass/autoFocus) is
+// openEnclaveDialog's own concern, already covered by open-enclave-dialog.spec.ts. These
+// tests only cover ConfirmationDialogService's own logic: mapping the dialog's afterClosed()
+// result to a plain boolean.
 describe('ConfirmationDialogService', () => {
-  it('opens the confirmation dialog with the given data and the expected config', () => {
-    const { service, open } = createService(true);
-
-    service.open(data);
-
-    expect(open).toHaveBeenCalledExactlyOnceWith(EnclaveConfirmationDialog, {
-      data,
-      ariaLabel: data.title,
-      backdropClass: DIALOG_BACKDROP_CLASS,
-      panelClass: DIALOG_PANEL_CLASS,
-      autoFocus: 'dialog',
-    });
-  });
-
   it('resolves true when the user confirms', async () => {
     const { service } = createService(true);
 

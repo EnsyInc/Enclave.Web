@@ -31,3 +31,27 @@ To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use th
 ```bash
 ng test
 ```
+
+## Running end-to-end tests
+
+To execute end-to-end tests with [Playwright](https://playwright.dev/), use the following command:
+
+```bash
+npm run e2e
+```
+
+## Linting
+
+To lint the project, use the following command:
+
+```bash
+ng lint
+```
+
+## Formatting
+
+To format the codebase with [Prettier](https://prettier.io/), use the following command:
+
+```bash
+npx prettier --write .
+```

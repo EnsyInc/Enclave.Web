@@ -23,7 +23,7 @@ test('renders the Info tab fields for the selected product', async ({ page }) =>
   await page.goto('/admin/products/1');
 
   const row = (label: string) =>
-    page.locator('.product-info > div').filter({ hasText: label }).locator('.info-value');
+    page.locator('enclave-detail-row').filter({ hasText: label }).locator('.info-value');
 
   await expect(row('Name')).toHaveText('Enclave Core');
   await expect(row('Description')).toHaveText(

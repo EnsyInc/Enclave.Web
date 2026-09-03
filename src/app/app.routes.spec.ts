@@ -5,12 +5,12 @@ import { RouterTestingHarness } from '@angular/router/testing';
 
 import { routes } from './app.routes';
 import { EnclaveTitleStrategy } from './core/routing/enclave-title-strategy';
-import { Dashboard } from './features/admin/dashboard/dashboard';
-import { ProductList, ProductDetails } from './features/admin/products';
-import { OrganizationList } from './features/admin/organizations/organization-list/organization-list';
-import { LicenseList } from './features/admin/licenses/license-list/license-list';
-import { LicenseRequestList } from './features/admin/license-requests/license-request-list/license-request-list';
 import { NotFoundPage } from './features';
+import { Dashboard } from './features/admin/dashboard/dashboard';
+import { LicenseRequestList } from './features/admin/license-requests/license-request-list/license-request-list';
+import { LicenseList } from './features/admin/licenses/license-list/license-list';
+import { OrganizationList } from './features/admin/organizations/organization-list/organization-list';
+import { ProductList, ProductDetails } from './features/admin/products';
 
 describe('app routes', () => {
   beforeEach(() => {

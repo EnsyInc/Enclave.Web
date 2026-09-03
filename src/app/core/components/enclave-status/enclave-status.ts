@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+
 import { EnsyLabsIcon, IconName } from '@enclave/core/icons';
 
 @Component({
