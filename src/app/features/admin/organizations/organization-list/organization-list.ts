@@ -11,6 +11,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { RouterLink } from '@angular/router';
 
 import {
   EnclavePageHeader,
@@ -35,6 +36,7 @@ import { OrganizationService, UserService } from '@enclave/domain/services';
     MatButtonModule,
     MatSortModule,
     MatTableModule,
+    RouterLink,
   ],
   templateUrl: './organization-list.html',
   styleUrl: './organization-list.scss',

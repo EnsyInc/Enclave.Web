@@ -1,6 +1,10 @@
 import { Routes } from '@angular/router';
 
 import {
+  organizationDetailsBreadcrumbResolver,
+  organizationDetailsTitleResolver,
+} from '@enclave/features/admin/organizations';
+import {
   productDetailsBreadcrumbResolver,
   productDetailsTitleResolver,
 } from '@enclave/features/admin/products';
@@ -37,7 +41,6 @@ export const routes: Routes = [
           breadcrumb: 'Products',
         },
       },
-
       {
         path: 'products/:productId',
         loadComponent: () =>
@@ -58,6 +61,17 @@ export const routes: Routes = [
         title: 'Organizations',
         data: {
           breadcrumb: 'Organizations',
+        },
+      },
+      {
+        path: 'organizations/:organizationId',
+        loadComponent: () =>
+          import('@enclave/features/admin/organizations/organization-details/organization-details').then(
+            (m) => m.OrganizationDetails,
+          ),
+        title: organizationDetailsTitleResolver,
+        resolve: {
+          breadcrumb: organizationDetailsBreadcrumbResolver,
         },
       },
       {

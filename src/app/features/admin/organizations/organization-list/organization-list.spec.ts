@@ -1,7 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSortHeader } from '@angular/material/sort';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  convertToParamMap,
+  provideRouter,
+  Router,
+  RouterLink,
+} from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 
@@ -56,8 +62,12 @@ const unsortedOrgs: OrganizationModel[] = [
 ];
 
 function rowNames(fixture: ComponentFixture<OrganizationList>): (string | undefined)[] {
+  // enclave-avatar renders its own internal fallback <span> -- select the name span by its
+  // position right after the avatar, not by tag alone, or it'd pick up both.
   return Array.from(
-    fixture.debugElement.nativeElement.querySelectorAll('tr[mat-row] .org-name a span'),
+    fixture.debugElement.nativeElement.querySelectorAll(
+      'tr[mat-row] .org-name enclave-avatar + span',
+    ),
   ).map((el) => (el as HTMLElement).textContent?.trim());
 }
 
@@ -125,6 +135,23 @@ describe('OrganizationList', () => {
     const rows: NodeListOf<HTMLElement> =
       fixture.debugElement.nativeElement.querySelectorAll('tr[mat-row]');
     expect(rows).toHaveLength(3);
+  });
+
+  it("wires each row to navigate to that organization's details page", async () => {
+    const fixture = createFixture();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const rowLinks = fixture.debugElement
+      .queryAll(By.directive(RouterLink))
+      .map((debugEl) => debugEl.injector.get(RouterLink).urlTree?.toString());
+
+    expect(rowLinks).toEqual([
+      '/admin/organizations/1',
+      '/admin/organizations/2',
+      '/admin/organizations/3',
+    ]);
   });
 
   it("resolves and displays each organization's primary contact email", async () => {

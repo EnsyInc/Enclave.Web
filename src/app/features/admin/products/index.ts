@@ -5,4 +5,4 @@ export { ProductFormService } from './product-form/product-form.service';
 export {
   productDetailsBreadcrumbResolver,
   productDetailsTitleResolver,
-} from './product-details/product-breadcrumb.resolver';
+} from './product-details/product.resolver';
