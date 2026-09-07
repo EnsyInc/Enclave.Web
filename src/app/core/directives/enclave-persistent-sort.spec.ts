@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSort, MatSortHeader, MatSortModule } from '@angular/material/sort';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, ParamMap, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { vi } from 'vitest';
 
 import { EnclavePersistentSort } from './enclave-persistent-sort';
@@ -38,8 +39,10 @@ function createFixture(options: FixtureOptions = {}): {
   fixture: ComponentFixture<HostComponent>;
   navigate: ReturnType<typeof vi.fn>;
   sort: MatSort;
+  queryParamMap$: BehaviorSubject<ParamMap>;
 } {
   const navigate = vi.fn().mockResolvedValue(true);
+  const queryParamMap$ = new BehaviorSubject(convertToParamMap(options.queryParams ?? {}));
 
   TestBed.configureTestingModule({
     imports: [HostComponent],
@@ -47,7 +50,12 @@ function createFixture(options: FixtureOptions = {}): {
       { provide: Router, useValue: { navigate } },
       {
         provide: ActivatedRoute,
-        useValue: { snapshot: { queryParamMap: convertToParamMap(options.queryParams ?? {}) } },
+        useValue: {
+          get snapshot() {
+            return { queryParamMap: queryParamMap$.value };
+          },
+          queryParamMap: queryParamMap$,
+        },
       },
     ],
   });
@@ -62,14 +70,10 @@ function createFixture(options: FixtureOptions = {}): {
 
   const sort = fixture.debugElement.query(By.directive(MatSort)).injector.get(MatSort);
 
-  return { fixture, navigate, sort };
+  return { fixture, navigate, sort, queryParamMap$ };
 }
 
 describe('EnclavePersistentSort', () => {
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
   it('restores ascending sort from the query param on init', async () => {
     const { fixture, sort } = createFixture({ queryParams: { sort: 'name:asc' } });
     fixture.detectChanges();
@@ -101,40 +105,16 @@ describe('EnclavePersistentSort', () => {
     expect(sort.active).toBeFalsy();
   });
 
-  it('navigates with the sort query param set once the debounce elapses after a header click', () => {
-    vi.useFakeTimers();
+  it('navigates with the sort query param set when a header is clicked', () => {
     const { fixture, navigate } = createFixture();
     fixture.detectChanges();
 
     const nameSortHeader = fixture.debugElement.queryAll(By.directive(MatSortHeader))[0];
     nameSortHeader.triggerEventHandler('click', null);
-
-    vi.advanceTimersByTime(400);
 
     expect(navigate).toHaveBeenCalledWith([], {
       relativeTo: expect.anything(),
       queryParams: { sort: 'name:asc' },
-      queryParamsHandling: 'merge',
-    });
-  });
-
-  it('collapses rapid header clicks into a single navigation with the final sort state', () => {
-    vi.useFakeTimers();
-    const { fixture, navigate } = createFixture();
-    fixture.detectChanges();
-
-    const nameSortHeader = fixture.debugElement.queryAll(By.directive(MatSortHeader))[0];
-    // Cycles asc -> desc -> none (disableClear defaults to false), all within the debounce window.
-    nameSortHeader.triggerEventHandler('click', null);
-    nameSortHeader.triggerEventHandler('click', null);
-    nameSortHeader.triggerEventHandler('click', null);
-
-    vi.advanceTimersByTime(400);
-
-    expect(navigate).toHaveBeenCalledTimes(1);
-    expect(navigate).toHaveBeenCalledWith([], {
-      relativeTo: expect.anything(),
-      queryParams: { sort: null },
       queryParamsHandling: 'merge',
     });
   });
@@ -163,19 +143,66 @@ describe('EnclavePersistentSort', () => {
   });
 
   it('writes to a custom query param name instead of "sort"', () => {
-    vi.useFakeTimers();
     const { fixture, navigate } = createFixture({ sortQueryParamName: 'productsSort' });
     fixture.detectChanges();
 
     const nameSortHeader = fixture.debugElement.queryAll(By.directive(MatSortHeader))[0];
     nameSortHeader.triggerEventHandler('click', null);
 
-    vi.advanceTimersByTime(400);
-
     expect(navigate).toHaveBeenCalledWith([], {
       relativeTo: expect.anything(),
       queryParams: { productsSort: 'name:asc' },
       queryParamsHandling: 'merge',
     });
+  });
+
+  // Regression test: MatSort.sort() cycles the direction whenever the given column is already
+  // active, instead of setting it to the requested direction -- calling it to restore an
+  // already-matching column used to spin the sort forward (asc -> desc -> none -> ...) every time
+  // the restore-triggered write echoed back through queryParamMap. The fix restores via direct
+  // `active`/`direction` assignment and relies on persistSortInUrl's dedup guard to break the loop.
+  it('does not keep rewriting the URL when restoring a sort that already matches it', async () => {
+    const { fixture, navigate, sort } = createFixture({ queryParams: { sort: 'name:asc' } });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(sort.active).toBe('name');
+    expect(sort.direction).toBe('asc');
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  // Angular Router's queryParamMap can emit more than once for what is logically a single
+  // navigation (e.g. an interim value alongside the final one) -- a duplicate emission of the
+  // same params must not produce a second, redundant navigation.
+  it('does not navigate again when queryParamMap re-emits the same value', async () => {
+    const { fixture, navigate, queryParamMap$ } = createFixture({
+      queryParams: { sort: 'name:asc' },
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    queryParamMap$.next(convertToParamMap({ sort: 'name:asc' }));
+    await fixture.whenStable();
+
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
+  // Restoring should react to the URL changing after mount too, not just on the initial read --
+  // this is what makes browser back/forward actually restore the previous sort.
+  it('restores a different sort when queryParamMap emits again after mount', async () => {
+    const { fixture, sort, queryParamMap$ } = createFixture({
+      queryParams: { sort: 'name:asc' },
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(sort.active).toBe('name');
+    expect(sort.direction).toBe('asc');
+
+    queryParamMap$.next(convertToParamMap({ sort: 'status:desc' }));
+    await fixture.whenStable();
+
+    expect(sort.active).toBe('status');
+    expect(sort.direction).toBe('desc');
   });
 });

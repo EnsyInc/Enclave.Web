@@ -9,7 +9,7 @@ test('navigating via the product name shows the product page and full breadcrumb
 }) => {
   await page.getByRole('link', { name: 'Enclave Core' }).click();
 
-  await expect(page).toHaveURL('/admin/products/1');
+  await expect(page).toHaveURL('/admin/products/1?tab=info');
   await expect(page.locator('.title')).toHaveText('Enclave Core');
 
   const breadcrumb = page.locator('.breadcrumb');

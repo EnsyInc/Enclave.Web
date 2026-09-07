@@ -6,6 +6,7 @@ import { EnclaveDetailsHeader, EnclaveStatus } from '@enclave/core/components';
 import { EnclaveDetailCard } from '@enclave/core/components/enclave-detail-card/enclave-detail-card';
 import { EnclaveDetailList } from '@enclave/core/components/enclave-detail-list/enclave-detail-list';
 import { EnclaveDetailRow } from '@enclave/core/components/enclave-detail-row/enclave-detail-row';
+import { EnclavePersistentTab } from '@enclave/core/directives';
 import { ProductService } from '@enclave/domain/services';
 import { ProductFormService } from '@enclave/features/admin/products/product-form/product-form.service';
 
@@ -16,6 +17,7 @@ import { ProductFormService } from '@enclave/features/admin/products/product-for
     EnclaveDetailList,
     EnclaveDetailRow,
     EnclaveDetailsHeader,
+    EnclavePersistentTab,
     EnclaveStatus,
     MatDividerModule,
     MatTabsModule,

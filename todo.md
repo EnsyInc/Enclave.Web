@@ -1,8 +1,8 @@
 # TODO
 
 1. Finish org details page
-2. Extract details-header component
-3. Create persistent tab directive (for mat tabs, they should also appear in the URL for better navigation)
+2. ~~Extract details-header component~~
+3. ~~Create persistent tab directive (for mat tabs, they should also appear in the URL for better navigation)~~
 4. Refactor enclave-status — it should only accept known statuses and provide consistent styling for each
 
 ## Extraction candidates (from codebase audit)
