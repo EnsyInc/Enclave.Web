@@ -2,7 +2,7 @@ import { Component, computed, inject, input } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 
-import { EnclaveAvatar, EnclaveStatus } from '@enclave/core/components';
+import { EnclaveDetailsHeader, EnclaveStatus } from '@enclave/core/components';
 import { EnclaveDetailCard } from '@enclave/core/components/enclave-detail-card/enclave-detail-card';
 import { EnclaveDetailList } from '@enclave/core/components/enclave-detail-list/enclave-detail-list';
 import { EnclaveDetailRow } from '@enclave/core/components/enclave-detail-row/enclave-detail-row';
@@ -12,10 +12,10 @@ import { ProductFormService } from '@enclave/features/admin/products/product-for
 @Component({
   selector: 'enclave-product-details',
   imports: [
-    EnclaveAvatar,
     EnclaveDetailCard,
     EnclaveDetailList,
     EnclaveDetailRow,
+    EnclaveDetailsHeader,
     EnclaveStatus,
     MatDividerModule,
     MatTabsModule,

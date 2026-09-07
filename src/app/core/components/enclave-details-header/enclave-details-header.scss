@@ -1,0 +1,41 @@
+.details-header-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  enclave-avatar {
+    --enclave-avatar-width: 2.5rem;
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+
+  .header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 400;
+    }
+
+    .subtitle {
+      display: flex;
+      justify-items: center;
+      align-items: center;
+      gap: 1rem;
+
+      span {
+        font-family: var(--font-mono);
+        font-weight: 400;
+
+        color: var(--color-text-muted);
+      }
+    }
+
+    enclave-status {
+      font-size: 0.75rem;
+      font-weight: 400;
+    }
+  }
+}

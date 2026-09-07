@@ -47,7 +47,7 @@ describe('ProductDetails', () => {
   it('renders the product name and status from the resolved product', () => {
     fixture.detectChanges();
 
-    const nameEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('.product-name');
+    const nameEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('.title');
     expect(nameEl.textContent?.trim()).toBe('Enclave Core');
   });
 

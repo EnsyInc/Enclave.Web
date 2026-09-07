@@ -56,14 +56,14 @@ describe('OrganizationDetails', () => {
   it('renders the organization name and status from the resolved organization', () => {
     fixture.detectChanges();
 
-    const nameEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('.org-name');
+    const nameEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('.title');
     expect(nameEl.textContent?.trim()).toBe('Northwind Systems');
   });
 
   it("renders the primary contact's email", () => {
     fixture.detectChanges();
 
-    const infoEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('.org-info');
+    const infoEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('.subtitle');
     expect(infoEl.textContent).toContain('ops@northwind.io');
   });
 });

@@ -1,13 +1,8 @@
 <div class="org-details-container">
-  <div class="org-header">
-    <enclave-avatar [name]="org().name" />
-
-    <div class="org-header-info">
-      <span class="org-name">{{ org().name }}</span>
-      <div class="org-info">
-        <enclave-status>{{ org().status }}</enclave-status>
-        <span>{{ primaryContact()?.email }}</span>
-      </div>
-    </div>
-  </div>
+  <enclave-details-header
+    [title]="org().name"
+    [showTitleAvatar]="true"
+    [subTitle]="primaryContact()?.email"
+    [status]="org().status"
+  />
 </div>
