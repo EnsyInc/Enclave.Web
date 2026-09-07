@@ -205,4 +205,42 @@ describe('EnclavePersistentSort', () => {
     expect(sort.active).toBe('status');
     expect(sort.direction).toBe('desc');
   });
+
+  // The write path (sortChange -> persistSortInUrl -> navigate) and the read path
+  // (queryParamMap -> restore -> sortChange) form a cycle by construction. Without an
+  // idempotence guard on the read side, one header click cost two full table re-renders.
+  it('does not re-emit sortChange when the URL echoes back a sort the table already has', async () => {
+    const { fixture, sort, queryParamMap$ } = createFixture();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const sortChange = vi.fn();
+    sort.sortChange.subscribe(sortChange);
+
+    const nameSortHeader = fixture.debugElement.queryAll(By.directive(MatSortHeader))[0];
+    nameSortHeader.triggerEventHandler('click', null);
+    expect(sortChange).toHaveBeenCalledTimes(1);
+
+    // Stand in for the Router actually applying persistSortInUrl's navigation.
+    queryParamMap$.next(convertToParamMap({ sort: 'name:asc' }));
+    await fixture.whenStable();
+
+    expect(sortChange).toHaveBeenCalledTimes(1);
+  });
+
+  // queryParamsHandling: 'merge' means this directive shares the URL with any other param a
+  // page adds (filters, paging). A change to one of those must not disturb the active sort.
+  it('does not re-emit sortChange when an unrelated query param changes', async () => {
+    const { fixture, sort, queryParamMap$ } = createFixture({ queryParams: { sort: 'name:asc' } });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const sortChange = vi.fn();
+    sort.sortChange.subscribe(sortChange);
+
+    queryParamMap$.next(convertToParamMap({ sort: 'name:asc', page: '2' }));
+    await fixture.whenStable();
+
+    expect(sortChange).not.toHaveBeenCalled();
+  });
 });

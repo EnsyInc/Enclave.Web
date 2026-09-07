@@ -5,6 +5,10 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 const SORT_DIRECTIONS = ['asc', 'desc'] as const;
 type SortDirection = (typeof SORT_DIRECTIONS)[number];
+interface PersistedSort {
+  column: string;
+  direction: SortDirection;
+}
 
 @Directive({
   selector: 'table[matSort][enclavePersistentSort]',
@@ -21,21 +25,32 @@ export class EnclavePersistentSort implements AfterViewInit {
   ngAfterViewInit(): void {
     this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       const restoredSort = this.parseSortQueryParam();
-      if (restoredSort) {
-        queueMicrotask(() => {
-          this.sort.active = restoredSort.column;
-          this.sort.direction = restoredSort.direction;
-          this.sort.sortChange.emit({
-            active: restoredSort.column,
-            direction: restoredSort.direction,
-          });
-        });
+      if (!restoredSort || this.isSortAlreadyApplied(restoredSort)) {
+        return;
       }
+
+      queueMicrotask(() => {
+        this.sort.active = restoredSort.column;
+        this.sort.direction = restoredSort.direction;
+        this.sort.sortChange.emit({
+          active: restoredSort.column,
+          direction: restoredSort.direction,
+        });
+      });
     });
 
     this.sort.sortChange.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((sort) => {
       this.persistSortInUrl(this.buildSortQueryParam(sort));
     });
+  }
+
+  // Breaks the echo loop: our own persistSortInUrl navigation makes queryParamMap
+  // re-emit, which would otherwise re-apply and re-emit a sort MatSort already holds,
+  // costing a second full table re-render on every header click.
+  private isSortAlreadyApplied(restoredSort: PersistedSort): boolean {
+    return (
+      this.sort.active === restoredSort.column && this.sort.direction === restoredSort.direction
+    );
   }
 
   private persistSortInUrl(param: string | null): void {
@@ -54,7 +69,7 @@ export class EnclavePersistentSort implements AfterViewInit {
   }
 
   // e.g. "?sort=name:asc" <-> { column: 'name', direction: 'asc' }
-  private parseSortQueryParam(): { column: string; direction: SortDirection } | undefined {
+  private parseSortQueryParam(): PersistedSort | undefined {
     const sortParam = this.route.snapshot.queryParamMap.get(this.sortQueryParamName());
     const [rawColumn, rawDirection, ...extra] = sortParam?.split(':') ?? [];
     if (!rawColumn || !rawDirection || extra.length > 0) {
