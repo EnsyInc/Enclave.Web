@@ -17,11 +17,11 @@ for (const theme of themes) {
     test(`${route.name} has no automatically detectable accessibility violations (${theme} theme)`, async ({
       page,
     }) => {
-      // Known color-contrast violation on the status pill text — enclave-status's
-      // --color-secondary token (used by Products' "Active" status, products.scss, and
-      // Organizations' "Active" status, organization-list.scss) fails WCAG AA against
-      // --color-bg in light theme — pending a color decision from UI/UX. Remove this once
-      // the colors are fixed.
+      // Known color-contrast violation on the status pill text. enclave-status.scss now owns
+      // the per-status colors on :host(...): "Active" uses --color-primary (~2.0:1) and
+      // "Upcoming" --color-secondary (~3.2:1), both under WCAG AA's 4.5:1 against --color-card
+      // in light theme. ("Retired"/"Deactivated" use --color-text-muted and pass.) Dark theme
+      // passes throughout. Pending a color decision from UI/UX — remove this once fixed.
       test.fixme(
         (route.name === 'Products' || route.name === 'Organizations') && theme === 'light',
         'Pending UI/UX color-contrast fix for status pill text (light theme only)',
@@ -65,7 +65,9 @@ for (const theme of themes) {
     page,
   }) => {
     // Same known status-pill color-contrast violation as the Products list issue above
-    // (enclave-status renders in both the page header and the Info tab here too).
+    // (enclave-status renders in both the page header and the Info tab here too). Note the
+    // header pill regressed from --color-secondary to --color-primary when the per-status
+    // colors moved into enclave-status.scss, so this is now the lower-contrast case.
     test.fixme(
       theme === 'light',
       'Pending UI/UX color-contrast fix for product status text (light theme only)',

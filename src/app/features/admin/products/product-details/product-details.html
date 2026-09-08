@@ -26,7 +26,7 @@
                 }
               </enclave-detail-row>
               <enclave-detail-row label="Status">
-                <enclave-status>{{ product().status }}</enclave-status>
+                <enclave-status [status]="product().status" />
               </enclave-detail-row>
               <enclave-detail-row label="Id">
                 {{ product().id }}

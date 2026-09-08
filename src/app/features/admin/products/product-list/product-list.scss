@@ -44,10 +44,6 @@
     color: var(--color-text-muted);
   }
 
-  .upcoming {
-    color: var(--color-primary);
-  }
-
   .product-name {
     display: flex;
     align-items: center;
@@ -59,22 +55,8 @@
     }
   }
 
-  enclave-status {
-    --enclave-status-background-color: var(--color-bg);
-  }
-
   td enclave-status {
-    --enclave-status-color: var(--color-secondary);
     --enclave-status-width: 100%;
-  }
-
-  tr.retired enclave-status {
-    --enclave-status-color: var(--color-text-muted);
-    --enclave-status-border-color: var(--color-border);
-  }
-
-  tr.upcoming enclave-status {
-    --enclave-status-color: var(--color-primary);
   }
 
   .product-actions {

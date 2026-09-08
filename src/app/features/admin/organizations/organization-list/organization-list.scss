@@ -52,12 +52,7 @@
     }
   }
 
-  enclave-status {
-    --enclave-status-background-color: var(--color-bg);
-  }
-
   td enclave-status {
-    --enclave-status-color: var(--color-secondary);
     --enclave-status-width: 100%;
   }
 
@@ -67,12 +62,6 @@
 
   td.mat-column-name {
     font-weight: 300;
-  }
-
-  tr.deactivated enclave-status {
-    --enclave-status-color: var(--color-text-muted);
-    --enclave-status-border-color: var(--color-border);
-    --enclave-status-border-style: dashed;
   }
 
   .org-actions {

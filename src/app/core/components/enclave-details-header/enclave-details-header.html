@@ -6,8 +6,8 @@
   <div class="header-info">
     <span class="title">{{ title() }}</span>
     <div class="subtitle">
-      @if (status()) {
-        <enclave-status>{{ status() }}</enclave-status>
+      @if (status(); as currentStatus) {
+        <enclave-status [status]="currentStatus" />
       }
       @if (subTitle()) {
         <span>{{ subTitle() }}</span>
