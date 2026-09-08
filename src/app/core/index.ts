@@ -3,4 +3,7 @@ export type { Theme } from './theme/theme.service';
 
 export { EnclaveTitleStrategy } from './routing/enclave-title-strategy';
 
+export { createDetailsResolvers } from './routing/details-resolvers';
+export type { DetailsEntity, DetailsResolversOptions } from './routing/details-resolvers';
+
 export { openEnclaveDialog } from './dialog/open-enclave-dialog';
