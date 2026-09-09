@@ -1,3 +1,5 @@
+@use 'mixins';
+
 :host {
   display: flex;
   flex-direction: column;
@@ -30,10 +32,7 @@
   }
 
   th {
-    font-family: var(--font-mono);
-    font-weight: 600;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
+    @include mixins.label-mono($weight: 600);
 
     &[mat-sort-header] {
       user-select: none;
