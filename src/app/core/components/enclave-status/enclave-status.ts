@@ -10,6 +10,10 @@ export const ENCLAVE_STATUSES = [
 ] as const;
 export type EnclaveStatusValues = ValuesOf<typeof ENCLAVE_STATUSES>;
 
+function assertUnhandledStatus(status: never): never {
+  throw new Error(`Unknown status value '${String(status)}'.`);
+}
+
 @Component({
   host: { '[class]': 'getStatusCssClass()' },
   selector: 'enclave-status',
@@ -22,7 +26,8 @@ export class EnclaveStatus {
   public readonly status = input.required<EnclaveStatusValues>();
 
   protected getStatusCssClass(): string {
-    switch (this.status()) {
+    const status = this.status();
+    switch (status) {
       case 'Active':
         return 'active';
       case 'Deactivated':
@@ -34,12 +39,13 @@ export class EnclaveStatus {
       case 'Upcoming':
         return 'upcoming';
       default:
-        throw `Unknown status value '${this.status()}'.`;
+        return assertUnhandledStatus(status);
     }
   }
 
   protected getStatusDisplayName(): string {
-    switch (this.status()) {
+    const status = this.status();
+    switch (status) {
       case 'Active':
         return 'Active';
       case 'Deactivated':
@@ -51,7 +57,7 @@ export class EnclaveStatus {
       case 'Upcoming':
         return 'Upcoming';
       default:
-        throw `Unknown status value '${this.status()}'.`;
+        return assertUnhandledStatus(status);
     }
   }
 }

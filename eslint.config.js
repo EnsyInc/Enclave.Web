@@ -15,10 +15,19 @@ module.exports = defineConfig([
       angular.configs.tsRecommended,
     ],
     processor: angular.processInlineTemplates,
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: __dirname,
+      },
+    },
     plugins: {
       perfectionist,
     },
     rules: {
+      // Type-aware: catches `throw 'literal'` and also `throw someNonError`, which the plain
+      // `no-throw-literal` rule cannot see. Matches SonarCloud's typescript:S3696.
+      '@typescript-eslint/only-throw-error': 'error',
       'perfectionist/sort-imports': [
         'error',
         {
