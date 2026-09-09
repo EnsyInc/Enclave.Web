@@ -1,7 +1,16 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 
 import { App } from './app';
+
+/**
+ * Stands in for whatever the router activates. App renders nothing but an outlet now that the
+ * shell is scoped to the /admin subtree, so this asserts the outlet wiring without dragging
+ * AppShell (and its BreakpointObserver/localStorage setup) into App's own spec.
+ */
+@Component({ template: 'routed content' })
+class StubRoutedComponent {}
 
 function createStorageMock(): Storage {
   const store = new Map<string, string>();
@@ -33,7 +42,7 @@ describe('App', () => {
 
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter([])],
+      providers: [provideRouter([{ path: '', component: StubRoutedComponent }])],
     }).compileComponents();
   });
 
@@ -47,10 +56,11 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render the app shell', async () => {
+  it('should render the routed component into its outlet', async () => {
     const fixture = TestBed.createComponent(App);
+    await TestBed.inject(Router).navigate(['/']);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('enclave-shell')).toBeTruthy();
+    expect(compiled.textContent).toContain('routed content');
   });
 });

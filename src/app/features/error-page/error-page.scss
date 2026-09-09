@@ -1,0 +1,58 @@
+@use 'mixins';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.not-found-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 10rem;
+
+  .logo {
+    color: var(--color-primary);
+    --ensy-labs-icon-size: 10rem;
+  }
+
+  .status-code {
+    @include mixins.label-mono(1.5rem);
+  }
+
+  .text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    .title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .subtitle {
+      color: var(--color-text-muted);
+      max-width: 30rem;
+      text-align: center;
+    }
+  }
+
+  .primary-action-button {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    gap: 0.25rem;
+
+    span {
+      align-content: center;
+    }
+  }
+}

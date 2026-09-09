@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 import { ThemeService } from '@enclave/core';
 import { IconRegistryService } from '@enclave/core/icons';
-import { AppShell } from '@enclave/core/layout/app-shell/app-shell';
 
 @Component({
   selector: 'enclave-root',
-  imports: [AppShell],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

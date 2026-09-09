@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 
@@ -24,6 +24,7 @@ import { ProductFormService } from '@enclave/features/admin/products/product-for
   ],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetails {
   private readonly productService = inject(ProductService);

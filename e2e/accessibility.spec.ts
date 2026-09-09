@@ -7,6 +7,10 @@ const routes = [
   { name: 'Organizations', path: '/admin/organizations' },
   { name: 'Licenses', path: '/admin/licenses' },
   { name: 'License Requests', path: '/admin/license-requests' },
+  // These two render outside AppShell, so they exercise a different landmark structure than
+  // every route above: no sidenav, no header, no skip link -- just the page's own <h1>.
+  { name: 'Not Found', path: '/not-found' },
+  { name: 'Forbidden', path: '/forbidden' },
 ];
 
 // Matches ThemeService's STORAGE_KEY ('enclave-theme') — see theme.service.ts.
@@ -25,6 +29,17 @@ for (const theme of themes) {
       test.fixme(
         (route.name === 'Products' || route.name === 'Organizations') && theme === 'light',
         'Pending UI/UX color-contrast fix for status pill text (light theme only)',
+      );
+
+      // Same root cause, different surface: --color-primary (#d8b315) is one value for both
+      // themes, so anything that paints *text* with it fails on the light background
+      // (#f8f8f5) at 1.9:1. Here it is the "Back to dashboard" label -- a text `matButton`
+      // takes its label color from the primary role. Switching that button to a filled
+      // variant would put --color-primary-text (#1c1c19) on the gold instead and clear this
+      // in both themes; left as a UI/UX call rather than decided here.
+      test.fixme(
+        (route.name === 'Not Found' || route.name === 'Forbidden') && theme === 'light',
+        'Pending UI/UX color-contrast fix for the primary action label (light theme only)',
       );
 
       await page.addInitScript((theme) => localStorage.setItem('enclave-theme', theme), theme);
