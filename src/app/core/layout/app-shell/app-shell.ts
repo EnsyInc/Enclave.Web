@@ -17,6 +17,7 @@ import { map } from 'rxjs';
 
 import { EnsyLabsIcon } from '@enclave/core/icons';
 import { AppHeader } from '@enclave/core/layout/app-header/app-header';
+import { readLocalStorage, writeLocalStorage } from '@enclave/core/storage/local-storage';
 
 export const SIDENAV_STORAGE_KEY = 'enclave-sidenav-collapsed';
 
@@ -56,15 +57,12 @@ export class AppShell {
       this.drawer().toggle();
     } else {
       this.sidenavCollapsed.update((v) => !v);
-      localStorage.setItem(SIDENAV_STORAGE_KEY, this.sidenavCollapsed().toString());
+      writeLocalStorage(SIDENAV_STORAGE_KEY, this.sidenavCollapsed().toString());
     }
   }
 
   private getInitialSidenavCollapseState(): boolean {
-    if (typeof localStorage === 'undefined') {
-      return false;
-    }
-    return localStorage.getItem(SIDENAV_STORAGE_KEY) === 'true';
+    return readLocalStorage(SIDENAV_STORAGE_KEY) === 'true';
   }
 
   protected onSidenavTransitionStart(event: TransitionEvent): void {

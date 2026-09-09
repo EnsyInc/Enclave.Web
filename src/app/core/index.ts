@@ -7,3 +7,9 @@ export { createDetailsResolvers } from './routing/details-resolvers';
 export type { DetailsEntity, DetailsResolversOptions } from './routing/details-resolvers';
 
 export { openEnclaveDialog } from './dialog/open-enclave-dialog';
+
+export {
+  isLocalStorageAvailable,
+  readLocalStorage,
+  writeLocalStorage,
+} from './storage/local-storage';
