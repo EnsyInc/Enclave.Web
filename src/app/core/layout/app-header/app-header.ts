@@ -32,7 +32,7 @@ export class AppHeader {
     return routeChain(this.router.routerState.root)
       .slice(1)
       .flatMap((route) => {
-        const crumb: string | string[] | undefined = route.snapshot.data['breadcrumb'];
+        const crumb: string | string[] | undefined = route.snapshot?.data['breadcrumb'];
         if (!crumb) {
           return [];
         }
@@ -46,7 +46,7 @@ export class AppHeader {
    */
   private findSection(): string | undefined {
     return routeChain(this.router.routerState.root).reduce<string | undefined>(
-      (section, route) => route.snapshot.data['section'] ?? section,
+      (section, route) => route.snapshot?.data['section'] ?? section,
       undefined,
     );
   }

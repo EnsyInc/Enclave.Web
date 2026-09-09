@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 
 import { EnclaveDetailsHeader } from '@enclave/core/components';
 import { OrganizationService, UserService } from '@enclave/domain/services';
@@ -8,6 +8,7 @@ import { OrganizationService, UserService } from '@enclave/domain/services';
   imports: [EnclaveDetailsHeader],
   templateUrl: './organization-details.html',
   styleUrl: './organization-details.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrganizationDetails {
   private readonly orgService = inject(OrganizationService);

@@ -18,12 +18,42 @@ class HostComponent {
   toggleCount = 0;
 }
 
+function createStorageMock(): Storage {
+  const store = new Map<string, string>();
+  return {
+    getItem: (key) => store.get(key) ?? null,
+    setItem: (key, value) => void store.set(key, value),
+    removeItem: (key) => void store.delete(key),
+    clear: () => store.clear(),
+    key: (index) => Array.from(store.keys())[index] ?? null,
+    get length() {
+      return store.size;
+    },
+  };
+}
+
 describe('AppHeader', () => {
   let hostFixture: ComponentFixture<HostComponent>;
   let host: HostComponent;
   let component: AppHeader;
 
   beforeEach(async () => {
+    // The real /admin routes activate AppShell, so navigating below renders a *second*,
+    // nested AppHeader inside it. Harmless for these assertions -- every query resolves to
+    // the host's own header, which comes first in document order -- but the shell itself
+    // needs localStorage and a BreakpointObserver-grade matchMedia to construct at all.
+    vi.stubGlobal('localStorage', createStorageMock());
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn().mockReturnValue({
+        matches: false,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      }) as unknown as typeof window.matchMedia,
+    );
+
     await TestBed.configureTestingModule({
       imports: [HostComponent],
       // Real app routes (not an empty array) so the breadcrumb tests below can
@@ -36,6 +66,10 @@ describe('AppHeader', () => {
     host = hostFixture.componentInstance;
     component = hostFixture.debugElement.query(By.directive(AppHeader)).componentInstance;
     await hostFixture.whenStable();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   it('should create', () => {

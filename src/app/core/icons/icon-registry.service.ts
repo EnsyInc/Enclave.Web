@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 export const IconName = {
   Logo: 'logo',
+  LogoFull: 'logo-full',
   Dot: 'dot',
   MoreHorizontal: 'more-horizontal',
   Add: 'add',
@@ -22,6 +23,7 @@ export const IconName = {
   Delete: 'delete',
   Details: 'details',
   Close: 'close',
+  ArrowLeft: 'arrow-left',
 } as const;
 export type IconName = (typeof IconName)[keyof typeof IconName];
 

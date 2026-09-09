@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+import { AppShell } from '@enclave/core/layout/app-shell/app-shell';
 import {
   organizationDetailsBreadcrumbResolver,
   organizationDetailsTitleResolver,
@@ -17,6 +18,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
+    component: AppShell,
     data: {
       section: 'Admin',
     },
@@ -100,9 +102,19 @@ export const routes: Routes = [
   },
   {
     path: 'not-found',
-    loadComponent: () =>
-      import('@enclave/features/not-found-page/not-found-page').then((m) => m.NotFoundPage),
+    loadComponent: () => import('@enclave/features/error-page/error-page').then((m) => m.ErrorPage),
     title: 'Page not found',
+    data: {
+      reason: 'NotFound',
+    },
+  },
+  {
+    path: 'forbidden',
+    loadComponent: () => import('@enclave/features/error-page/error-page').then((m) => m.ErrorPage),
+    title: 'Forbidden',
+    data: {
+      reason: 'Forbidden',
+    },
   },
   {
     path: '**',
