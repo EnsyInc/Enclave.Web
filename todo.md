@@ -11,4 +11,4 @@
 2. ~~`localStorage` read/write guard — `theme.service.ts` and `app-shell.ts` (sidenav-collapse) both reimplement the same SSR/test-safe persistence guard~~
 3. ~~Status/role union boilerplate — `(typeof X_STATUSES)[number]` repeated 4x across models; extract a `ValuesOf<T>` type helper~~
 4. ~~Eyebrow label style — mono/uppercase/muted text style duplicated between `enclave-detail-row.scss` and `enclave-dialog-header.scss` (differs only in font-size)~~ — done as a `label-mono` mixin in `src/styles/_mixins.scss`, applied to 4 sites
-5. Route-tree walk helper — `app-header.ts`'s `getBreadcrumb()`/`findSection()` both walk the router tree with the same loop shape
+5. ~~Route-tree walk helper — `app-header.ts`'s `getBreadcrumb()`/`findSection()` both walk the router tree with the same loop shape~~
