@@ -25,8 +25,8 @@ export class AppHeader {
 
   private readonly router: Router = inject(Router);
 
-  /** 
-   * Every level contributes, deepest last. A resolver may supply several segments at once 
+  /**
+   * Every level contributes, deepest last. A resolver may supply several segments at once
    */
   private getBreadcrumb(): string[] {
     return routeChain(this.router.routerState.root)
