@@ -3,8 +3,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSort, Sort } from '@angular/material/sort';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
+import type { ValuesOf } from '@enclave/core/types/values-of';
+
 const SORT_DIRECTIONS = ['asc', 'desc'] as const;
-type SortDirection = (typeof SORT_DIRECTIONS)[number];
+type SortDirection = ValuesOf<typeof SORT_DIRECTIONS>;
 interface PersistedSort {
   column: string;
   direction: SortDirection;

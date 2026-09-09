@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
+import type { ValuesOf } from '@enclave/core/types/values-of';
+
 import { EnsyLabsIcon } from '@enclave/core/icons';
 import { ORGANIZATION_STATUSES, PRODUCT_STATUSES, USER_STATUSES } from '@enclave/domain/models';
 
 export const ENCLAVE_STATUSES = [
   ...new Set([...ORGANIZATION_STATUSES, ...PRODUCT_STATUSES, ...USER_STATUSES] as const),
 ] as const;
-export type EnclaveStatusValues = (typeof ENCLAVE_STATUSES)[number];
+export type EnclaveStatusValues = ValuesOf<typeof ENCLAVE_STATUSES>;
 
 @Component({
   host: { '[class]': 'getStatusCssClass()' },

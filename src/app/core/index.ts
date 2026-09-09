@@ -13,3 +13,5 @@ export {
   readLocalStorage,
   writeLocalStorage,
 } from './storage/local-storage';
+
+export type { ValuesOf } from './types/values-of';
