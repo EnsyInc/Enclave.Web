@@ -1,3 +1,5 @@
+import type { ValuesOf } from '@enclave/core';
+
 export interface ProductModel {
   id: string;
   name: string;
@@ -6,4 +8,4 @@ export interface ProductModel {
 }
 
 export const PRODUCT_STATUSES = ['Active', 'Retired', 'Upcoming'] as const;
-export type ProductStatus = (typeof PRODUCT_STATUSES)[number];
+export type ProductStatus = ValuesOf<typeof PRODUCT_STATUSES>;

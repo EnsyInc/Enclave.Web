@@ -1,3 +1,5 @@
+@use 'mixins';
+
 .enclave-detail-row {
   justify-content: center;
   align-items: center;
@@ -14,13 +16,7 @@
         max-width: 12rem;
         width: 100%;
 
-        font-family: var(--font-mono);
-        font-weight: 400;
-        font-style: normal;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-
-        color: var(--color-text-muted);
+        @include mixins.label-mono(0.75rem);
       }
 
       &.info-value {

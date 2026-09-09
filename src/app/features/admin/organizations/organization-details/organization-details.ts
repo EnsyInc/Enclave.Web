@@ -1,11 +1,11 @@
 import { Component, computed, inject, input } from '@angular/core';
 
-import { EnclaveAvatar, EnclaveStatus } from '@enclave/core/components';
+import { EnclaveDetailsHeader } from '@enclave/core/components';
 import { OrganizationService, UserService } from '@enclave/domain/services';
 
 @Component({
   selector: 'enclave-organization-details',
-  imports: [EnclaveAvatar, EnclaveStatus],
+  imports: [EnclaveDetailsHeader],
   templateUrl: './organization-details.html',
   styleUrl: './organization-details.scss',
 })

@@ -1,0 +1,17 @@
+<div class="details-header-container">
+  @if (showTitleAvatar()) {
+    <enclave-avatar [name]="title()" />
+  }
+
+  <div class="header-info">
+    <span class="title">{{ title() }}</span>
+    <div class="subtitle">
+      @if (status(); as currentStatus) {
+        <enclave-status [status]="currentStatus" />
+      }
+      @if (subTitle()) {
+        <span>{{ subTitle() }}</span>
+      }
+    </div>
+  </div>
+</div>

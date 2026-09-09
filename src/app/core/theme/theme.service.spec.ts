@@ -29,12 +29,35 @@ describe('ThemeService', () => {
     document.documentElement.removeAttribute('data-theme');
   });
 
-  it('defaults to dark when localStorage is unavailable', () => {
+  // Losing storage only means the choice can't be remembered -- it must not also cost the
+  // user their OS preference, which is what the old `return 'dark'` short-circuit did.
+  it('still honours OS preference when localStorage is unavailable', () => {
     vi.stubGlobal('localStorage', undefined);
+    stubMatchMedia(true); // OS prefers light
+
+    const service = TestBed.inject(ThemeService);
+
+    expect(service.theme()).toBe('light');
+  });
+
+  it('defaults to dark when neither localStorage nor matchMedia is available', () => {
+    vi.stubGlobal('localStorage', undefined);
+    vi.stubGlobal('matchMedia', undefined);
 
     const service = TestBed.inject(ThemeService);
 
     expect(service.theme()).toBe('dark');
+  });
+
+  // The read path was always guarded; the write path was not, so toggling with no storage
+  // used to throw straight out of setTheme.
+  it('still toggles when localStorage is unavailable rather than throwing', () => {
+    vi.stubGlobal('localStorage', undefined);
+    stubMatchMedia(false); // OS says dark, so the toggle should land on light
+    const service = TestBed.inject(ThemeService);
+
+    expect(() => service.toggle()).not.toThrow();
+    expect(service.theme()).toBe('light');
   });
 
   it('prefers a previously saved theme over OS preference', () => {

@@ -1,3 +1,5 @@
+@use 'mixins';
+
 :host {
   display: flex;
   flex-direction: column;
@@ -30,10 +32,7 @@
   }
 
   th {
-    font-family: var(--font-mono);
-    font-weight: 600;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
+    @include mixins.label-mono($weight: 600);
 
     &[mat-sort-header] {
       user-select: none;
@@ -42,10 +41,6 @@
 
   .retired {
     color: var(--color-text-muted);
-  }
-
-  .upcoming {
-    color: var(--color-primary);
   }
 
   .product-name {
@@ -59,22 +54,8 @@
     }
   }
 
-  enclave-status {
-    --enclave-status-background-color: var(--color-bg);
-  }
-
   td enclave-status {
-    --enclave-status-color: var(--color-secondary);
     --enclave-status-width: 100%;
-  }
-
-  tr.retired enclave-status {
-    --enclave-status-color: var(--color-text-muted);
-    --enclave-status-border-color: var(--color-border);
-  }
-
-  tr.upcoming enclave-status {
-    --enclave-status-color: var(--color-primary);
   }
 
   .product-actions {

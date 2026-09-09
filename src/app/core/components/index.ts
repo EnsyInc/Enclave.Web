@@ -8,8 +8,10 @@ export { EnclaveDialogHeader } from './enclave-dialog-header/enclave-dialog-head
 export { EnclaveDetailCard } from './enclave-detail-card/enclave-detail-card';
 export { EnclaveDetailList } from './enclave-detail-list/enclave-detail-list';
 export { EnclaveDetailRow } from './enclave-detail-row/enclave-detail-row';
+export { EnclaveDetailsHeader } from './enclave-details-header/enclave-details-header';
 
 export { EnclaveMoreActionsMenu } from './enclave-more-actions-menu/enclave-more-actions-menu';
 export { EnclavePageHeader } from './enclave-page-header/enclave-page-header';
 export { EnclaveSearchBarFilter } from './enclave-search-bar-filter/enclave-search-bar-filter';
-export { EnclaveStatus } from './enclave-status/enclave-status';
+export { ENCLAVE_STATUSES, EnclaveStatus } from './enclave-status/enclave-status';
+export type { EnclaveStatusValues } from './enclave-status/enclave-status';

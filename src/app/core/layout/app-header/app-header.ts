@@ -8,6 +8,7 @@ import { filter, map } from 'rxjs';
 import { ThemeService } from '@enclave/core';
 import { EnclaveAvatar } from '@enclave/core/components';
 import { EnsyLabsIcon } from '@enclave/core/icons';
+import { routeChain } from '@enclave/core/routing/route-chain';
 
 @Component({
   selector: 'enclave-header',
@@ -24,31 +25,30 @@ export class AppHeader {
 
   private readonly router: Router = inject(Router);
 
+  /**
+   * Every level contributes, deepest last. A resolver may supply several segments at once
+   */
   private getBreadcrumb(): string[] {
-    let route = this.router.routerState.root;
-    let breadcrumb: string[] = [];
-    while (route.firstChild) {
-      route = route.firstChild;
-      if (route.snapshot.data['breadcrumb']) {
-        breadcrumb = [
-          ...breadcrumb,
-          ...(Array.isArray(route.snapshot.data['breadcrumb'])
-            ? route.snapshot.data['breadcrumb']
-            : [route.snapshot.data['breadcrumb']]),
-        ];
-      }
-    }
-    return breadcrumb;
+    return routeChain(this.router.routerState.root)
+      .slice(1)
+      .flatMap((route) => {
+        const crumb: string | string[] | undefined = route.snapshot.data['breadcrumb'];
+        if (!crumb) {
+          return [];
+        }
+        return Array.isArray(crumb) ? crumb : [crumb];
+      });
   }
 
+  /**
+   * Last level to declare a section wins, so a child can override its parent while a child
+   * without one keeps inheriting (which is how /admin/* all report 'Admin').
+   */
   private findSection(): string | undefined {
-    let route = this.router.routerState.root;
-    let section: string | undefined = route.snapshot.data['section'];
-    while (route.firstChild) {
-      route = route.firstChild;
-      section = route.snapshot.data['section'] ?? section;
-    }
-    return section;
+    return routeChain(this.router.routerState.root).reduce<string | undefined>(
+      (section, route) => route.snapshot.data['section'] ?? section,
+      undefined,
+    );
   }
 
   protected readonly breadcrumb = toSignal(

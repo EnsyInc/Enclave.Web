@@ -1,3 +1,5 @@
+import type { ValuesOf } from '@enclave/core';
+
 export interface OrganizationModel {
   id: string;
   name: string;
@@ -6,4 +8,4 @@ export interface OrganizationModel {
 }
 
 export const ORGANIZATION_STATUSES = ['Active', 'Deactivated'] as const;
-export type OrganizationStatus = (typeof ORGANIZATION_STATUSES)[number];
+export type OrganizationStatus = ValuesOf<typeof ORGANIZATION_STATUSES>;

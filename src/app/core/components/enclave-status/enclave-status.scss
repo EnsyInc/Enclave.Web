@@ -7,6 +7,25 @@
   display: block;
 }
 
+:host(.active) {
+  --enclave-status-color: var(--color-primary);
+}
+:host(.deactivated) {
+  --enclave-status-color: var(--color-text-muted);
+  --enclave-status-border-color: var(--color-border);
+  --enclave-status-border-style: dashed;
+}
+:host(.invite-sent) {
+  --enclave-status-color: red;
+}
+:host(.retired) {
+  --enclave-status-color: var(--color-text-muted);
+  --enclave-status-border-color: var(--color-border);
+}
+:host(.upcoming) {
+  --enclave-status-color: var(--color-secondary);
+}
+
 .status-container {
   display: flex;
   align-items: center;

@@ -39,3 +39,12 @@ test('sorts rows by name when the Name column header is clicked', async ({ page 
 
   await expect(page.locator('tr[mat-row]').first()).toContainText('Beacon Alerts');
 });
+
+test('persists the sort across a reload via the URL', async ({ page }) => {
+  await page.getByRole('columnheader', { name: 'Name' }).click();
+  await expect(page).toHaveURL(/sort=name:asc/);
+
+  await page.reload();
+
+  await expect(page.locator('tr[mat-row]').first()).toContainText('Beacon Alerts');
+});

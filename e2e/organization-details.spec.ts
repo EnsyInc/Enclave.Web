@@ -10,7 +10,7 @@ test('clicking an organization row shows the organization page and full breadcru
   await page.locator('tr[mat-row]', { hasText: 'Northwind Systems' }).click();
 
   await expect(page).toHaveURL('/admin/organizations/1');
-  await expect(page.locator('.org-name')).toHaveText('Northwind Systems');
+  await expect(page.locator('.title')).toHaveText('Northwind Systems');
 
   const breadcrumb = page.locator('.breadcrumb');
   await expect(breadcrumb).toContainText('Enclave');
@@ -23,5 +23,5 @@ test('renders the resolved status and primary contact email in the header', asyn
   await page.goto('/admin/organizations/1');
 
   await expect(page.locator('enclave-status')).toContainText('Active');
-  await expect(page.locator('.org-info')).toContainText('ops@northwind.io');
+  await expect(page.locator('.subtitle')).toContainText('ops@northwind.io');
 });

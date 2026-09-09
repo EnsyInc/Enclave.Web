@@ -251,6 +251,15 @@ describe('AppShell', () => {
 
       expect(freshFixture.componentInstance['sidenavCollapsed']()).toBe(false);
     });
+
+    // The read path was always guarded; the write path was not, so toggling with no storage
+    // used to throw straight out of onToggleSidenav.
+    it('still toggles when localStorage is unavailable rather than throwing', () => {
+      vi.stubGlobal('localStorage', undefined);
+
+      expect(() => component['onToggleSidenav']()).not.toThrow();
+      expect(component['sidenavCollapsed']()).toBe(true);
+    });
   });
 
   describe('sidenav width-transition handling', () => {

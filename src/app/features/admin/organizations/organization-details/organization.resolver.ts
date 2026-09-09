@@ -1,23 +1,14 @@
 import { inject } from '@angular/core';
-import { RedirectCommand, ResolveFn, Router } from '@angular/router';
 
+import { createDetailsResolvers } from '@enclave/core';
 import { OrganizationService } from '@enclave/domain/services';
 
-export const organizationDetailsBreadcrumbResolver: ResolveFn<string[]> = (route) => {
-  const orgService = inject(OrganizationService);
-  const org = orgService.getOrganizationById(route.paramMap.get('organizationId')!);
-
-  if (!org) {
-    const router = inject(Router);
-    const urlTree = router.parseUrl('/not-found');
-    return new RedirectCommand(urlTree);
-  }
-
-  return ['Organizations', org.name];
-};
-
-export const organizationDetailsTitleResolver: ResolveFn<string> = (route) => {
-  const orgService = inject(OrganizationService);
-  const org = orgService.getOrganizationById(route.paramMap.get('organizationId')!);
-  return `${org?.name ?? 'Organization Details'}`;
-};
+export const {
+  breadcrumb: organizationDetailsBreadcrumbResolver,
+  title: organizationDetailsTitleResolver,
+} = createDetailsResolvers({
+  paramName: 'organizationId',
+  collectionLabel: 'Organizations',
+  defaultTitle: 'Organization Details',
+  findById: (id) => inject(OrganizationService).getOrganizationById(id),
+});

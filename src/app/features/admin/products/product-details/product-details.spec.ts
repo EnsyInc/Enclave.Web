@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
+import { of } from 'rxjs';
 import { vi } from 'vitest';
 
 import { ProductModel } from '@enclave/domain/models';
@@ -18,15 +20,26 @@ describe('ProductDetails', () => {
   let component: ProductDetails;
   let fixture: ComponentFixture<ProductDetails>;
   let openEdit: ReturnType<typeof vi.fn>;
+  let navigate: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     openEdit = vi.fn();
+    navigate = vi.fn().mockResolvedValue(true);
 
     await TestBed.configureTestingModule({
       imports: [ProductDetails],
       providers: [
         { provide: ProductService, useValue: { getProductById: () => product } },
         { provide: ProductFormService, useValue: { openCreate: vi.fn(), openEdit } },
+        { provide: Router, useValue: { navigate } },
+        {
+          // enclavePersistentTab, wired to the Info tab in the template, injects this itself.
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: { queryParamMap: convertToParamMap({}) },
+            queryParamMap: of(convertToParamMap({})),
+          },
+        },
       ],
     }).compileComponents();
 
@@ -47,7 +60,7 @@ describe('ProductDetails', () => {
   it('renders the product name and status from the resolved product', () => {
     fixture.detectChanges();
 
-    const nameEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('.product-name');
+    const nameEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('.title');
     expect(nameEl.textContent?.trim()).toBe('Enclave Core');
   });
 
@@ -59,5 +72,20 @@ describe('ProductDetails', () => {
     editButton.click();
 
     expect(openEdit).toHaveBeenCalledExactlyOnceWith(product);
+  });
+
+  // Full restore/self-heal/debounce coverage lives at the directive level
+  // (enclave-persistent-tab.spec.ts) -- this just proves the Info tab is actually wired up with
+  // enclavePersistentTab and a reachable Router.navigate.
+  it('populates the URL with the Info tab once mounted', async () => {
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(navigate).toHaveBeenCalledWith([], {
+      relativeTo: expect.anything(),
+      queryParams: { tab: 'info' },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
   });
 });

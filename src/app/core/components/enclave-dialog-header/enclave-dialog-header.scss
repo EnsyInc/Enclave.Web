@@ -1,3 +1,5 @@
+@use 'mixins';
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -10,12 +12,7 @@
     flex-direction: column;
 
     .action {
-      font-family: var(--font-mono);
-      font-weight: 400;
-      font-size: 0.875rem;
-      text-transform: uppercase;
-
-      color: var(--color-text-muted);
+      @include mixins.label-mono(0.875rem);
     }
 
     .title {

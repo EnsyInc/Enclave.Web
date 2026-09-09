@@ -4,34 +4,6 @@
   gap: 1rem;
 }
 
-.product-header {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-
-  enclave-avatar {
-    --enclave-avatar-width: 2.5rem;
-    font-size: 1.5rem;
-    font-weight: 400;
-  }
-
-  .product-header-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-
-    .product-name {
-      font-size: 1.5rem;
-      font-weight: 400;
-    }
-
-    enclave-status {
-      font-size: 0.75rem;
-      font-weight: 400;
-    }
-  }
-}
-
 mat-tab-group {
   --mat-tab-divider-color: var(--color-border);
 

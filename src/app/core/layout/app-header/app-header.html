@@ -10,11 +10,9 @@
         <span>/</span>
         <span>{{ section() }}</span>
       }
-      @if (breadcrumb()) {
-        @for (crumb of breadcrumb(); track crumb) {
-          <span>/</span>
-          <span>{{ crumb }}</span>
-        }
+      @for (crumb of breadcrumb(); track $index) {
+        <span>/</span>
+        <span>{{ crumb }}</span>
       }
     </div>
   </div>

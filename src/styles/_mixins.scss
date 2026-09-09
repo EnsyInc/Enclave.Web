@@ -1,0 +1,29 @@
+// Shared type styles, as mixins.
+//
+// Deliberately separate from _typography.scss: that file emits a `:root` block, and Sass runs
+// `@use` once per compilation unit -- every Angular component stylesheet being its own unit.
+// `@use`-ing it from a component would copy those custom properties into that component's
+// scoped CSS, where emulated encapsulation rewrites `:root` to `:root[_ngcontent-…]`, matching
+// nothing. This file emits no CSS of its own, so it's safe to `@use` from anywhere.
+
+/// Small mono / uppercase / muted label: table column headers, detail-row field labels, and
+/// the line above a dialog title.
+///
+/// Named for how it looks rather than where it sits. The print term for this treatment is an
+/// "eyebrow" (or "overline") -- a line set above a headline -- but only one of the four uses
+/// here is actually above a heading; the others are a field label and two column headers. A
+/// positional name would be wrong for three of them.
+///
+/// `$size` is optional: table headers inherit their size from the table, so passing nothing
+/// leaves `font-size` untouched.
+@mixin label-mono($size: null, $weight: 400) {
+  font-family: var(--font-mono);
+  font-weight: $weight;
+
+  @if $size {
+    font-size: $size;
+  }
+
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}

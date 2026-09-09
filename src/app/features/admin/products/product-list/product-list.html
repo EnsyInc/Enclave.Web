@@ -48,7 +48,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
       <td mat-cell *matCellDef="let element">
         <div class="product-status">
-          <enclave-status>{{ element.status }}</enclave-status>
+          <enclave-status [status]="element.status" />
         </div>
       </td>
     </ng-container>
