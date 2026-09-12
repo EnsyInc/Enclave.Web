@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import {
   EnclaveDetailsHeader,
@@ -9,7 +9,7 @@ import {
   EnclaveStatus,
 } from '@enclave/core/components';
 import { EnclavePersistentTab } from '@enclave/core/directives';
-import { OrganizationService, UserService } from '@enclave/domain/services';
+import { LicenseService, OrganizationService, UserService } from '@enclave/domain/services';
 
 @Component({
   selector: 'enclave-organization-details',
@@ -20,8 +20,7 @@ import { OrganizationService, UserService } from '@enclave/domain/services';
     EnclaveDetailsHeader,
     EnclavePersistentTab,
     EnclaveStatus,
-    MatTab,
-    MatTabGroup,
+    MatTabsModule,
   ],
   templateUrl: './organization-details.html',
   styleUrl: './organization-details.scss',
@@ -30,6 +29,7 @@ import { OrganizationService, UserService } from '@enclave/domain/services';
 export class OrganizationDetails {
   private readonly orgService = inject(OrganizationService);
   private readonly userService = inject(UserService);
+  private readonly licenseService = inject(LicenseService);
 
   protected readonly organizationId = input.required<string>();
   protected readonly org = computed(() => {
@@ -37,5 +37,11 @@ export class OrganizationDetails {
   });
   protected readonly primaryContact = computed(() => {
     return this.userService.getUserById(this.org().primaryUserId);
+  });
+  protected readonly licenses = computed(() => {
+    return this.licenseService.getLicensesForOrg(this.org().id);
+  });
+  protected readonly licenseCount = computed(() => {
+    return this.licenses().length;
   });
 }

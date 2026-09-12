@@ -134,4 +134,8 @@ export class LicenseService {
   public getLicenseById(id: string): LicenseModel | undefined {
     return this.LICENSE_SEEDS.find((license) => license.id === id);
   }
+
+  public getLicensesForOrg(orgId: string): LicenseModel[] {
+    return this.LICENSE_SEEDS.filter((license) => license.orgId === orgId);
+  }
 }
