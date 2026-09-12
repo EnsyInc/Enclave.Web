@@ -35,24 +35,11 @@
           <span class="license-count">{{ licenseCount() }}</span>
         </div>
       </ng-template>
-      
+
       <div class="tab-content">
-        <enclave-detail-card actionButtonIcon="edit" actionButtonText="Edit">
-          <div class="org-info">
-            <enclave-detail-list>
-              <enclave-detail-row label="Name">{{ org().name }}</enclave-detail-row>
-              <enclave-detail-row label="Primary Contact Email">
-                {{ primaryContact()?.email }}
-              </enclave-detail-row>
-              <enclave-detail-row label="Status">
-                <enclave-status [status]="org().status" />
-              </enclave-detail-row>
-              <enclave-detail-row label="Id">
-                {{ org().id }}
-              </enclave-detail-row>
-            </enclave-detail-list>
-          </div>
-        </enclave-detail-card>
+        <table>
+          
+        </table>
       </div>
     </mat-tab>
   </mat-tab-group>

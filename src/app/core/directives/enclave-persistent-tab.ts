@@ -35,7 +35,12 @@ export class EnclavePersistentTab implements AfterViewInit {
           this.tabGroup.selectedIndex = restoredIndex;
           this.appRef.tick();
           this.tabGroup.animationDone.pipe(take(1)).subscribe(() => {
-            this.tabGroup.animationDuration = originalDuration;
+            // Header ink-bar has no completion event of its own; wait 2 painted frames.
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                this.tabGroup.animationDuration = originalDuration;
+              });
+            });
           });
         });
       } else {
