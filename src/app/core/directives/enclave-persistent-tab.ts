@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ApplicationRef,
   contentChildren,
   DestroyRef,
   Directive,
@@ -9,7 +10,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { debounceTime } from 'rxjs';
+import { debounceTime, take } from 'rxjs';
 
 @Directive({
   selector: 'mat-tab-group[enclavePersistentTab]',
@@ -19,6 +20,7 @@ export class EnclavePersistentTab implements AfterViewInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly appRef = inject(ApplicationRef);
   private readonly tabs = contentChildren(MatTab);
 
   public readonly tabQueryParamName = input<string>('tab');
@@ -27,8 +29,14 @@ export class EnclavePersistentTab implements AfterViewInit {
     this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       const restoredIndex = this.parseTabQueryParam();
       if (restoredIndex !== undefined && restoredIndex !== this.tabGroup.selectedIndex) {
+        const originalDuration = this.tabGroup.animationDuration;
+        this.tabGroup.animationDuration = '0ms';
         queueMicrotask(() => {
           this.tabGroup.selectedIndex = restoredIndex;
+          this.appRef.tick();
+          this.tabGroup.animationDone.pipe(take(1)).subscribe(() => {
+            this.tabGroup.animationDuration = originalDuration;
+          });
         });
       } else {
         const currentIndex = this.tabGroup.selectedIndex ?? 0;
