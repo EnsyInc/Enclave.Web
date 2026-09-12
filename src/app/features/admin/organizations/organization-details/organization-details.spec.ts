@@ -90,7 +90,8 @@ describe('OrganizationDetails', () => {
     const rowText = (label: string) =>
       Array.from(rows)
         .find((row) => row.textContent?.includes(label))
-        ?.querySelector('.info-value')?.textContent?.trim();
+        ?.querySelector('.info-value')
+        ?.textContent?.trim();
 
     expect(rowText('Name')).toBe('Northwind Systems');
     expect(rowText('Primary Contact Email')).toBe('ops@northwind.io');
