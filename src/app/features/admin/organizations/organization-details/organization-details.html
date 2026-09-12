@@ -5,4 +5,27 @@
     [subTitle]="primaryContact()?.email"
     [status]="org().status"
   />
+
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" enclavePersistentTab>
+    <mat-tab label="Info">
+      <div class="tab-content">
+        <enclave-detail-card actionButtonIcon="edit" actionButtonText="Edit">
+          <div class="org-info">
+            <enclave-detail-list>
+              <enclave-detail-row label="Name">{{ org().name }}</enclave-detail-row>
+              <enclave-detail-row label="Primary Contact Email">
+                {{ primaryContact()?.email }}
+              </enclave-detail-row>
+              <enclave-detail-row label="Status">
+                <enclave-status [status]="org().status" />
+              </enclave-detail-row>
+              <enclave-detail-row label="Id">
+                {{ org().id }}
+              </enclave-detail-row>
+            </enclave-detail-list>
+          </div>
+        </enclave-detail-card>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>
