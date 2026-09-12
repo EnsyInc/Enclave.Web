@@ -23,7 +23,7 @@ export class ThemeService {
     root.classList.add('theme-transitioning');
 
     const onTransitionEnd = (event: TransitionEvent) => {
-      if (event.target === document.body && event.propertyName == 'background-color') {
+      if (event.target === document.body && event.propertyName == 'color') {
         root.classList.remove('theme-transitioning');
         document.body.removeEventListener('transitionend', onTransitionEnd);
       }

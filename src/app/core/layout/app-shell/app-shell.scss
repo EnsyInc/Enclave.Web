@@ -110,10 +110,6 @@ mat-sidenav-container {
       }
     }
 
-    // padding-left and .mdc-list-item__start's margin-inline below are solved
-    // together: they place the icon's center at the same x-position whether
-    // the sidenav is collapsed or expanded. Change one without the other and
-    // the icon will drift between the two states.
     &.mdc-list-item--with-leading-icon {
       padding-left: 0.75rem;
       padding-right: var(--content-padding);
@@ -157,7 +153,6 @@ mat-sidenav-content {
 }
 
 mat-sidenav {
-  transition: width var(--theme-transition-duration) ease !important;
   border-radius: 0;
   --mat-sidenav-container-width: 20rem;
   background-color: var(--color-card);
@@ -173,6 +168,10 @@ mat-sidenav {
       display: none;
     }
   }
+}
+
+.mat-drawer-transition mat-sidenav {
+  transition: width var(--theme-transition-duration) ease !important;
 }
 
 :host-context(.theme-transitioning) mat-sidenav {
