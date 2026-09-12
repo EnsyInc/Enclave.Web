@@ -67,7 +67,6 @@ export class OrganizationList implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // populate orgsList
     this.orgList.set(this.orgService.getOrganizations());
   }
 }

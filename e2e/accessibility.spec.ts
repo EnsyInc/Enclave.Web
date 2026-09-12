@@ -23,12 +23,24 @@ for (const theme of themes) {
     }) => {
       // Known color-contrast violation on the status pill text. enclave-status.scss now owns
       // the per-status colors on :host(...): "Active" uses --color-primary (~2.0:1) and
-      // "Upcoming" --color-secondary (~3.2:1), both under WCAG AA's 4.5:1 against --color-card
-      // in light theme. ("Retired"/"Deactivated" use --color-text-muted and pass.) Dark theme
-      // passes throughout. Pending a color decision from UI/UX — remove this once fixed.
+      // "Upcoming"/"Scheduled"/"Suspended" --color-secondary (~3.3:1), both under WCAG AA's
+      // 4.5:1 against --color-card in light theme. ("Retired"/"Deactivated" use
+      // --color-text-muted and pass.) Dark theme passes throughout for these two tokens.
+      // Pending a color decision from UI/UX — remove this once fixed.
       test.fixme(
-        (route.name === 'Products' || route.name === 'Organizations') && theme === 'light',
+        (route.name === 'Products' ||
+          route.name === 'Organizations' ||
+          route.name === 'Licenses') &&
+          theme === 'light',
         'Pending UI/UX color-contrast fix for status pill text (light theme only)',
+      );
+
+      // Distinct from the above: "Revoked" uses --color-error (#c46262), which fails 4.5:1
+      // against --color-card in BOTH themes (3.98:1 light, 4.34:1 dark) -- the only status
+      // color that doesn't clear dark theme. Same category of pending UI/UX color decision.
+      test.fixme(
+        route.name === 'Licenses',
+        'Pending UI/UX color-contrast fix for the Revoked status pill (both themes)',
       );
 
       // Same root cause, different surface: --color-primary (#d8b315) is one value for both

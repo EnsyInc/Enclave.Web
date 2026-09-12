@@ -13,8 +13,12 @@ import { ENCLAVE_STATUSES, EnclaveStatus, EnclaveStatusValues } from './enclave-
 const KNOWN_STATUSES = [
   { status: 'Active', label: 'Active', cssClass: 'active' },
   { status: 'Deactivated', label: 'Deactivated', cssClass: 'deactivated' },
+  { status: 'Expired', label: 'Expired', cssClass: 'expired' },
   { status: 'InviteSent', label: 'Invite Sent', cssClass: 'invite-sent' },
   { status: 'Retired', label: 'Retired', cssClass: 'retired' },
+  { status: 'Revoked', label: 'Revoked', cssClass: 'revoked' },
+  { status: 'Scheduled', label: 'Scheduled', cssClass: 'scheduled' },
+  { status: 'Suspended', label: 'Suspended', cssClass: 'suspended' },
   { status: 'Upcoming', label: 'Upcoming', cssClass: 'upcoming' },
 ] as const satisfies readonly { status: EnclaveStatusValues; label: string; cssClass: string }[];
 
@@ -46,6 +50,25 @@ describe('EnclaveStatus', () => {
       .componentInstance as EnsyLabsIcon;
     expect(icon.name()).toBe(IconName.Dot);
   });
+
+  it('enables ghost mode on the dot icon only for a Suspended status', () => {
+    renderWith('Suspended');
+
+    const icon = fixture.debugElement.query(By.directive(EnsyLabsIcon))
+      .componentInstance as EnsyLabsIcon;
+    expect(icon.ghostMode()).toBe(true);
+  });
+
+  it.each([...KNOWN_STATUSES].filter((s) => s.status !== 'Suspended'))(
+    'keeps the dot icon solid (ghost mode off) for a $status status',
+    ({ status }) => {
+      renderWith(status);
+
+      const icon = fixture.debugElement.query(By.directive(EnsyLabsIcon))
+        .componentInstance as EnsyLabsIcon;
+      expect(icon.ghostMode()).toBe(false);
+    },
+  );
 
   // Order in ENCLAVE_STATUSES is an artifact of the spread order in enclave-status.ts, not
   // something worth pinning -- compare as sets so only membership matters.

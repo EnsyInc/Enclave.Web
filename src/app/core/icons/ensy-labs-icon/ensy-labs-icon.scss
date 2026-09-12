@@ -11,3 +11,13 @@
 mat-icon.mat-icon-no-color {
   color: var(--ensy-labs-icon-color, currentColor);
 }
+
+mat-icon.ghost ::ng-deep svg * {
+  fill: none;
+
+  stroke: var(--ensy-labs-icon-color, currentColor);
+  stroke-width: var(--ensy-labs-icon-stroke-width, 1.5);
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: var(--ensy-labs-icon-stroke-dasharray, 2.5rem 1rem);
+}

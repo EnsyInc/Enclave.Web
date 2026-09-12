@@ -1,0 +1,76 @@
+@use 'mixins';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.licenses-table-container {
+  flex: 0 1 auto;
+  max-height: 100%;
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+}
+
+.licenses-table {
+  table-layout: fixed;
+
+  .mat-column-organization {
+    width: 25%;
+  }
+  .mat-column-product {
+    width: 25%;
+  }
+  .mat-column-status {
+    width: 20%;
+  }
+  .mat-column-end {
+    width: 15%;
+  }
+  .mat-column-timeLeft {
+    width: 14%;
+  }
+  .mat-column-action {
+    width: 1%;
+  }
+
+  th {
+    @include mixins.label-mono($weight: 600);
+
+    &[mat-sort-header] {
+      user-select: none;
+    }
+  }
+
+  .org-name,
+  .product-name {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 0.5rem;
+
+    enclave-avatar {
+      font-weight: 600;
+    }
+  }
+
+  td enclave-status {
+    --enclave-status-width: 100%;
+  }
+
+  td.mat-column-organization,
+  td.mat-column-product {
+    font-weight: 300;
+  }
+
+  .license-actions {
+    visibility: hidden;
+  }
+
+  tr:hover .license-actions {
+    visibility: visible;
+  }
+}

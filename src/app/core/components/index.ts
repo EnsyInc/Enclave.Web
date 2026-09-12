@@ -15,3 +15,4 @@ export { EnclavePageHeader } from './enclave-page-header/enclave-page-header';
 export { EnclaveSearchBarFilter } from './enclave-search-bar-filter/enclave-search-bar-filter';
 export { ENCLAVE_STATUSES, EnclaveStatus } from './enclave-status/enclave-status';
 export type { EnclaveStatusValues } from './enclave-status/enclave-status';
+export { EnclaveTimeLeft } from './enclave-time-left/enclave-time-left';
