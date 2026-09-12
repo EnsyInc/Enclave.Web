@@ -18,6 +18,23 @@
 :host(.invite-sent) {
   --enclave-status-color: red;
 }
+:host(.scheduled) {
+  --enclave-status-color: var(--color-secondary);
+}
+:host(.expired) {
+  --enclave-status-color: var(--color-text-muted);
+  --enclave-status-border-color: var(--color-border);
+  --enclave-status-border-style: dashed;
+}
+:host(.suspended) {
+  --enclave-status-color: var(--color-text-muted);
+  --enclave-status-border-color: var(--color-border);
+  --enclave-status-border-style: dashed;
+  --ensy-labs-icon-stroke-dasharray: 0.25rem 0.25rem;
+}
+:host(.revoked) {
+  --enclave-status-color: var(--color-error);
+}
 :host(.retired) {
   --enclave-status-color: var(--color-text-muted);
   --enclave-status-border-color: var(--color-border);

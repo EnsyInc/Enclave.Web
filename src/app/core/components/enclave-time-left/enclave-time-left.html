@@ -1,0 +1,6 @@
+<div class="time-left-container">
+  <span>{{ timeLeft() }}</span>
+  @if (timeLeftPercent() > 0) {
+    <mat-progress-bar mode="determinate" [value]="timeLeftPercent()" />
+  }
+</div>

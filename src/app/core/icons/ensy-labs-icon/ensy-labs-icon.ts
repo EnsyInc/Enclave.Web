@@ -11,5 +11,6 @@ import { IconName } from '@enclave/core/icons/icon-registry.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EnsyLabsIcon {
-  readonly name = input.required<IconName>();
+  public readonly name = input.required<IconName>();
+  public readonly ghostMode = input<boolean>(false);
 }

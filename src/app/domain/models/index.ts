@@ -6,3 +6,6 @@ export { ORGANIZATION_STATUSES } from './organization.model';
 
 export type { UserModel, UserRole, UserStatus } from './user.model';
 export { USER_ROLES, USER_STATUSES } from './user.model';
+
+export type { LicenseModel, LicenseStatus } from './license.model';
+export { LICENSE_STATUSES } from './license.model';

@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  --enclave-time-left-progress-bar-color: var(--color-primary);
+}
+
+.time-left-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+
+  mat-progress-bar {
+    @include mat.progress-bar-overrides(
+      (
+        active-indicator-color: var(--enclave-time-left-progress-bar-color),
+        track-color: var(--color-border),
+      )
+    );
+  }
+}

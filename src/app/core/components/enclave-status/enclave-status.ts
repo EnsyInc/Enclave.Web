@@ -3,10 +3,20 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import type { ValuesOf } from '@enclave/core/types/values-of';
 
 import { EnsyLabsIcon } from '@enclave/core/icons';
-import { ORGANIZATION_STATUSES, PRODUCT_STATUSES, USER_STATUSES } from '@enclave/domain/models';
+import {
+  LICENSE_STATUSES,
+  ORGANIZATION_STATUSES,
+  PRODUCT_STATUSES,
+  USER_STATUSES,
+} from '@enclave/domain/models';
 
 export const ENCLAVE_STATUSES = [
-  ...new Set([...ORGANIZATION_STATUSES, ...PRODUCT_STATUSES, ...USER_STATUSES] as const),
+  ...new Set([
+    ...ORGANIZATION_STATUSES,
+    ...PRODUCT_STATUSES,
+    ...USER_STATUSES,
+    ...LICENSE_STATUSES,
+  ] as const),
 ] as const;
 export type EnclaveStatusValues = ValuesOf<typeof ENCLAVE_STATUSES>;
 
@@ -38,6 +48,14 @@ export class EnclaveStatus {
         return 'retired';
       case 'Upcoming':
         return 'upcoming';
+      case 'Scheduled':
+        return 'scheduled';
+      case 'Expired':
+        return 'expired';
+      case 'Suspended':
+        return 'suspended';
+      case 'Revoked':
+        return 'revoked';
       default:
         return assertUnhandledStatus(status);
     }
@@ -56,8 +74,26 @@ export class EnclaveStatus {
         return 'Retired';
       case 'Upcoming':
         return 'Upcoming';
+      case 'Scheduled':
+        return 'Scheduled';
+      case 'Expired':
+        return 'Expired';
+      case 'Suspended':
+        return 'Suspended';
+      case 'Revoked':
+        return 'Revoked';
       default:
         return assertUnhandledStatus(status);
+    }
+  }
+
+  protected isGhostMode(): boolean {
+    const status = this.status();
+    switch (status) {
+      case 'Suspended':
+        return true;
+      default:
+        return false;
     }
   }
 }

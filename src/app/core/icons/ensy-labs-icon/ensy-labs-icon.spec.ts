@@ -32,4 +32,21 @@ describe('EnsyLabsIcon', () => {
     const matIcon = fixture.debugElement.query(By.directive(MatIcon)).componentInstance as MatIcon;
     expect(matIcon.svgIcon).toBe(IconName.Dashboard);
   });
+
+  it('does not add the ghost class by default', async () => {
+    fixture.componentRef.setInput('name', IconName.Dashboard);
+    await fixture.whenStable();
+
+    const matIcon: HTMLElement = fixture.debugElement.nativeElement.querySelector('mat-icon');
+    expect(matIcon.classList.contains('ghost')).toBe(false);
+  });
+
+  it('adds the ghost class when ghostMode is enabled', async () => {
+    fixture.componentRef.setInput('name', IconName.Dashboard);
+    fixture.componentRef.setInput('ghostMode', true);
+    await fixture.whenStable();
+
+    const matIcon: HTMLElement = fixture.debugElement.nativeElement.querySelector('mat-icon');
+    expect(matIcon.classList.contains('ghost')).toBe(true);
+  });
 });
