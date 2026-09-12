@@ -133,17 +133,15 @@ describe('ThemeService', () => {
       expect(document.documentElement.classList.contains('theme-transitioning')).toBe(true);
     });
 
-    it('removes theme-transitioning once the body background-color transition ends', () => {
+    it('removes theme-transitioning once the body color transition ends', () => {
       service.setTheme('light');
 
-      document.body.dispatchEvent(
-        new TransitionEvent('transitionend', { propertyName: 'background-color' }),
-      );
+      document.body.dispatchEvent(new TransitionEvent('transitionend', { propertyName: 'color' }));
 
       expect(document.documentElement.classList.contains('theme-transitioning')).toBe(false);
     });
 
-    it('ignores transitionend events for properties other than background-color', () => {
+    it('ignores transitionend events for properties other than color', () => {
       service.setTheme('light');
 
       document.body.dispatchEvent(
@@ -160,7 +158,7 @@ describe('ThemeService', () => {
 
       child.dispatchEvent(
         new TransitionEvent('transitionend', {
-          propertyName: 'background-color',
+          propertyName: 'color',
           bubbles: true,
         }),
       );
