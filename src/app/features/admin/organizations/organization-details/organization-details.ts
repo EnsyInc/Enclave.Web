@@ -1,5 +1,18 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  viewChild,
+} from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { RouterLink } from '@angular/router';
 
 import {
   EnclaveDetailsHeader,
@@ -7,20 +20,37 @@ import {
   EnclaveDetailList,
   EnclaveDetailRow,
   EnclaveStatus,
+  EnclaveAvatar,
+  EnclaveTimeLeft,
 } from '@enclave/core/components';
-import { EnclavePersistentTab } from '@enclave/core/directives';
-import { LicenseService, OrganizationService, UserService } from '@enclave/domain/services';
+import { EnclavePersistentSort, EnclavePersistentTab } from '@enclave/core/directives';
+import { EnsyLabsIcon } from '@enclave/core/icons';
+import {
+  LicenseService,
+  OrganizationService,
+  ProductService,
+  UserService,
+} from '@enclave/domain/services';
 
 @Component({
   selector: 'enclave-organization-details',
   imports: [
+    DatePipe,
+    EnclaveAvatar,
     EnclaveDetailCard,
     EnclaveDetailList,
     EnclaveDetailRow,
     EnclaveDetailsHeader,
+    EnclavePersistentSort,
     EnclavePersistentTab,
     EnclaveStatus,
+    EnclaveTimeLeft,
+    EnsyLabsIcon,
+    MatSortModule,
+    MatTableModule,
+    MatButtonModule,
     MatTabsModule,
+    RouterLink,
   ],
   templateUrl: './organization-details.html',
   styleUrl: './organization-details.scss',
@@ -30,6 +60,7 @@ export class OrganizationDetails {
   private readonly orgService = inject(OrganizationService);
   private readonly userService = inject(UserService);
   private readonly licenseService = inject(LicenseService);
+  private readonly productService = inject(ProductService);
 
   protected readonly organizationId = input.required<string>();
   protected readonly org = computed(() => {
@@ -41,7 +72,42 @@ export class OrganizationDetails {
   protected readonly licenses = computed(() => {
     return this.licenseService.getLicensesForOrg(this.org().id);
   });
+  protected readonly licenseRows = computed(() =>
+    this.licenses().map((license) => ({
+      ...license,
+      product: this.productService.getProductById(license.productId)?.name,
+    })),
+  );
   protected readonly licenseCount = computed(() => {
     return this.licenses().length;
   });
+  protected readonly licensesDataSource = computed(() => {
+    const ds = new MatTableDataSource(this.licenseRows());
+    ds.sortingDataAccessor = (row, columnId) => {
+      if (columnId === 'end' && row.status !== 'Active' && row.status !== 'Expired') {
+        return Number.POSITIVE_INFINITY;
+      }
+      if (columnId === 'timeLeft') {
+        if (row.status !== 'Active') {
+          return Number.POSITIVE_INFINITY;
+        }
+        const val = row['end'];
+        return val.getTime();
+      }
+      const val = row[columnId as keyof typeof row];
+      if (val instanceof Date) {
+        return val.getTime();
+      }
+      return val ?? '';
+    };
+    return ds;
+  });
+  protected readonly displayedColumns = ['product', 'status', 'end', 'timeLeft', 'action'];
+  protected readonly licenseSort = viewChild.required(MatSort);
+
+  constructor() {
+    effect(() => {
+      this.licensesDataSource().sort = this.licenseSort();
+    });
+  }
 }
