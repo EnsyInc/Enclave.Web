@@ -14,7 +14,7 @@
             <enclave-detail-list>
               <enclave-detail-row label="Name">{{ org().name }}</enclave-detail-row>
               <enclave-detail-row label="Primary Contact Email">
-                {{ primaryContact()!.email }}
+                {{ primaryContact()?.email }}
               </enclave-detail-row>
               <enclave-detail-row label="Status">
                 <enclave-status [status]="org().status" />
