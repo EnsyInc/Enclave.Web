@@ -12,9 +12,12 @@ import { ENCLAVE_STATUSES, EnclaveStatus, EnclaveStatusValues } from './enclave-
 // rule in enclave-status.scss. That failure is intended -- it's the reminder to style it.
 const KNOWN_STATUSES = [
   { status: 'Active', label: 'Active', cssClass: 'active' },
+  { status: 'Approved', label: 'Approved', cssClass: 'approved' },
   { status: 'Deactivated', label: 'Deactivated', cssClass: 'deactivated' },
   { status: 'Expired', label: 'Expired', cssClass: 'expired' },
   { status: 'InviteSent', label: 'Invite Sent', cssClass: 'invite-sent' },
+  { status: 'Pending', label: 'Pending', cssClass: 'pending' },
+  { status: 'Rejected', label: 'Rejected', cssClass: 'rejected' },
   { status: 'Retired', label: 'Retired', cssClass: 'retired' },
   { status: 'Revoked', label: 'Revoked', cssClass: 'revoked' },
   { status: 'Scheduled', label: 'Scheduled', cssClass: 'scheduled' },

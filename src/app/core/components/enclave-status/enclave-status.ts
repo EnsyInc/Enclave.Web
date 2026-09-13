@@ -4,6 +4,7 @@ import type { ValuesOf } from '@enclave/core/types/values-of';
 
 import { EnsyLabsIcon } from '@enclave/core/icons';
 import {
+  LICENSE_REQUEST_STATUSES,
   LICENSE_STATUSES,
   ORGANIZATION_STATUSES,
   PRODUCT_STATUSES,
@@ -16,6 +17,7 @@ export const ENCLAVE_STATUSES = [
     ...PRODUCT_STATUSES,
     ...USER_STATUSES,
     ...LICENSE_STATUSES,
+    ...LICENSE_REQUEST_STATUSES,
   ] as const),
 ] as const;
 export type EnclaveStatusValues = ValuesOf<typeof ENCLAVE_STATUSES>;
@@ -56,6 +58,12 @@ export class EnclaveStatus {
         return 'suspended';
       case 'Revoked':
         return 'revoked';
+      case 'Pending':
+        return 'pending';
+      case 'Approved':
+        return 'approved';
+      case 'Rejected':
+        return 'rejected';
       default:
         return assertUnhandledStatus(status);
     }
@@ -82,6 +90,12 @@ export class EnclaveStatus {
         return 'Suspended';
       case 'Revoked':
         return 'Revoked';
+      case 'Pending':
+        return 'Pending';
+      case 'Approved':
+        return 'Approved';
+      case 'Rejected':
+        return 'Rejected';
       default:
         return assertUnhandledStatus(status);
     }

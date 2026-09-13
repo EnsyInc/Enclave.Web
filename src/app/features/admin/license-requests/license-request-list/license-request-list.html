@@ -1,1 +1,103 @@
-<p>license-requests works!</p>
+<enclave-page-header
+  title="License Requests"
+  [subTitle]="`${pendingLicenseRequestCount()} awaiting action - ${licenseRequestCount()} total`"
+/>
+
+<enclave-search-bar-filter searchPlaceholder="Search License Requests" />
+
+<div class="license-requests-table-container">
+  <table
+    mat-table
+    [dataSource]="licenseRequestDataSource()"
+    class="license-requests-table"
+    matSort
+    enclavePersistentSort
+    [sortableColumns]="['organization', 'product', 'status']"
+  >
+    <ng-container matColumnDef="organization">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Organization</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="org-name">
+          <enclave-avatar [name]="element.organization" />
+          <a [routerLink]="['/admin/organizations', element.orgId]">
+            <span>{{ element.organization }}</span>
+          </a>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Product</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="product-name">
+          <enclave-avatar [name]="element.product" />
+          <a [routerLink]="['/admin/products', element.productId]">
+            <span>{{ element.product }}</span>
+          </a>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="renewal">
+      <th mat-header-cell *matHeaderCellDef>Renewal</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="license-request-renewal">
+          <span
+            [matTooltip]="
+              element.existingLicenseExpiry
+                ? `License expires on: ${(element.existingLicenseExpiry | date: 'd MMM y' : 'UTC')}`
+                : undefined
+            "
+            [class]="element.renewalLabelClass"
+            >{{ element.renewalLabel }}</span
+          >
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="license-request-status">
+          <enclave-status [status]="element.status" />
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <enclave-more-actions-menu
+          [elementName]="`${element.organization}_${element.product}`"
+          class="license-request-actions"
+        >
+          <button mat-menu-item [routerLink]="['/admin/license-requests', element.id]">
+            <div>
+              <ensy-labs-icon name="details" />
+              <span>Details</span>
+            </div>
+          </button>
+          <button mat-menu-item>
+            <div>
+              <ensy-labs-icon name="edit" />
+              <span>Edit</span>
+            </div>
+          </button>
+        </enclave-more-actions-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [colSpan]="displayedColumns.length">
+        @if (licenseRequestSearch().searchText()) {
+          No data matching the search term "{{ licenseRequestSearch().searchText() }}".
+        } @else {
+          No license requests yet.
+        }
+      </td>
+    </tr>
+  </table>
+</div>

@@ -6,6 +6,9 @@ import { provideRouter } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { vi } from 'vitest';
 
+import { LicenseRequestModel } from '@enclave/domain/models';
+import { LicenseRequestService } from '@enclave/domain/services';
+
 import { AppShell, SIDENAV_STORAGE_KEY } from './app-shell';
 
 function createStorageMock(initial: Record<string, string> = {}): Storage {
@@ -22,6 +25,27 @@ function createStorageMock(initial: Record<string, string> = {}): Storage {
   };
 }
 
+function createPendingLicenseRequests(count: number): LicenseRequestModel[] {
+  return Array.from({ length: count }, (_, index) => ({
+    id: `${index}`,
+    orgId: '1',
+    productId: '1',
+    userId: '1',
+    status: 'Pending',
+  }));
+}
+
+// .mat-badge-content also holds a nested .cdk-visually-hidden span carrying the
+// long-form matBadgeDescription, so a plain .textContent read on it concatenates
+// both — this pulls out only the visible badge number's own text node.
+function getVisibleBadgeText(badgeContent: Element | null): string | undefined {
+  return Array.from(badgeContent?.childNodes ?? [])
+    .filter((node) => node.nodeType === Node.TEXT_NODE)
+    .map((node) => node.textContent)
+    .join('')
+    .trim();
+}
+
 describe('AppShell', () => {
   let component: AppShell;
   let fixture: ComponentFixture<AppShell>;
@@ -31,13 +55,12 @@ describe('AppShell', () => {
   // to simulate the viewport resizing after the component is alive.
   let breakpointState$: BehaviorSubject<BreakpointState>;
 
-  beforeEach(async () => {
-    vi.stubGlobal('localStorage', createStorageMock());
-    vi.stubGlobal(
-      'matchMedia',
-      vi.fn().mockReturnValue({ matches: false }) as unknown as typeof window.matchMedia,
-    );
-    breakpointState$ = new BehaviorSubject<BreakpointState>({ matches: false, breakpoints: {} });
+  // Re-callable so tests can rebuild AppShell against a different pending-request
+  // count: the count is read once in ngAfterViewInit, so it can only be varied by
+  // reconfiguring the module before the component is created, not by poking the
+  // already-created instance.
+  async function configureAppShell(pendingLicenseRequestCount = 3): Promise<void> {
+    TestBed.resetTestingModule();
 
     await TestBed.configureTestingModule({
       imports: [AppShell],
@@ -47,12 +70,30 @@ describe('AppShell', () => {
           provide: BreakpointObserver,
           useValue: { observe: () => breakpointState$.asObservable() },
         },
+        {
+          provide: LicenseRequestService,
+          useValue: {
+            getPendingLicenseRequests: () =>
+              createPendingLicenseRequests(pendingLicenseRequestCount),
+          },
+        },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppShell);
     component = fixture.componentInstance;
     await fixture.whenStable();
+  }
+
+  beforeEach(async () => {
+    vi.stubGlobal('localStorage', createStorageMock());
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn().mockReturnValue({ matches: false }) as unknown as typeof window.matchMedia,
+    );
+    breakpointState$ = new BehaviorSubject<BreakpointState>({ matches: false, breakpoints: {} });
+
+    await configureAppShell();
   });
 
   afterEach(() => {
@@ -121,19 +162,19 @@ describe('AppShell', () => {
       expect(getLicenseRequestsChip()).toBeNull();
       const icon = getLicenseRequestsIcon();
       expect(icon.classList.contains('mat-badge-hidden')).toBe(false);
-      expect(icon.querySelector('.mat-badge-content')?.textContent?.trim()).toBe('3');
+      expect(getVisibleBadgeText(icon.querySelector('.mat-badge-content'))).toBe('3');
     });
 
-    it('hides both the chip and the icon badge when the count is zero', () => {
-      fixture.componentRef.setInput('licenseRequestsCount', 0);
+    it('hides both the chip and the icon badge when the count is zero', async () => {
+      await configureAppShell(0);
       fixture.detectChanges();
 
       expect(getLicenseRequestsChip()).toBeNull();
       expect(getLicenseRequestsIcon().classList.contains('mat-badge-hidden')).toBe(true);
     });
 
-    it('keeps the icon badge hidden when collapsed with a zero count', () => {
-      fixture.componentRef.setInput('licenseRequestsCount', 0);
+    it('keeps the icon badge hidden when collapsed with a zero count', async () => {
+      await configureAppShell(0);
       component['onToggleSidenav']();
       fixture.detectChanges();
 
@@ -147,8 +188,8 @@ describe('AppShell', () => {
       expect(link.getAttribute('aria-label')).toBe('License Requests, 3 pending');
     });
 
-    it('omits the count from the nav link aria-label when there are none', () => {
-      fixture.componentRef.setInput('licenseRequestsCount', 0);
+    it('omits the count from the nav link aria-label when there are none', async () => {
+      await configureAppShell(0);
       fixture.detectChanges();
 
       const link: HTMLElement = fixture.debugElement.nativeElement.querySelector(

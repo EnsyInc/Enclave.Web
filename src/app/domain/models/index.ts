@@ -9,3 +9,6 @@ export { USER_ROLES, USER_STATUSES } from './user.model';
 
 export type { LicenseModel, LicenseStatus } from './license.model';
 export { LICENSE_STATUSES } from './license.model';
+
+export type { LicenseRequestModel, LicenseRequestStatus } from './license-request.model';
+export { LICENSE_REQUEST_STATUSES } from './license-request.model';
