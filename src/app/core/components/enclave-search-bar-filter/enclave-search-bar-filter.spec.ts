@@ -11,17 +11,22 @@ describe('EnclaveSearchBarFilter', () => {
   let queryParamMap$: BehaviorSubject<ReturnType<typeof convertToParamMap>>;
   let routeStub: { queryParamMap: BehaviorSubject<ReturnType<typeof convertToParamMap>> };
   let navigateSpy: ReturnType<typeof vi.fn>;
+  let getCurrentNavigationSpy: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     queryParamMap$ = new BehaviorSubject(convertToParamMap({}));
     routeStub = { queryParamMap: queryParamMap$ };
     navigateSpy = vi.fn().mockResolvedValue(true);
+    getCurrentNavigationSpy = vi.fn().mockReturnValue(null);
 
     await TestBed.configureTestingModule({
       imports: [EnclaveSearchBarFilter],
       providers: [
         { provide: ActivatedRoute, useValue: routeStub },
-        { provide: Router, useValue: { navigate: navigateSpy } },
+        {
+          provide: Router,
+          useValue: { navigate: navigateSpy, getCurrentNavigation: getCurrentNavigationSpy },
+        },
       ],
     }).compileComponents();
 
@@ -108,6 +113,21 @@ describe('EnclaveSearchBarFilter', () => {
       queryParams: { search: null },
       queryParamsHandling: 'merge',
     });
+  });
+
+  // Regression: a navigation away from this route (e.g. clicking a row action) can still be
+  // resolving when the debounce elapses. router.navigate() cancels whatever navigation is
+  // currently in flight, so firing here would silently bounce the user back to this page.
+  it('does not navigate when another navigation is already in flight once the debounce elapses', () => {
+    getCurrentNavigationSpy.mockReturnValue({ id: 1 });
+    vi.useFakeTimers();
+    const input: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
+    input.value = 'widgets';
+    input.dispatchEvent(new Event('keyup'));
+
+    vi.advanceTimersByTime(400);
+
+    expect(navigateSpy).not.toHaveBeenCalled();
   });
 
   it('reads a custom query param name when configured', () => {

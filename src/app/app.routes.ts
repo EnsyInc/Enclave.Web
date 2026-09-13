@@ -2,6 +2,10 @@ import { Routes } from '@angular/router';
 
 import { AppShell } from '@enclave/core/layout/app-shell/app-shell';
 import {
+  licenseDetailsBreadcrumbResolver,
+  licenseDetailsTitleResolver,
+} from '@enclave/features/admin/licenses';
+import {
   organizationDetailsBreadcrumbResolver,
   organizationDetailsTitleResolver,
 } from '@enclave/features/admin/organizations';
@@ -85,6 +89,17 @@ export const routes: Routes = [
         title: 'Licenses',
         data: {
           breadcrumb: 'Licenses',
+        },
+      },
+      {
+        path: 'licenses/:licenseId',
+        loadComponent: () =>
+          import('@enclave/features/admin/licenses/license-details/license-details').then(
+            (m) => m.LicenseDetails,
+          ),
+        title: licenseDetailsTitleResolver,
+        resolve: {
+          breadcrumb: licenseDetailsBreadcrumbResolver,
         },
       },
       {

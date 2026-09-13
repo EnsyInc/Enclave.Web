@@ -84,3 +84,18 @@ test('clicking a product name navigates to its details page', async ({ page }) =
 
   await expect(page).toHaveURL('/admin/products/1?tab=info');
 });
+
+test('choosing Details from the row actions menu navigates to the license page', async ({
+  page,
+}) => {
+  await page.getByPlaceholder('Search Licenses').pressSequentially('Northwind Systems');
+  const scheduledRow = page.locator('tr[mat-row]', { hasText: 'Enclave Core' });
+  // The actions button is `visibility: hidden` until the row is hovered/focused (license-list.scss).
+  await scheduledRow.hover();
+  await scheduledRow
+    .getByRole('button', { name: 'Northwind Systems_Enclave Core actions' })
+    .click();
+  await page.getByRole('menuitem', { name: 'Details' }).click();
+
+  await expect(page).toHaveURL('/admin/licenses/1?tab=info');
+});

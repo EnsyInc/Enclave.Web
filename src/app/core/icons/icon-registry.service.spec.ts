@@ -50,6 +50,8 @@ describe('IconRegistryService', () => {
       ['close', 'icons/close.svg'],
       ['arrow-left', 'icons/arrow-left.svg'],
       ['invite-user', 'icons/invite-user.svg'],
+      ['suspend', 'icons/suspend.svg'],
+      ['revoke', 'icons/revoke.svg'],
     ];
 
     // Compare the name lists rather than just the call count: a bare count mismatch reports
