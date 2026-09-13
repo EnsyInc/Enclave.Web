@@ -16,7 +16,7 @@ export class UserService {
     },
     {
       id: '7',
-      firstName: 'jamie',
+      firstName: 'Jamie',
       lastName: 'Ellery',
       email: 'jamie.ellery@northwind.io',
       organizationId: '1',
@@ -25,7 +25,7 @@ export class UserService {
     },
     {
       id: '8',
-      firstName: 'morgan',
+      firstName: 'Morgan',
       lastName: 'Feld',
       email: 'morgan.feld@northwind.io',
       organizationId: '1',
@@ -34,7 +34,7 @@ export class UserService {
     },
     {
       id: '9',
-      firstName: 'priya',
+      firstName: 'Priya',
       lastName: 'Nandakumar',
       email: 'priya.nandakumar@northwind.io',
       organizationId: '1',
