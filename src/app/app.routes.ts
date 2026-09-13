@@ -2,6 +2,10 @@ import { Routes } from '@angular/router';
 
 import { AppShell } from '@enclave/core/layout/app-shell/app-shell';
 import {
+  licenseDetailsBreadcrumbResolver,
+  licenseDetailsTitleResolver,
+} from '@enclave/features/admin/licenses';
+import {
   organizationDetailsBreadcrumbResolver,
   organizationDetailsTitleResolver,
 } from '@enclave/features/admin/organizations';
@@ -9,10 +13,6 @@ import {
   productDetailsBreadcrumbResolver,
   productDetailsTitleResolver,
 } from '@enclave/features/admin/products';
-import {
-  licenseDetailsBreadcrumbResolver,
-  licenseDetailsTitleResolver,
-} from '@enclave/features/admin/licenses';
 
 export const routes: Routes = [
   {

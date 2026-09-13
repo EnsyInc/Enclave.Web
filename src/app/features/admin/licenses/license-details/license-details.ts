@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'license-details',
+  selector: 'enclave-license-details',
   imports: [],
   templateUrl: './license-details.html',
   styleUrl: './license-details.scss',
