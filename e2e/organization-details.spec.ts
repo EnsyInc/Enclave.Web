@@ -92,6 +92,25 @@ test.describe('Licenses tab', () => {
       page.getByText('No licenses yet. Press the "Issue license" button above to add one.'),
     ).toBeVisible();
   });
+
+  test('navigating via the Details menu item shows the license details page', async ({ page }) => {
+    await page.goto('/admin/organizations/1');
+    await page.getByRole('tab', { name: /Licenses/ }).click();
+
+    const row = page.locator('tr[mat-row]', { hasText: 'Vault Analytics' });
+    // The actions button is `visibility: hidden` until the row is hovered/focused
+    // (organization-details.scss).
+    await row.hover();
+    await row.getByRole('button', { name: 'Vault Analytics actions' }).click();
+    await page.getByRole('menuitem', { name: 'Details' }).click();
+
+    await expect(page).toHaveURL('/admin/licenses/2?tab=info');
+    // Scoped to the page header's own title -- license 2 also has a pending renewal request,
+    // whose banner (added alongside this test) renders its own unrelated `.title` element.
+    await expect(page.locator('enclave-details-header .title')).toHaveText(
+      'Vault Analytics - Northwind Systems',
+    );
+  });
 });
 
 test.describe('Users tab', () => {

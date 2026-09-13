@@ -21,6 +21,13 @@
     </div>
   </div>
 
+  @if (pendingLicenseRequest(); as pending) {
+    <enclave-license-renewal-banner
+      [licenseRequest]="pending.licenseRequest"
+      [user]="pending.user"
+    />
+  }
+
   <div class="license-details-content">
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" enclavePersistentTab>
       <mat-tab label="Info">
@@ -29,10 +36,14 @@
             <div class="license-info">
               <enclave-detail-list>
                 <enclave-detail-row label="Product">
-                  {{ product().name }}
+                  <a [routerLink]="['/admin/products', product().id]">
+                    {{ product().name }}
+                  </a>
                 </enclave-detail-row>
                 <enclave-detail-row label="Organization">
-                  {{ org().name }}
+                  <a [routerLink]="['/admin/organizations', org().id]">
+                    {{ org().name }}
+                  </a>
                 </enclave-detail-row>
                 <enclave-detail-row label="Start Date">
                   {{ license().start | date: 'd MMM y' : 'UTC' }}

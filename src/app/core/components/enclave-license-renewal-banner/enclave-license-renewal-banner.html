@@ -1,0 +1,29 @@
+<div class="license-request-container">
+  <div class="license-request-header">
+    <div class="title">
+      <div class="icon-box">
+        <ensy-labs-icon name="renew" />
+      </div>
+      <span>Renewal Requested</span>
+    </div>
+    <div class="action-button">
+      <button
+        class="card-action-button"
+        matButton
+        [routerLink]="['/admin/license-requests', licenseRequest().id]"
+      >
+        <div>
+          <span>Review Request</span>
+          <ensy-labs-icon name="ref-arrow" />
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <div class="license-request-content">
+    <span class="predefined-text"> {{ user().email }} asked to renew this license </span>
+    @if (licenseRequest().requestNotes) {
+      <span class="user-notes"> Notes: "{{ licenseRequest().requestNotes }}" </span>
+    }
+  </div>
+</div>

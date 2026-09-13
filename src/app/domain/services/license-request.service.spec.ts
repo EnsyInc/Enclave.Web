@@ -102,4 +102,43 @@ describe('LicenseRequestService', () => {
       expect(service.getLicenseRequestsForOrg('999')).toEqual([]);
     });
   });
+
+  describe('getPendingLicenseRequestForOrgProduct', () => {
+    it('returns the Pending license request matching both the org and the product', () => {
+      expect(service.getPendingLicenseRequestForOrgProduct('1', '2')).toEqual(
+        expect.objectContaining({ id: '1', orgId: '1', productId: '2', status: 'Pending' }),
+      );
+    });
+
+    it('returns undefined when the matching request for that org/product is not Pending', () => {
+      // Request '2' is org '1' + product '1', but its status is 'Approved'.
+      expect(service.getPendingLicenseRequestForOrgProduct('1', '1')).toBeUndefined();
+    });
+
+    it('returns undefined when the org has no request for that product', () => {
+      expect(service.getPendingLicenseRequestForOrgProduct('1', '3')).toBeUndefined();
+    });
+
+    it('returns undefined for an unknown org id', () => {
+      expect(service.getPendingLicenseRequestForOrgProduct('999', '2')).toBeUndefined();
+    });
+  });
+
+  describe('getLicenseRequestsForLicense', () => {
+    it('returns only the license requests renewing/upgrading the given license', () => {
+      const licenseRequests = service.getLicenseRequestsForLicense('2');
+
+      expect(licenseRequests).toEqual([
+        expect.objectContaining({ id: '1', existingLicenseId: '2' }),
+      ]);
+    });
+
+    it('returns an empty array for a license with no requests against it', () => {
+      expect(service.getLicenseRequestsForLicense('1')).toEqual([]);
+    });
+
+    it('returns an empty array for an unknown license id', () => {
+      expect(service.getLicenseRequestsForLicense('999')).toEqual([]);
+    });
+  });
 });

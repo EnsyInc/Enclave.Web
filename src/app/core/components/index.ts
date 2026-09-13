@@ -10,6 +10,7 @@ export { EnclaveDetailList } from './enclave-detail-list/enclave-detail-list';
 export { EnclaveDetailRow } from './enclave-detail-row/enclave-detail-row';
 export { EnclaveDetailsHeader } from './enclave-details-header/enclave-details-header';
 
+export { EnclaveLicenseRenewalBanner } from './enclave-license-renewal-banner/enclave-license-renewal-banner';
 export { EnclaveMoreActionsMenu } from './enclave-more-actions-menu/enclave-more-actions-menu';
 export { EnclavePageHeader } from './enclave-page-header/enclave-page-header';
 export { EnclaveSearchBarFilter } from './enclave-search-bar-filter/enclave-search-bar-filter';

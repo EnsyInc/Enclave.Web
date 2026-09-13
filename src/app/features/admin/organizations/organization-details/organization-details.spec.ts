@@ -1,11 +1,26 @@
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { ANIMATION_MODULE_TYPE } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import {
+  ActivatedRoute,
+  convertToParamMap,
+  provideRouter,
+  Router,
+  RouterLink,
+} from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 
-import { LicenseModel, OrganizationModel, ProductModel, UserModel } from '@enclave/domain/models';
 import {
+  LicenseModel,
+  LicenseRequestModel,
+  OrganizationModel,
+  ProductModel,
+  UserModel,
+} from '@enclave/domain/models';
+import {
+  LicenseRequestService,
   LicenseService,
   OrganizationService,
   ProductService,
@@ -40,16 +55,17 @@ const product: ProductModel = {
 interface FixtureOptions {
   licenses?: LicenseModel[];
   users?: UserModel[];
+  licenseRequests?: LicenseRequestModel[];
+  router?: { navigate: ReturnType<typeof vi.fn> };
 }
 
 function createFixture(options: FixtureOptions = {}): {
   fixture: ComponentFixture<OrganizationDetails>;
   component: OrganizationDetails;
-  navigate: ReturnType<typeof vi.fn>;
 } {
-  const navigate = vi.fn().mockResolvedValue(true);
   const licenses = options.licenses ?? [];
   const users = options.users ?? [];
+  const licenseRequests = options.licenseRequests ?? [];
 
   TestBed.configureTestingModule({
     imports: [OrganizationDetails],
@@ -71,8 +87,22 @@ function createFixture(options: FixtureOptions = {}): {
             licenses.filter((license) => license.orgId === orgId),
         },
       },
+      {
+        provide: LicenseRequestService,
+        useValue: {
+          getPendingLicenseRequestForOrgProduct: (orgId: string, productId: string) =>
+            licenseRequests.find(
+              (request) =>
+                request.orgId === orgId &&
+                request.productId === productId &&
+                request.status === 'Pending',
+            ),
+        },
+      },
       { provide: ProductService, useValue: { getProductById: () => product } },
-      { provide: Router, useValue: { navigate } },
+      // Only stubbed with a fake `navigate` when a test needs to assert on it (persistent-tab
+      // wiring below) -- otherwise a real router lets RouterLink resolve a genuine urlTree.
+      options.router ? { provide: Router, useValue: options.router } : provideRouter([]),
       {
         // enclavePersistentTab, wired to the Info tab in the template, injects this itself.
         provide: ActivatedRoute,
@@ -87,7 +117,7 @@ function createFixture(options: FixtureOptions = {}): {
   const fixture = TestBed.createComponent(OrganizationDetails);
   fixture.componentRef.setInput('organizationId', '1');
 
-  return { fixture, component: fixture.componentInstance, navigate };
+  return { fixture, component: fixture.componentInstance };
 }
 
 // MatTabGroup flips the clicked tab's `isActive` (which lazily attaches its content portal)
@@ -173,7 +203,8 @@ describe('OrganizationDetails', () => {
   // (enclave-persistent-tab.spec.ts) -- this just proves the Info tab is actually wired up with
   // enclavePersistentTab and a reachable Router.navigate.
   it('populates the URL with the Info tab once mounted', async () => {
-    const { fixture, navigate } = createFixture();
+    const navigate = vi.fn().mockResolvedValue(true);
+    const { fixture } = createFixture({ router: { navigate } });
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -236,6 +267,110 @@ describe('OrganizationDetails', () => {
       const rows: NodeListOf<HTMLElement> =
         fixture.debugElement.nativeElement.querySelectorAll('.licenses-table tr');
       expect(rows[1].textContent).toContain('No licenses yet');
+    });
+
+    it("wires the row's Details menu item to that license's own details page", async () => {
+      const { fixture } = createFixture({ licenses });
+      fixture.detectChanges();
+      await fixture.whenStable();
+      await selectLicensesTab(fixture);
+
+      const overlayContainer = TestBed.inject(OverlayContainer);
+      const trigger: HTMLButtonElement = fixture.debugElement.nativeElement.querySelector(
+        'button[aria-label="Enclave Core actions"]',
+      );
+      trigger.click();
+      fixture.detectChanges();
+
+      const links = fixture.debugElement
+        .queryAll(By.directive(RouterLink))
+        .map((debugEl) => debugEl.injector.get(RouterLink).urlTree?.toString());
+      expect(links).toContain('/admin/licenses/l1');
+
+      overlayContainer.ngOnDestroy();
+    });
+
+    describe('pending renewal request indicator', () => {
+      const pendingRequest: LicenseRequestModel = {
+        id: 'req1',
+        orgId: '1',
+        productId: 'p1',
+        userId: 'u1',
+        existingLicenseId: 'l1',
+        status: 'Pending',
+      };
+
+      it('shows a badge on the product link when there is a Pending request for that product', async () => {
+        const { fixture } = createFixture({ licenses, licenseRequests: [pendingRequest] });
+        fixture.detectChanges();
+        await fixture.whenStable();
+        await selectLicensesTab(fixture);
+
+        const badge: HTMLElement | null =
+          fixture.debugElement.nativeElement.querySelector('.mat-badge-content');
+        expect(badge?.textContent?.trim()).toBe('*');
+      });
+
+      it('hides the badge when there is no Pending request for that product', async () => {
+        const { fixture } = createFixture({ licenses, licenseRequests: [] });
+        fixture.detectChanges();
+        await fixture.whenStable();
+        await selectLicensesTab(fixture);
+
+        expect(fixture.debugElement.nativeElement.querySelector('.mat-badge-content')).toBeNull();
+      });
+
+      it('hides the badge when the only matching request is not Pending', async () => {
+        const { fixture } = createFixture({
+          licenses,
+          licenseRequests: [{ ...pendingRequest, status: 'Approved' }],
+        });
+        fixture.detectChanges();
+        await fixture.whenStable();
+        await selectLicensesTab(fixture);
+
+        expect(fixture.debugElement.nativeElement.querySelector('.mat-badge-content')).toBeNull();
+      });
+
+      it("wires the row's View License Request menu item to that request", async () => {
+        const { fixture } = createFixture({ licenses, licenseRequests: [pendingRequest] });
+        fixture.detectChanges();
+        await fixture.whenStable();
+        await selectLicensesTab(fixture);
+
+        const overlayContainer = TestBed.inject(OverlayContainer);
+        const trigger: HTMLButtonElement = fixture.debugElement.nativeElement.querySelector(
+          'button[aria-label="Enclave Core actions"]',
+        );
+        trigger.click();
+        fixture.detectChanges();
+
+        const links = fixture.debugElement
+          .queryAll(By.directive(RouterLink))
+          .map((debugEl) => debugEl.injector.get(RouterLink).urlTree?.toString());
+        expect(links).toContain('/admin/license-requests/req1');
+
+        overlayContainer.ngOnDestroy();
+      });
+
+      it('omits the View License Request menu item when there is no Pending request', async () => {
+        const { fixture } = createFixture({ licenses, licenseRequests: [] });
+        fixture.detectChanges();
+        await fixture.whenStable();
+        await selectLicensesTab(fixture);
+
+        const overlayContainer = TestBed.inject(OverlayContainer);
+        const trigger: HTMLButtonElement = fixture.debugElement.nativeElement.querySelector(
+          'button[aria-label="Enclave Core actions"]',
+        );
+        trigger.click();
+        fixture.detectChanges();
+
+        const panel = overlayContainer.getContainerElement().querySelector('.mat-mdc-menu-panel');
+        expect(panel?.textContent).not.toContain('View License Request');
+
+        overlayContainer.ngOnDestroy();
+      });
     });
   });
 
