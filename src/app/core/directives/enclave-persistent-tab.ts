@@ -29,20 +29,7 @@ export class EnclavePersistentTab implements AfterViewInit {
     this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       const restoredIndex = this.parseTabQueryParam();
       if (restoredIndex !== undefined && restoredIndex !== this.tabGroup.selectedIndex) {
-        const originalDuration = this.tabGroup.animationDuration;
-        this.tabGroup.animationDuration = '0ms';
-        queueMicrotask(() => {
-          this.tabGroup.selectedIndex = restoredIndex;
-          this.appRef.tick();
-          this.tabGroup.animationDone.pipe(take(1)).subscribe(() => {
-            // Header ink-bar has no completion event of its own; wait 2 painted frames.
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => {
-                this.tabGroup.animationDuration = originalDuration;
-              });
-            });
-          });
-        });
+        this.restoreIndexWithoutAnimation(restoredIndex);
       } else {
         const currentIndex = this.tabGroup.selectedIndex ?? 0;
         const currentLabel = this.tabs()[currentIndex]?.textLabel.toLowerCase();
@@ -58,6 +45,28 @@ export class EnclavePersistentTab implements AfterViewInit {
       .subscribe((e) => {
         this.persistTabInUrl(e.tab.textLabel.toLowerCase());
       });
+  }
+
+  // Suppresses the tab-switch animation for a restore, since Material only skips it on true first render.
+  private restoreIndexWithoutAnimation(restoredIndex: number): void {
+    const originalDuration = this.tabGroup.animationDuration;
+    this.tabGroup.animationDuration = '0ms';
+
+    queueMicrotask(() => {
+      this.tabGroup.selectedIndex = restoredIndex;
+      this.appRef.tick();
+      this.tabGroup.animationDone.pipe(take(1)).subscribe(() => {
+        this.afterTwoAnimationFrames(() => {
+          this.tabGroup.animationDuration = originalDuration;
+        });
+      });
+    });
+  }
+
+  private afterTwoAnimationFrames(callback: () => void): void {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(callback);
+    });
   }
 
   private parseTabQueryParam(): number | undefined {
