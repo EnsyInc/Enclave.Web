@@ -33,13 +33,15 @@ mat-tab-group {
   }
 }
 
-.licenses-tab-label {
+.licenses-tab-label,
+.users-tab-label {
   display: flex;
   gap: 1rem;
   justify-content: center;
   align-items: center;
 
-  .license-count {
+  .license-count,
+  .user-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -54,13 +56,15 @@ mat-tab-group {
   }
 }
 
-.license-tab-header {
+.license-tab-header,
+.user-tab-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 
-  .license-tab-header-text {
+  .license-tab-header-text,
+  .user-tab-header-text {
     @include mixins.label-mono($size: 0.85rem, $weight: 400);
   }
 
@@ -139,6 +143,68 @@ mat-tab-group {
   }
 
   tr:hover .license-actions {
+    visibility: visible;
+  }
+}
+
+.users-table {
+  table-layout: fixed;
+
+  .mat-column-name {
+    width: 35%;
+  }
+  .mat-column-email {
+    width: 25%;
+  }
+  .mat-column-role {
+    width: 20%;
+  }
+  .mat-column-status {
+    width: 19%;
+  }
+  .mat-column-action {
+    width: 1%;
+  }
+
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+
+  th {
+    @include mixins.label-mono($weight: 600);
+
+    &[mat-sort-header] {
+      user-select: none;
+    }
+  }
+
+  .user-name {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 0.5rem;
+
+    enclave-avatar {
+      font-weight: 600;
+    }
+  }
+
+  .user-email {
+    color: var(--color-text-muted);
+  }
+
+  td enclave-status {
+    --enclave-status-width: 100%;
+  }
+
+  td.mat-column-name {
+    font-weight: 300;
+  }
+
+  .user-actions {
+    visibility: hidden;
+  }
+
+  tr:hover .user-actions {
     visibility: visible;
   }
 }

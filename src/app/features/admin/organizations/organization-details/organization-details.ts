@@ -70,6 +70,7 @@ export class OrganizationDetails {
   protected readonly primaryContact = computed(() => {
     return this.userService.getUserById(this.org().primaryUserId);
   });
+
   protected readonly licenses = computed(() => {
     return this.licenseService.getLicensesForOrg(this.org().id);
   });
@@ -87,12 +88,31 @@ export class OrganizationDetails {
     ds.sortingDataAccessor = licenseSortingDataAccessor;
     return ds;
   });
-  protected readonly displayedColumns = ['product', 'status', 'end', 'timeLeft', 'action'];
-  protected readonly licenseSort = viewChild.required(MatSort);
+  protected readonly licensesDisplayedColumns = ['product', 'status', 'end', 'timeLeft', 'action'];
+  protected readonly licenseSort = viewChild.required<MatSort>('licenseSort');
+
+  protected readonly users = computed(() => {
+    return this.userService.getUsersForOrg(this.org().id);
+  });
+  protected readonly userRows = computed(() =>
+    this.users().map((user) => ({
+      ...user,
+      name: `${user.firstName} ${user.lastName}`,
+    })),
+  );
+  protected readonly userCount = computed(() => {
+    return this.users().length;
+  });
+  protected readonly usersDataSource = computed(() => new MatTableDataSource(this.userRows()));
+  protected readonly usersDisplayedColumns = ['name', 'email', 'role', 'status', 'action'];
+  protected readonly userSort = viewChild.required<MatSort>('userSort');
 
   constructor() {
     effect(() => {
       this.licensesDataSource().sort = this.licenseSort();
+    });
+    effect(() => {
+      this.usersDataSource().sort = this.userSort();
     });
   }
 }

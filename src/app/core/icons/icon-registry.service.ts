@@ -24,6 +24,7 @@ export const IconName = {
   Details: 'details',
   Close: 'close',
   ArrowLeft: 'arrow-left',
+  InviteUser: 'invite-user',
 } as const;
 export type IconName = (typeof IconName)[keyof typeof IconName];
 

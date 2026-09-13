@@ -39,6 +39,7 @@ const product: ProductModel = {
 
 interface FixtureOptions {
   licenses?: LicenseModel[];
+  users?: UserModel[];
 }
 
 function createFixture(options: FixtureOptions = {}): {
@@ -48,6 +49,7 @@ function createFixture(options: FixtureOptions = {}): {
 } {
   const navigate = vi.fn().mockResolvedValue(true);
   const licenses = options.licenses ?? [];
+  const users = options.users ?? [];
 
   TestBed.configureTestingModule({
     imports: [OrganizationDetails],
@@ -55,7 +57,13 @@ function createFixture(options: FixtureOptions = {}): {
       // Without this, tab-body centering relies on a 100ms fallback timer instead of settling synchronously.
       { provide: ANIMATION_MODULE_TYPE, useValue: 'NoopAnimations' },
       { provide: OrganizationService, useValue: { getOrganizationById: () => organization } },
-      { provide: UserService, useValue: { getUserById: () => primaryUser } },
+      {
+        provide: UserService,
+        useValue: {
+          getUserById: () => primaryUser,
+          getUsersForOrg: (orgId: string) => users.filter((user) => user.organizationId === orgId),
+        },
+      },
       {
         provide: LicenseService,
         useValue: {
@@ -89,6 +97,15 @@ async function selectLicensesTab(fixture: ComponentFixture<OrganizationDetails>)
   const tabLabels: HTMLElement[] =
     fixture.debugElement.nativeElement.querySelectorAll('[role="tab"]');
   tabLabels[1].click();
+  fixture.detectChanges();
+  await Promise.resolve();
+  fixture.detectChanges();
+}
+
+async function selectUsersTab(fixture: ComponentFixture<OrganizationDetails>): Promise<void> {
+  const tabLabels: HTMLElement[] =
+    fixture.debugElement.nativeElement.querySelectorAll('[role="tab"]');
+  tabLabels[2].click();
   fixture.detectChanges();
   await Promise.resolve();
   fixture.detectChanges();
@@ -219,6 +236,61 @@ describe('OrganizationDetails', () => {
       const rows: NodeListOf<HTMLElement> =
         fixture.debugElement.nativeElement.querySelectorAll('.licenses-table tr');
       expect(rows[1].textContent).toContain('No licenses yet');
+    });
+  });
+
+  describe('Users tab', () => {
+    const users: UserModel[] = [
+      {
+        id: '2',
+        firstName: 'Jamie',
+        lastName: 'Doe',
+        email: 'jamie.doe@northwind.io',
+        organizationId: '1',
+        status: 'Active',
+        role: 'Reader',
+      },
+    ];
+
+    it('shows the user count badge on the tab label', async () => {
+      const { fixture } = createFixture({ users });
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const badge: HTMLElement = fixture.debugElement.nativeElement.querySelector('.user-count');
+      expect(badge.textContent?.trim()).toBe('1');
+    });
+
+    it('hides the user count badge when the org has no users', async () => {
+      const { fixture } = createFixture({ users: [] });
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const badge: HTMLElement | null =
+        fixture.debugElement.nativeElement.querySelector('.user-count');
+      expect(badge).toBeNull();
+    });
+
+    it('maps each user row to their full name from firstName and lastName', async () => {
+      const { fixture } = createFixture({ users });
+      fixture.detectChanges();
+      await fixture.whenStable();
+      await selectUsersTab(fixture);
+
+      const rows: NodeListOf<HTMLElement> =
+        fixture.debugElement.nativeElement.querySelectorAll('.users-table tr');
+      expect(rows[1].textContent).toContain('Jamie Doe');
+    });
+
+    it('shows the empty state row when the org has no users', async () => {
+      const { fixture } = createFixture({ users: [] });
+      fixture.detectChanges();
+      await fixture.whenStable();
+      await selectUsersTab(fixture);
+
+      const rows: NodeListOf<HTMLElement> =
+        fixture.debugElement.nativeElement.querySelectorAll('.users-table tr');
+      expect(rows[1].textContent).toContain('No users yet');
     });
   });
 });

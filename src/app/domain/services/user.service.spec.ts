@@ -49,4 +49,23 @@ describe('UserService', () => {
       expect(service.getUserById('999')).toBeUndefined();
     });
   });
+
+  describe('getUsersForOrg', () => {
+    it('returns only the users belonging to the given org', () => {
+      const users = service.getUsersForOrg('1');
+
+      expect(users.length).toBeGreaterThan(0);
+      expect(users.every((user) => user.organizationId === '1')).toBe(true);
+    });
+
+    it('includes a user for every status for the given org', () => {
+      const statuses = service.getUsersForOrg('1').map((user) => user.status);
+
+      expect(statuses).toEqual(expect.arrayContaining(['InviteSent', 'Active', 'Deactivated']));
+    });
+
+    it('returns an empty array for an unknown org id', () => {
+      expect(service.getUsersForOrg('999')).toEqual([]);
+    });
+  });
 });

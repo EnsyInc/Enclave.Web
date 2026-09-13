@@ -54,7 +54,9 @@
           [dataSource]="licensesDataSource()"
           class="licenses-table"
           matSort
+          #licenseSort="matSort"
           enclavePersistentSort
+          sortQueryParamName="licenseSort"
           [sortableColumns]="['product', 'status', 'end', 'timeLeft']"
         >
           <ng-container matColumnDef="product">
@@ -68,14 +70,17 @@
               </div>
             </td>
           </ng-container>
+
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
             <td mat-cell *matCellDef="let element">
               <div class="license-status">
                 <enclave-status [status]="element.status" />
               </div>
-            </td> </ng-container
-          ><ng-container matColumnDef="end">
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="end">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Expiry Date</th>
             <td mat-cell *matCellDef="let element">
               <div class="license-expiry-date">
@@ -102,6 +107,7 @@
               </div>
             </td>
           </ng-container>
+
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
@@ -111,12 +117,101 @@
             </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-          <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+          <tr mat-header-row *matHeaderRowDef="licensesDisplayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let element; columns: licensesDisplayedColumns"></tr>
 
           <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" [colSpan]="displayedColumns.length">
+            <td class="mat-cell" [colSpan]="licensesDisplayedColumns.length">
               No licenses yet. Press the "Issue license" button above to add one.
+            </td>
+          </tr>
+        </table>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Users">
+      <ng-template mat-tab-label>
+        <div class="users-tab-label">
+          <span>Users</span>
+          @if (userCount()) {
+            <span class="user-count">{{ userCount() }}</span>
+          }
+        </div>
+      </ng-template>
+
+      <div class="tab-content">
+        <div class="user-tab-header">
+          <span class="user-tab-header-text">{{ `${userCount()} users` }}</span>
+          <button matButton>
+            <div class="primary-action-button">
+              <ensy-labs-icon name="invite-user" />
+              <span>Invite user</span>
+            </div>
+          </button>
+        </div>
+
+        <table
+          mat-table
+          [dataSource]="usersDataSource()"
+          class="users-table"
+          matSort
+          #userSort="matSort"
+          enclavePersistentSort
+          sortQueryParamName="userSort"
+          [sortableColumns]="['name', 'email', 'role', 'status']"
+        >
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="user-name">
+                <enclave-avatar [name]="element.name" />
+                <span>{{ element.name }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="user-email">
+                <span>{{ element.email }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="user-role">
+                <span>{{ element.role }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="user-status">
+                <enclave-status [status]="element.status" />
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button class="user-actions">
+                <ensy-labs-icon name="edit" />
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="usersDisplayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let element; columns: usersDisplayedColumns"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" [colSpan]="usersDisplayedColumns.length">
+              No users yet. Press the "Invite user" button above to add one.
             </td>
           </tr>
         </table>
