@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import {
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { By } from '@angular/platform-browser';
@@ -14,8 +19,12 @@ import { EnclavePersistentTab } from './enclave-persistent-tab';
     <mat-tab-group enclavePersistentTab [tabQueryParamName]="tabQueryParamName">
       <mat-tab label="First">First content</mat-tab>
       <mat-tab label="Second">Second content</mat-tab>
+      <mat-tab label="Third">Third content</mat-tab>
     </mat-tab-group>
   `,
+  // Matches OrganizationDetails/LicenseDetails (the real hosts of enclavePersistentTab), which
+  // are both OnPush -- see the "rapid double back-navigation" regression test below.
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class HostComponent {
   tabQueryParamName = 'tab';
@@ -185,6 +194,41 @@ describe('EnclavePersistentTab', () => {
     settleTabGroupUpdate(fixture);
 
     expect(tabGroup.selectedIndex).toBe(1);
+  });
+
+  // Regression test for a bug found in the real app: navigate Info -> Licenses -> Users, then
+  // press the browser's back button twice in quick succession. The URL correctly lands back on
+  // Info, but the tab widget stayed on Users (sometimes with a blank body) -- because
+  // ApplicationRef.tick() alone can skip an OnPush ancestor's subtree when a second restore's
+  // queryParamMap emission lands before the first restore's queueMicrotask has settled. Unlike
+  // every other test here, this one deliberately avoids `settleTabGroupUpdate`'s manual
+  // `markForCheck()` + `detectChanges()` -- that would paper over the bug regardless of whether
+  // restoreIndexWithoutAnimation calls markForCheck() itself. It also attaches the fixture's view
+  // to the real ApplicationRef, since a plain TestBed fixture normally isn't part of the tree
+  // ApplicationRef.tick() walks, and the whole bug is specifically about what that walk does.
+  it('restores the correct tab when two browser-back navigations land in immediate succession', async () => {
+    const { fixture, tabGroup, queryParamMap$ } = createFixture({
+      queryParams: { tab: 'third' },
+    });
+    const appRef = TestBed.inject(ApplicationRef);
+    appRef.attachView(fixture.componentRef.hostView);
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+    settleTabGroupUpdate(fixture);
+    expect(tabGroup.selectedIndex).toBe(2);
+
+    queryParamMap$.next(convertToParamMap({ tab: 'second' })); // 1st back
+    queryParamMap$.next(convertToParamMap({ tab: 'first' })); // 2nd back, fired immediately after
+
+    // Let both restores' queueMicrotask callbacks (and their appRef.tick() calls) run, without
+    // forcing change detection ourselves.
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(tabGroup.selectedIndex).toBe(0);
+
+    appRef.detachView(fixture.componentRef.hostView);
   });
 
   it('navigates with the tab query param set once the debounce elapses after selecting a tab', () => {

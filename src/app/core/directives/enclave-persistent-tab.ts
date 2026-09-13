@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ApplicationRef,
+  ChangeDetectorRef,
   contentChildren,
   DestroyRef,
   Directive,
@@ -21,6 +22,9 @@ export class EnclavePersistentTab implements AfterViewInit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly appRef = inject(ApplicationRef);
+  // Resolves to the enclosing OnPush component's (e.g. OrganizationDetails/LicenseDetails) view,
+  // since this directive sits on that component's own template -- see restoreIndexWithoutAnimation.
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly tabs = contentChildren(MatTab);
 
   public readonly tabQueryParamName = input<string>('tab');
@@ -54,6 +58,13 @@ export class EnclavePersistentTab implements AfterViewInit {
 
     queueMicrotask(() => {
       this.tabGroup.selectedIndex = restoredIndex;
+      // MatTabGroup only resolves that assignment into its readable `selectedIndex` (and the
+      // actual tab-body swap) during its own ngAfterContentChecked. In this app's zoneless
+      // setup, appRef.tick() alone can silently skip that OnPush ancestor's subtree -- e.g. when
+      // two restores land close together (two fast browser-back navigations) -- so the tab never
+      // visibly changes even though the URL did. markForCheck() ensures this tick actually
+      // descends into it.
+      this.changeDetectorRef.markForCheck();
       this.appRef.tick();
       this.tabGroup.animationDone.pipe(take(1)).subscribe(() => {
         this.afterTwoAnimationFrames(() => {
