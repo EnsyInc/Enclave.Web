@@ -1,10 +1,16 @@
+import { ANIMATION_MODULE_TYPE } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 
-import { OrganizationModel, UserModel } from '@enclave/domain/models';
-import { OrganizationService, UserService } from '@enclave/domain/services';
+import { LicenseModel, OrganizationModel, ProductModel, UserModel } from '@enclave/domain/models';
+import {
+  LicenseService,
+  OrganizationService,
+  ProductService,
+  UserService,
+} from '@enclave/domain/services';
 
 import { OrganizationDetails } from './organization-details';
 
@@ -25,65 +31,113 @@ const primaryUser: UserModel = {
   role: 'Admin',
 };
 
-describe('OrganizationDetails', () => {
-  let component: OrganizationDetails;
-  let fixture: ComponentFixture<OrganizationDetails>;
-  let navigate: ReturnType<typeof vi.fn>;
+const product: ProductModel = {
+  id: 'p1',
+  name: 'Enclave Core',
+  status: 'Active',
+};
 
-  beforeEach(async () => {
-    navigate = vi.fn().mockResolvedValue(true);
+interface FixtureOptions {
+  licenses?: LicenseModel[];
+}
 
-    await TestBed.configureTestingModule({
-      imports: [OrganizationDetails],
-      providers: [
-        { provide: OrganizationService, useValue: { getOrganizationById: () => organization } },
-        { provide: UserService, useValue: { getUserById: () => primaryUser } },
-        { provide: Router, useValue: { navigate } },
-        {
-          // enclavePersistentTab, wired to the Info tab in the template, injects this itself.
-          provide: ActivatedRoute,
-          useValue: {
-            snapshot: { queryParamMap: convertToParamMap({}) },
-            queryParamMap: of(convertToParamMap({})),
-          },
+function createFixture(options: FixtureOptions = {}): {
+  fixture: ComponentFixture<OrganizationDetails>;
+  component: OrganizationDetails;
+  navigate: ReturnType<typeof vi.fn>;
+} {
+  const navigate = vi.fn().mockResolvedValue(true);
+  const licenses = options.licenses ?? [];
+
+  TestBed.configureTestingModule({
+    imports: [OrganizationDetails],
+    providers: [
+      // Without this, tab-body centering relies on a 100ms fallback timer instead of settling synchronously.
+      { provide: ANIMATION_MODULE_TYPE, useValue: 'NoopAnimations' },
+      { provide: OrganizationService, useValue: { getOrganizationById: () => organization } },
+      { provide: UserService, useValue: { getUserById: () => primaryUser } },
+      {
+        provide: LicenseService,
+        useValue: {
+          getLicensesForOrg: (orgId: string) =>
+            licenses.filter((license) => license.orgId === orgId),
         },
-      ],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(OrganizationDetails);
-    component = fixture.componentInstance;
-    fixture.componentRef.setInput('organizationId', '1');
-    await fixture.whenStable();
+      },
+      { provide: ProductService, useValue: { getProductById: () => product } },
+      { provide: Router, useValue: { navigate } },
+      {
+        // enclavePersistentTab, wired to the Info tab in the template, injects this itself.
+        provide: ActivatedRoute,
+        useValue: {
+          snapshot: { queryParamMap: convertToParamMap({}) },
+          queryParamMap: of(convertToParamMap({})),
+        },
+      },
+    ],
   });
 
-  it('should create', () => {
+  const fixture = TestBed.createComponent(OrganizationDetails);
+  fixture.componentRef.setInput('organizationId', '1');
+
+  return { fixture, component: fixture.componentInstance, navigate };
+}
+
+// MatTabGroup flips the clicked tab's `isActive` (which lazily attaches its content portal)
+// inside a `Promise.resolve().then(...)` in its own ngAfterContentChecked, so the content only
+// renders after that microtask drains and a further change-detection pass runs.
+async function selectLicensesTab(fixture: ComponentFixture<OrganizationDetails>): Promise<void> {
+  const tabLabels: HTMLElement[] =
+    fixture.debugElement.nativeElement.querySelectorAll('[role="tab"]');
+  tabLabels[1].click();
+  fixture.detectChanges();
+  await Promise.resolve();
+  fixture.detectChanges();
+}
+
+describe('OrganizationDetails', () => {
+  it('should create', async () => {
+    const { fixture, component } = createFixture();
+    await fixture.whenStable();
+
     expect(component).toBeTruthy();
   });
 
-  it('resolves the organization for the bound organizationId', () => {
+  it('resolves the organization for the bound organizationId', async () => {
+    const { fixture, component } = createFixture();
+    await fixture.whenStable();
+
     expect(component['org']()).toEqual(organization);
   });
 
-  it('resolves the primary contact for the resolved organization', () => {
+  it('resolves the primary contact for the resolved organization', async () => {
+    const { fixture, component } = createFixture();
+    await fixture.whenStable();
+
     expect(component['primaryContact']()).toEqual(primaryUser);
   });
 
-  it('renders the organization name and status from the resolved organization', () => {
+  it('renders the organization name and status from the resolved organization', async () => {
+    const { fixture } = createFixture();
     fixture.detectChanges();
+    await fixture.whenStable();
 
     const nameEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('.title');
     expect(nameEl.textContent?.trim()).toBe('Northwind Systems');
   });
 
-  it("renders the primary contact's email", () => {
+  it("renders the primary contact's email", async () => {
+    const { fixture } = createFixture();
     fixture.detectChanges();
+    await fixture.whenStable();
 
     const infoEl: HTMLElement = fixture.debugElement.nativeElement.querySelector('.subtitle');
     expect(infoEl.textContent).toContain('ops@northwind.io');
   });
 
-  it('renders the Info tab fields for the resolved organization', () => {
+  it('renders the Info tab fields for the resolved organization', async () => {
+    const { fixture } = createFixture();
     fixture.detectChanges();
+    await fixture.whenStable();
 
     const rows: NodeListOf<HTMLElement> =
       fixture.debugElement.nativeElement.querySelectorAll('enclave-detail-row');
@@ -102,6 +156,7 @@ describe('OrganizationDetails', () => {
   // (enclave-persistent-tab.spec.ts) -- this just proves the Info tab is actually wired up with
   // enclavePersistentTab and a reachable Router.navigate.
   it('populates the URL with the Info tab once mounted', async () => {
+    const { fixture, navigate } = createFixture();
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -110,6 +165,60 @@ describe('OrganizationDetails', () => {
       queryParams: { tab: 'info' },
       queryParamsHandling: 'merge',
       replaceUrl: true,
+    });
+  });
+
+  describe('Licenses tab', () => {
+    const licenses: LicenseModel[] = [
+      {
+        id: 'l1',
+        orgId: '1',
+        productId: 'p1',
+        start: new Date('2024-01-01T00:00:00Z'),
+        end: new Date('2099-01-01T00:00:00Z'),
+        status: 'Active',
+      },
+    ];
+
+    it('shows the license count badge on the tab label', async () => {
+      const { fixture } = createFixture({ licenses });
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const badge: HTMLElement = fixture.debugElement.nativeElement.querySelector('.license-count');
+      expect(badge.textContent?.trim()).toBe('1');
+    });
+
+    it('hides the license count badge when the org has no licenses', async () => {
+      const { fixture } = createFixture({ licenses: [] });
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const badge: HTMLElement | null =
+        fixture.debugElement.nativeElement.querySelector('.license-count');
+      expect(badge).toBeNull();
+    });
+
+    it('maps each license row to its product name via the productId', async () => {
+      const { fixture } = createFixture({ licenses });
+      fixture.detectChanges();
+      await fixture.whenStable();
+      await selectLicensesTab(fixture);
+
+      const rows: NodeListOf<HTMLElement> =
+        fixture.debugElement.nativeElement.querySelectorAll('.licenses-table tr');
+      expect(rows[1].textContent).toContain('Enclave Core');
+    });
+
+    it('shows the empty state row when the org has no licenses', async () => {
+      const { fixture } = createFixture({ licenses: [] });
+      fixture.detectChanges();
+      await fixture.whenStable();
+      await selectLicensesTab(fixture);
+
+      const rows: NodeListOf<HTMLElement> =
+        fixture.debugElement.nativeElement.querySelectorAll('.licenses-table tr');
+      expect(rows[1].textContent).toContain('No licenses yet');
     });
   });
 });

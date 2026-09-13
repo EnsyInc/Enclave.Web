@@ -112,6 +112,32 @@ for (const theme of themes) {
 }
 
 for (const theme of themes) {
+  test(`Organization detail page has no automatically detectable accessibility violations (${theme} theme)`, async ({
+    page,
+  }) => {
+    // Same known status-pill color-contrast violations as the Licenses list issue above:
+    // the org's own header/Info-tab status pill ("Active") only fails in light theme, but the
+    // Licenses tab also renders a "Revoked" license, which fails in both themes.
+    test.fixme(
+      theme === 'light',
+      'Pending UI/UX color-contrast fix for status pill text (light theme only)',
+    );
+    test.fixme(true, 'Pending UI/UX color-contrast fix for the Revoked status pill (both themes)');
+
+    await page.addInitScript((theme) => localStorage.setItem('enclave-theme', theme), theme);
+    await page.goto('/admin/organizations/1');
+    await page.getByRole('tab', { name: /Licenses/ }).click();
+    await expect(page.locator('tr[mat-row]')).toHaveCount(5);
+
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .analyze();
+
+    expect(results.violations).toEqual([]);
+  });
+}
+
+for (const theme of themes) {
   test(`Product form dialog has no automatically detectable accessibility violations (${theme} theme)`, async ({
     page,
   }) => {

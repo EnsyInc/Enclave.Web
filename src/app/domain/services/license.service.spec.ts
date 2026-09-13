@@ -72,4 +72,21 @@ describe('LicenseService', () => {
       expect(service.getLicenseById('999')).toBeUndefined();
     });
   });
+
+  describe('getLicensesForOrg', () => {
+    it('returns only the licenses belonging to the given org', () => {
+      const licenses = service.getLicensesForOrg('1');
+
+      expect(licenses.length).toBeGreaterThan(0);
+      expect(licenses.every((license) => license.orgId === '1')).toBe(true);
+    });
+
+    it('returns an empty array for an org with no licenses', () => {
+      expect(service.getLicensesForOrg('6')).toEqual([]);
+    });
+
+    it('returns an empty array for an unknown org id', () => {
+      expect(service.getLicensesForOrg('999')).toEqual([]);
+    });
+  });
 });

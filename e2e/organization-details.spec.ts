@@ -37,3 +37,59 @@ test('renders the Info tab fields for the selected organization', async ({ page 
   await expect(row('Status')).toContainText('Active');
   await expect(row('Id')).toHaveText('1');
 });
+
+test.describe('Licenses tab', () => {
+  test('shows the license count and a row per license for the organization', async ({ page }) => {
+    await page.goto('/admin/organizations/1');
+    await page.getByRole('tab', { name: /Licenses/ }).click();
+
+    await expect(page.locator('.license-count')).toHaveText('5');
+    await expect(page.locator('tr[mat-row]')).toHaveCount(5);
+  });
+
+  test('maps each license row to its product name via the productId', async ({ page }) => {
+    await page.goto('/admin/organizations/1');
+    await page.getByRole('tab', { name: /Licenses/ }).click();
+
+    await expect(page.locator('tr[mat-row]', { hasText: 'Enclave Core' })).toBeVisible();
+    await expect(page.locator('tr[mat-row]', { hasText: 'Vault Analytics' })).toBeVisible();
+  });
+
+  test('sorts rows by status when the Status column header is clicked', async ({ page }) => {
+    await page.goto('/admin/organizations/1');
+    await page.getByRole('tab', { name: /Licenses/ }).click();
+
+    await page.getByRole('columnheader', { name: 'Status' }).click();
+
+    await expect(page.locator('tr[mat-row]').first()).toContainText('Active');
+  });
+
+  test('clicking a product name navigates to its details page', async ({ page }) => {
+    await page.goto('/admin/organizations/1');
+    await page.getByRole('tab', { name: /Licenses/ }).click();
+
+    await page.getByRole('link', { name: 'Enclave Core' }).click();
+
+    await expect(page).toHaveURL('/admin/products/1?tab=info');
+  });
+
+  test('persists the Licenses tab across a reload', async ({ page }) => {
+    await page.goto('/admin/organizations/1');
+    await page.getByRole('tab', { name: /Licenses/ }).click();
+    await expect(page).toHaveURL('/admin/organizations/1?tab=licenses');
+
+    await page.reload();
+
+    await expect(page.locator('tr[mat-row]')).toHaveCount(5);
+  });
+
+  test('shows the empty state for an organization with no licenses', async ({ page }) => {
+    await page.goto('/admin/organizations/6');
+    await page.getByRole('tab', { name: 'Licenses' }).click();
+
+    await expect(page.locator('.license-count')).toHaveCount(0);
+    await expect(
+      page.getByText('No licenses yet. Press the "Issue license" button above to add one.'),
+    ).toBeVisible();
+  });
+});
