@@ -9,6 +9,10 @@ import {
   productDetailsBreadcrumbResolver,
   productDetailsTitleResolver,
 } from '@enclave/features/admin/products';
+import {
+  licenseDetailsBreadcrumbResolver,
+  licenseDetailsTitleResolver,
+} from '@enclave/features/admin/licenses';
 
 export const routes: Routes = [
   {
@@ -85,6 +89,17 @@ export const routes: Routes = [
         title: 'Licenses',
         data: {
           breadcrumb: 'Licenses',
+        },
+      },
+      {
+        path: 'licenses/:licenseId',
+        loadComponent: () =>
+          import('@enclave/features/admin/licenses/license-details/license-details').then(
+            (m) => m.LicenseDetails,
+          ),
+        title: licenseDetailsTitleResolver,
+        resolve: {
+          breadcrumb: licenseDetailsBreadcrumbResolver,
         },
       },
       {
