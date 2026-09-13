@@ -88,6 +88,19 @@ export class LicenseRequestService {
     return this.LICENSE_REQUEST_SEEDS.filter((licenseRequest) => licenseRequest.orgId === orgId);
   }
 
+  public getPendingLicenseRequestForOrgProduct(
+    orgId: string,
+    productId: string,
+  ): LicenseRequestModel | undefined {
+    const requests = this.LICENSE_REQUEST_SEEDS.filter(
+      (licenseRequest) =>
+        licenseRequest.orgId === orgId &&
+        licenseRequest.productId === productId &&
+        licenseRequest.status === 'Pending',
+    );
+    return requests.length > 0 ? requests[0] : undefined;
+  }
+
   public getLicenseRequestsForLicense(licenseId: string): LicenseRequestModel[] {
     return this.LICENSE_REQUEST_SEEDS.filter(
       (licenseRequest) => licenseRequest.existingLicenseId === licenseId,

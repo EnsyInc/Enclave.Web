@@ -8,6 +8,7 @@ import {
   input,
   viewChild,
 } from '@angular/core';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -29,6 +30,7 @@ import {
 import { EnclavePersistentSort, EnclavePersistentTab } from '@enclave/core/directives';
 import { EnsyLabsIcon } from '@enclave/core/icons';
 import {
+  LicenseRequestService,
   LicenseService,
   OrganizationService,
   ProductService,
@@ -50,6 +52,7 @@ import {
     EnclaveStatus,
     EnclaveTimeLeft,
     EnsyLabsIcon,
+    MatBadgeModule,
     MatButtonModule,
     MatMenuModule,
     MatSortModule,
@@ -65,6 +68,7 @@ export class OrganizationDetails {
   private readonly orgService = inject(OrganizationService);
   private readonly userService = inject(UserService);
   private readonly licenseService = inject(LicenseService);
+  private readonly licenseRequestService = inject(LicenseRequestService);
   private readonly productService = inject(ProductService);
 
   protected readonly organizationId = input.required<string>();
@@ -82,6 +86,10 @@ export class OrganizationDetails {
     this.licenses().map((license) => ({
       ...license,
       product: this.productService.getProductById(license.productId)?.name,
+      licenseRequest: this.licenseRequestService.getPendingLicenseRequestForOrgProduct(
+        this.organizationId(),
+        license.productId,
+      ),
     })),
   );
   protected readonly licenseCount = computed(() => {

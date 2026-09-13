@@ -128,6 +128,11 @@ mat-tab-group {
     enclave-avatar {
       font-weight: 600;
     }
+
+    ::ng-deep .mat-badge-content {
+      background-color: var(--color-primary);
+      margin-left: 0.25rem;
+    }
   }
 
   td enclave-status {
