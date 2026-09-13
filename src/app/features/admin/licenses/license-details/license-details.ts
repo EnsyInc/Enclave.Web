@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
+
 import {
   EnclaveDetailsHeader,
   EnclaveDetailCard,
@@ -17,17 +18,17 @@ import { LicenseService, OrganizationService, ProductService } from '@enclave/do
 @Component({
   selector: 'enclave-license-details',
   imports: [
-    EnclaveDetailsHeader,
-    EnsyLabsIcon,
-    EnclavePersistentTab,
-    MatButtonModule,
-    MatTabsModule,
+    DatePipe,
     EnclaveDetailCard,
     EnclaveDetailList,
     EnclaveDetailRow,
-    DatePipe,
+    EnclaveDetailsHeader,
+    EnclavePersistentTab,
     EnclaveStatus,
     EnclaveTimeLeft,
+    EnsyLabsIcon,
+    MatButtonModule,
+    MatTabsModule,
   ],
   templateUrl: './license-details.html',
   styleUrl: './license-details.scss',
