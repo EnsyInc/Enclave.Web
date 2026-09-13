@@ -173,6 +173,18 @@ describe('LicenseDetails', () => {
     expect(rowText('Id')).toBe('1');
   });
 
+  it('links the Product and Organization rows to their own detail pages', async () => {
+    const { fixture } = createFixture();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const links = fixture.debugElement
+      .queryAll(By.directive(RouterLink))
+      .map((debugEl) => debugEl.injector.get(RouterLink).urlTree?.toString());
+
+    expect(links).toEqual(['/admin/products/1', '/admin/organizations/1']);
+  });
+
   it('renders the Suspend and Revoke action buttons', async () => {
     const { fixture } = createFixture();
     fixture.detectChanges();

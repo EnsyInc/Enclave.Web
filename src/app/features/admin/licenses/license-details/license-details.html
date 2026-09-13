@@ -21,38 +21,11 @@
     </div>
   </div>
 
-  @if (pendingLicenseRequest(); as pendingLicense) {
-    <div class="license-request-container">
-      <div class="license-request-header">
-        <div class="title">
-          <div class="icon-box">
-            <ensy-labs-icon name="renew" />
-          </div>
-          <span>Renewal Requested</span>
-        </div>
-        <div class="action-button">
-          <button
-            class="card-action-button"
-            matButton
-            [routerLink]="['/admin/license-requests', pendingLicense.id]"
-          >
-            <div>
-              <span>Review Request</span>
-              <ensy-labs-icon name="ref-arrow" />
-            </div>
-          </button>
-        </div>
-      </div>
-
-      <div class="license-request-content">
-        <span class="predefined-text">
-          {{ pendingLicense.userEmail }} asked to renew this license
-        </span>
-        @if (pendingLicense.requestNotes) {
-          <span class="user-notes"> Notes: "{{ pendingLicense.requestNotes }}" </span>
-        }
-      </div>
-    </div>
+  @if (pendingLicenseRequest(); as pending) {
+    <enclave-license-renewal-banner
+      [licenseRequest]="pending.licenseRequest"
+      [user]="pending.user"
+    />
   }
 
   <div class="license-details-content">
@@ -63,10 +36,14 @@
             <div class="license-info">
               <enclave-detail-list>
                 <enclave-detail-row label="Product">
-                  {{ product().name }}
+                  <a [routerLink]="['/admin/products', product().id]">
+                    {{ product().name }}
+                  </a>
                 </enclave-detail-row>
                 <enclave-detail-row label="Organization">
-                  {{ org().name }}
+                  <a [routerLink]="['/admin/organizations', org().id]">
+                    {{ org().name }}
+                  </a>
                 </enclave-detail-row>
                 <enclave-detail-row label="Start Date">
                   {{ license().start | date: 'd MMM y' : 'UTC' }}

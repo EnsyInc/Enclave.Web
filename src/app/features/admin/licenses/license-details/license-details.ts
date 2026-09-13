@@ -9,6 +9,7 @@ import {
   EnclaveDetailCard,
   EnclaveDetailList,
   EnclaveDetailRow,
+  EnclaveLicenseRenewalBanner,
   EnclaveStatus,
   EnclaveTimeLeft,
 } from '@enclave/core/components';
@@ -30,6 +31,7 @@ import {
     EnclaveDetailList,
     EnclaveDetailRow,
     EnclaveDetailsHeader,
+    EnclaveLicenseRenewalBanner,
     EnclavePersistentTab,
     EnclaveStatus,
     EnclaveTimeLeft,
@@ -66,10 +68,7 @@ export class LicenseDetails {
       return undefined;
     }
 
-    return {
-      ...licenseRequest,
-      userEmail: user.email,
-    };
+    return { licenseRequest, user };
   });
   protected readonly product = computed(() => {
     return this.productService.getProductById(this.license().productId)!;

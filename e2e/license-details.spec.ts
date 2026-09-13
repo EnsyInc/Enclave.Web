@@ -44,6 +44,24 @@ test('renders the Info tab fields for the selected license', async ({ page }) =>
   await expect(row('Id')).toHaveText('1');
 });
 
+test('clicking the Product row navigates to the product details page', async ({ page }) => {
+  await page.goto('/admin/licenses/1');
+
+  await page.getByRole('link', { name: 'Enclave Core' }).click();
+
+  await expect(page).toHaveURL('/admin/products/1?tab=info');
+});
+
+test('clicking the Organization row navigates to the organization details page', async ({
+  page,
+}) => {
+  await page.goto('/admin/licenses/1');
+
+  await page.getByRole('link', { name: 'Northwind Systems' }).click();
+
+  await expect(page).toHaveURL('/admin/organizations/1?tab=info');
+});
+
 test.describe('time left indicator', () => {
   test('is hidden for a Scheduled license', async ({ page }) => {
     await page.goto('/admin/licenses/1');
