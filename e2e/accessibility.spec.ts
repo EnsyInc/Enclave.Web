@@ -138,6 +138,28 @@ for (const theme of themes) {
 }
 
 for (const theme of themes) {
+  test(`License detail page has no automatically detectable accessibility violations (${theme} theme)`, async ({
+    page,
+  }) => {
+    // Same known status-pill color-contrast violation as the Licenses list issue above
+    // ("Scheduled" uses --color-secondary, ~3.3:1 against --color-card in light theme).
+    test.fixme(
+      theme === 'light',
+      'Pending UI/UX color-contrast fix for license status pill text (light theme only)',
+    );
+
+    await page.addInitScript((theme) => localStorage.setItem('enclave-theme', theme), theme);
+    await page.goto('/admin/licenses/1');
+
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .analyze();
+
+    expect(results.violations).toEqual([]);
+  });
+}
+
+for (const theme of themes) {
   test(`Product form dialog has no automatically detectable accessibility violations (${theme} theme)`, async ({
     page,
   }) => {

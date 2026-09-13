@@ -53,6 +53,10 @@ export class EnclaveSearchBarFilter {
           return;
         }
 
+        if (this.router.getCurrentNavigation()) {
+          return;
+        }
+
         const queryParams: Params = {};
         queryParams[this.urlQueryParamName()] = search || null;
 
