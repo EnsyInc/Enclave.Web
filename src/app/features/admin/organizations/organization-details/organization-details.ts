@@ -14,6 +14,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterLink } from '@angular/router';
 
+import { licenseSortingDataAccessor } from '@enclave/core';
 import {
   EnclaveDetailsHeader,
   EnclaveDetailCard,
@@ -83,23 +84,7 @@ export class OrganizationDetails {
   });
   protected readonly licensesDataSource = computed(() => {
     const ds = new MatTableDataSource(this.licenseRows());
-    ds.sortingDataAccessor = (row, columnId) => {
-      if (columnId === 'end' && row.status !== 'Active' && row.status !== 'Expired') {
-        return Number.POSITIVE_INFINITY;
-      }
-      if (columnId === 'timeLeft') {
-        if (row.status !== 'Active') {
-          return Number.POSITIVE_INFINITY;
-        }
-        const val = row['end'];
-        return val.getTime();
-      }
-      const val = row[columnId as keyof typeof row];
-      if (val instanceof Date) {
-        return val.getTime();
-      }
-      return val ?? '';
-    };
+    ds.sortingDataAccessor = licenseSortingDataAccessor;
     return ds;
   });
   protected readonly displayedColumns = ['product', 'status', 'end', 'timeLeft', 'action'];

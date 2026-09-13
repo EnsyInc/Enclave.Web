@@ -10,6 +10,8 @@ export type { DetailsEntity, DetailsResolversOptions } from './routing/details-r
 
 export { openEnclaveDialog } from './dialog/open-enclave-dialog';
 
+export { licenseSortingDataAccessor } from './tables/license-sorting-data-accessor';
+
 export {
   isLocalStorageAvailable,
   readLocalStorage,
