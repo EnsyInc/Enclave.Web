@@ -1,6 +1,10 @@
+@use 'mixins';
+
 .org-details-container {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-height: 0;
   gap: 1rem;
 }
 
@@ -26,5 +30,115 @@ mat-tab-group {
       font-size: 0.75rem;
       font-weight: 400;
     }
+  }
+}
+
+.licenses-tab-label {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+
+  .license-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    color: var(--color-primary-text);
+    background-color: var(--color-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+.license-tab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  .license-tab-header-text {
+    @include mixins.label-mono($size: 0.85rem, $weight: 400);
+  }
+
+  button {
+    color: var(--color-text);
+    border-radius: 0.5rem;
+
+    ensy-labs-icon {
+      color: var(--color-text);
+    }
+
+    .primary-action-button {
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      gap: 0.25rem;
+
+      span {
+        align-content: center;
+      }
+    }
+  }
+}
+
+.licenses-table {
+  table-layout: fixed;
+
+  .mat-column-product {
+    width: 35%;
+  }
+  .mat-column-status {
+    width: 25%;
+  }
+  .mat-column-end {
+    width: 20%;
+  }
+  .mat-column-timeLeft {
+    width: 19%;
+  }
+  .mat-column-action {
+    width: 1%;
+  }
+
+  border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+
+  th {
+    @include mixins.label-mono($weight: 600);
+
+    &[mat-sort-header] {
+      user-select: none;
+    }
+  }
+
+  .product-name {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 0.5rem;
+
+    enclave-avatar {
+      font-weight: 600;
+    }
+  }
+
+  td enclave-status {
+    --enclave-status-width: 100%;
+  }
+
+  td.mat-column-product {
+    font-weight: 300;
+  }
+
+  .license-actions {
+    visibility: hidden;
+  }
+
+  tr:hover .license-actions {
+    visibility: visible;
   }
 }

@@ -85,6 +85,24 @@ mat-divider.mat-divider {
   border-color: var(--color-border);
 }
 
+// Global (crosses component boundary); router-outlet + * skips the empty outlet element itself.
+.main-content router-outlet + * {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+mat-tab-group {
+  flex: 1;
+  min-height: 0;
+}
+
+.mat-mdc-tab-body-wrapper {
+  flex: 1;
+  min-height: 0;
+}
+
 .enclave-dialog-backdrop {
   backdrop-filter: blur(4px);
   background-color: color-mix(in srgb, var(--color-border) 10%, transparent);

@@ -27,5 +27,100 @@
         </enclave-detail-card>
       </div>
     </mat-tab>
+
+    <mat-tab label="Licenses">
+      <ng-template mat-tab-label>
+        <div class="licenses-tab-label">
+          <span>Licenses</span>
+          @if (licenseCount()) {
+            <span class="license-count">{{ licenseCount() }}</span>
+          }
+        </div>
+      </ng-template>
+
+      <div class="tab-content">
+        <div class="license-tab-header">
+          <span class="license-tab-header-text">{{ `${licenseCount()} licenses` }}</span>
+          <button matButton>
+            <div class="primary-action-button">
+              <ensy-labs-icon name="add" />
+              <span>Issue license</span>
+            </div>
+          </button>
+        </div>
+
+        <table
+          mat-table
+          [dataSource]="licensesDataSource()"
+          class="licenses-table"
+          matSort
+          enclavePersistentSort
+          [sortableColumns]="['product', 'status', 'end', 'timeLeft']"
+        >
+          <ng-container matColumnDef="product">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Product</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="product-name">
+                <enclave-avatar [name]="element.product" />
+                <a [routerLink]="['/admin/products', element.productId]">
+                  <span>{{ element.product }}</span>
+                </a>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="license-status">
+                <enclave-status [status]="element.status" />
+              </div>
+            </td> </ng-container
+          ><ng-container matColumnDef="end">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Expiry Date</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="license-expiry-date">
+                <span>
+                  @if (element.status === 'Active' || element.status === 'Expired') {
+                    {{ element.end | date: 'd MMM y' : 'UTC' }}
+                  } @else {
+                    -
+                  }
+                </span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="timeLeft">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Time Left</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="license-time-left">
+                @if (element.status === 'Active') {
+                  <enclave-time-left [startDate]="element.start" [endDate]="element.end" />
+                } @else {
+                  -
+                }
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button class="license-actions">
+                <ensy-labs-icon name="edit" />
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" [colSpan]="displayedColumns.length">
+              No licenses yet. Press the "Issue license" button above to add one.
+            </td>
+          </tr>
+        </table>
+      </div>
+    </mat-tab>
   </mat-tab-group>
 </div>
