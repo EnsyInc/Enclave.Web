@@ -16,7 +16,7 @@
   --enclave-status-border-style: dashed;
 }
 :host(.invite-sent) {
-  --enclave-status-color: red;
+  --enclave-status-color: var(--color-secondary);
 }
 :host(.scheduled) {
   --enclave-status-color: var(--color-secondary);
