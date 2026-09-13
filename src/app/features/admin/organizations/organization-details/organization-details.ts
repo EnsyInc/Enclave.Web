@@ -70,6 +70,7 @@ export class OrganizationDetails {
   protected readonly primaryContact = computed(() => {
     return this.userService.getUserById(this.org().primaryUserId);
   });
+
   protected readonly licenses = computed(() => {
     return this.licenseService.getLicensesForOrg(this.org().id);
   });
@@ -89,6 +90,13 @@ export class OrganizationDetails {
   });
   protected readonly displayedColumns = ['product', 'status', 'end', 'timeLeft', 'action'];
   protected readonly licenseSort = viewChild.required(MatSort);
+
+  protected readonly users = computed(() => {
+    return this.userService.getUsersForOrg(this.org().id);
+  });
+  protected readonly userCount = computed(() => {
+    return this.users().length;
+  });
 
   constructor() {
     effect(() => {

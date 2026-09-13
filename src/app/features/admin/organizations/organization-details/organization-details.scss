@@ -33,13 +33,15 @@ mat-tab-group {
   }
 }
 
-.licenses-tab-label {
+.licenses-tab-label,
+.users-tab-label {
   display: flex;
   gap: 1rem;
   justify-content: center;
   align-items: center;
 
-  .license-count {
+  .license-count,
+  .user-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;

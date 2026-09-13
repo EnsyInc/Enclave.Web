@@ -15,6 +15,33 @@ export class UserService {
       role: 'Admin',
     },
     {
+      id: '7',
+      firstName: 'jamie',
+      lastName: 'Ellery',
+      email: 'jamie.ellery@northwind.io',
+      organizationId: '1',
+      status: 'InviteSent',
+      role: 'Reader',
+    },
+    {
+      id: '8',
+      firstName: 'morgan',
+      lastName: 'Feld',
+      email: 'morgan.feld@northwind.io',
+      organizationId: '1',
+      status: 'Active',
+      role: 'Reader',
+    },
+    {
+      id: '9',
+      firstName: 'priya',
+      lastName: 'Nandakumar',
+      email: 'priya.nandakumar@northwind.io',
+      organizationId: '1',
+      status: 'Deactivated',
+      role: 'Admin',
+    },
+    {
       id: '2',
       firstName: 'billing',
       lastName: 'HalcyonLabs',
@@ -67,5 +94,9 @@ export class UserService {
 
   public getUserById(id: string): UserModel | undefined {
     return this.USER_SEEDS.find((user) => user.id === id);
+  }
+
+  public getUsersForOrg(orgId: string): UserModel[] {
+    return this.USER_SEEDS.filter((user) => user.organizationId === orgId);
   }
 }

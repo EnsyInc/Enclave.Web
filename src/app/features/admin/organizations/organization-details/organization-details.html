@@ -122,5 +122,16 @@
         </table>
       </div>
     </mat-tab>
+
+    <mat-tab label="Users">
+      <ng-template mat-tab-label>
+        <div class="users-tab-label">
+          <span>Users</span>
+          @if (userCount()) {
+            <span class="user-count">{{ userCount() }}</span>
+          }
+        </div>
+      </ng-template>
+    </mat-tab>
   </mat-tab-group>
 </div>
