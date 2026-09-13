@@ -63,14 +63,15 @@ describe('LicenseRequestService', () => {
       expect(orgIdsWithRequests.has('6')).toBe(false);
     });
 
-    it('gives every rejected request a rejection reason', () => {
+    it('gives most rejected requests a rejection reason, but seeds one without', () => {
       const licenseRequests = service.getLicenseRequests();
       const rejected = licenseRequests.filter(
         (licenseRequest) => licenseRequest.status === 'Rejected',
       );
 
-      expect(rejected.length).toBeGreaterThan(0);
-      expect(rejected.every((licenseRequest) => !!licenseRequest.rejectionReason)).toBe(true);
+      expect(rejected.length).toBeGreaterThan(1);
+      expect(rejected.some((licenseRequest) => !licenseRequest.rejectionReason)).toBe(true);
+      expect(rejected.some((licenseRequest) => !!licenseRequest.rejectionReason)).toBe(true);
     });
   });
 

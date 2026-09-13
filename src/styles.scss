@@ -44,6 +44,14 @@ html {
       on-error: var(--color-error-text),
     )
   );
+
+  // Text buttons (matButton with no appearance) default to a primary-colored M3 state
+  // layer; neutralize it to match icon buttons' on-surface-variant hover/focus/press tint.
+  @include mat.button-overrides(
+    (
+      text-state-layer-color: var(--color-text-muted),
+    )
+  );
 }
 
 ::-webkit-scrollbar {

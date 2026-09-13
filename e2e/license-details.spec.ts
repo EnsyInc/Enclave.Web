@@ -94,16 +94,13 @@ test.describe('renewal request banner', () => {
     await expect(banner).toContainText('Renewing before end of quarter.');
   });
 
-  // The button already links to `/admin/license-requests/:id` in the template, but that
-  // details route isn't registered in app.routes.ts yet (only the `license-requests` list
-  // is) -- clicking it currently 404s via the wildcard redirect to `/not-found`.
-  test.fixme('clicking Review Request navigates to the pending request in the license requests view', async ({
+  test('clicking Review Request navigates to the pending request in the license requests view', async ({
     page,
   }) => {
     await page.goto('/admin/licenses/2');
 
     await page.getByRole('button', { name: 'Review Request' }).click();
 
-    await expect(page).toHaveURL('/admin/license-requests/1');
+    await expect(page).toHaveURL('/admin/license-requests/1?tab=info');
   });
 });

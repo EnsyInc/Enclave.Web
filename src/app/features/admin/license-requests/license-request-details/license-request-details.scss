@@ -1,0 +1,82 @@
+.license-request-details-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: 1rem;
+
+  .license-request-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .action-button {
+      --mat-button-text-container-height: var(--enclave-detail-card-band-min-height);
+
+      div {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--color-text);
+
+        span {
+          align-content: center;
+        }
+      }
+    }
+  }
+}
+
+mat-tab-group {
+  --mat-tab-divider-color: var(--color-border);
+
+  --mat-tab-label-text-size: 1rem;
+  --mat-tab-label-text-weight: 400;
+  --mat-tab-label-text-line-height: 100%;
+  --mat-tab-label-text-tracking: 0;
+
+  ::ng-deep .mdc-tab__text-label {
+    text-transform: uppercase;
+    user-select: none;
+  }
+}
+
+.tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0;
+
+  enclave-detail-row {
+    enclave-status {
+      font-size: 0.75rem;
+      font-weight: 400;
+    }
+  }
+}
+
+mat-divider.mat-divider {
+  border-color: var(--color-border);
+  border-width: 2px;
+}
+
+.license-request-notes {
+  padding: 0 1rem;
+  display: flex;
+  gap: 1rem;
+
+  .responses {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .response {
+    display: flex;
+    flex-direction: column;
+
+    .responder {
+      color: var(--color-text-muted);
+    }
+  }
+}
