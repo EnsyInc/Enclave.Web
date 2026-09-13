@@ -11,6 +11,7 @@ import {
   EnclaveDetailRow,
   EnclaveStatus,
 } from '@enclave/core/components';
+import { EnclavePersistentTab } from '@enclave/core/directives';
 import { EnsyLabsIcon } from '@enclave/core/icons';
 import {
   LicenseService,
@@ -27,6 +28,7 @@ import {
     EnclaveDetailList,
     EnclaveDetailRow,
     EnclaveDetailsHeader,
+    EnclavePersistentTab,
     EnclaveStatus,
     EnsyLabsIcon,
     MatButtonModule,
