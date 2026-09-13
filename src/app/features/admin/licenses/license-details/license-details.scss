@@ -1,0 +1,63 @@
+.license-details-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: 1rem;
+
+  .license-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .action-button {
+      --mat-button-text-container-height: var(--enclave-detail-card-band-min-height);
+
+      div {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--color-text);
+
+        span {
+          align-content: center;
+        }
+      }
+    }
+  }
+}
+
+mat-tab-group {
+  --mat-tab-divider-color: var(--color-border);
+
+  --mat-tab-label-text-size: 1rem;
+  --mat-tab-label-text-weight: 400;
+  --mat-tab-label-text-line-height: 100%;
+  --mat-tab-label-text-tracking: 0;
+
+  ::ng-deep .mdc-tab__text-label {
+    text-transform: uppercase;
+    user-select: none;
+  }
+}
+
+.tab-content {
+  padding: 1rem 0;
+
+  enclave-detail-row {
+    enclave-status {
+      font-size: 0.75rem;
+      font-weight: 400;
+    }
+  }
+}
+
+.expiry-date-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  enclave-time-left {
+    min-width: 5rem;
+  }
+}

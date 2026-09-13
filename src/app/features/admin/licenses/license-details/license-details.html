@@ -1,1 +1,61 @@
-<p>license-details works!</p>
+<div class="license-details-container">
+  <div class="license-details-header">
+    <enclave-details-header
+      [title]="`${product().name} - ${org().name}`"
+      [showTitleAvatar]="true"
+      [status]="license().status"
+    />
+
+    <div>
+      <button class="action-button" matButton>
+        <div>
+          <ensy-labs-icon name="suspend" />
+          <span>Suspend</span>
+        </div></button
+      ><button class="action-button" matButton>
+        <div>
+          <ensy-labs-icon name="revoke" />
+          <span>Revoke</span>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <div class="license-details-content">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" enclavePersistentTab>
+      <mat-tab label="Info">
+        <div class="tab-content">
+          <enclave-detail-card actionButtonIcon="edit" actionButtonText="Edit">
+            <div class="license-info">
+              <enclave-detail-list>
+                <enclave-detail-row label="Product">
+                  {{ product().name }}
+                </enclave-detail-row>
+                <enclave-detail-row label="Organization">
+                  {{ org().name }}
+                </enclave-detail-row>
+                <enclave-detail-row label="Start Date">
+                  {{ license().start | date: 'd MMM y' : 'UTC' }}
+                </enclave-detail-row>
+                <enclave-detail-row label="Expiry Date">
+                  <div class="expiry-date-row">
+                    <span> {{ license().end | date: 'd MMM y' : 'UTC' }}</span>
+                    @if (license().status === 'Active') {
+                      <enclave-time-left [startDate]="license().start" [endDate]="license().end" />
+                    }
+                  </div>
+                </enclave-detail-row>
+                <enclave-detail-row label="Status">
+                  <enclave-status [status]="license().status" />
+                </enclave-detail-row>
+                <enclave-detail-row label="Id">
+                  {{ license().id }}
+                </enclave-detail-row>
+              </enclave-detail-list>
+            </div>
+          </enclave-detail-card>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
