@@ -4,19 +4,19 @@ import { AppShell } from '@enclave/core/layout/app-shell/app-shell';
 import {
   licenseRequestDetailsBreadcrumbResolver,
   licenseRequestDetailsTitleResolver,
-} from '@enclave/features/admin/license-requests';
+} from '@enclave/features/admin/license-requests/license-request-details/license-request.resolver';
 import {
   licenseDetailsBreadcrumbResolver,
   licenseDetailsTitleResolver,
-} from '@enclave/features/admin/licenses';
+} from '@enclave/features/admin/licenses/license-details/license.resolver';
 import {
   organizationDetailsBreadcrumbResolver,
   organizationDetailsTitleResolver,
-} from '@enclave/features/admin/organizations';
+} from '@enclave/features/admin/organizations/organization-details/organization.resolver';
 import {
   productDetailsBreadcrumbResolver,
   productDetailsTitleResolver,
-} from '@enclave/features/admin/products';
+} from '@enclave/features/admin/products/product-details/product.resolver';
 
 export const routes: Routes = [
   {
