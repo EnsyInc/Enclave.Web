@@ -93,3 +93,40 @@ test.describe('Licenses tab', () => {
     ).toBeVisible();
   });
 });
+
+test.describe('Users tab', () => {
+  test('shows the user count and a row per user for the organization', async ({ page }) => {
+    await page.goto('/admin/organizations/1');
+    await page.getByRole('tab', { name: /Users/ }).click();
+
+    await expect(page.locator('.user-count')).toHaveText('4');
+    await expect(page.locator('tr[mat-row]')).toHaveCount(4);
+  });
+
+  test('maps each user row to their full name from firstName and lastName', async ({ page }) => {
+    await page.goto('/admin/organizations/1');
+    await page.getByRole('tab', { name: /Users/ }).click();
+
+    await expect(page.locator('tr[mat-row]', { hasText: 'jamie Ellery' })).toBeVisible();
+    await expect(page.locator('tr[mat-row]', { hasText: 'morgan Feld' })).toBeVisible();
+  });
+
+  test('sorts rows by status when the Status column header is clicked', async ({ page }) => {
+    await page.goto('/admin/organizations/1');
+    await page.getByRole('tab', { name: /Users/ }).click();
+
+    await page.getByRole('columnheader', { name: 'Status' }).click();
+
+    await expect(page.locator('tr[mat-row]').first()).toContainText('Active');
+  });
+
+  test('persists the Users tab across a reload', async ({ page }) => {
+    await page.goto('/admin/organizations/1');
+    await page.getByRole('tab', { name: /Users/ }).click();
+    await expect(page).toHaveURL('/admin/organizations/1?tab=users');
+
+    await page.reload();
+
+    await expect(page.locator('tr[mat-row]')).toHaveCount(4);
+  });
+});
