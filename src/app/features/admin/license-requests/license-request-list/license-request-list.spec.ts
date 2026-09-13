@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
+import { of } from 'rxjs';
 
 import { LicenseRequestList } from './license-request-list';
 
@@ -9,6 +11,17 @@ describe('LicenseRequestList', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LicenseRequestList],
+      providers: [
+        provideRouter([]),
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: { queryParamMap: convertToParamMap({}) },
+            // EnclaveSearchBarFilter, nested in the template, subscribes to this stream directly.
+            queryParamMap: of(convertToParamMap({})),
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LicenseRequestList);

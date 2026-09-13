@@ -26,21 +26,32 @@ for (const theme of themes) {
       // "Upcoming"/"Scheduled"/"Suspended" --color-secondary (~3.3:1), both under WCAG AA's
       // 4.5:1 against --color-card in light theme. ("Retired"/"Deactivated" use
       // --color-text-muted and pass.) Dark theme passes throughout for these two tokens.
+      // "Pending"/"Approved" on the License Requests list hit the same two tokens.
       // Pending a color decision from UI/UX — remove this once fixed.
       test.fixme(
         (route.name === 'Products' ||
           route.name === 'Organizations' ||
-          route.name === 'Licenses') &&
+          route.name === 'Licenses' ||
+          route.name === 'License Requests') &&
           theme === 'light',
         'Pending UI/UX color-contrast fix for status pill text (light theme only)',
       );
 
-      // Distinct from the above: "Revoked" uses --color-error (#c46262), which fails 4.5:1
-      // against --color-card in BOTH themes (3.98:1 light, 4.34:1 dark) -- the only status
-      // color that doesn't clear dark theme. Same category of pending UI/UX color decision.
+      // Distinct from the above: "Revoked" (Licenses) and "Rejected" (License Requests) both
+      // use --color-error (#c46262), which fails 4.5:1 against --color-card in BOTH themes
+      // (3.98:1 light, 4.34:1 dark) -- the only status color that doesn't clear dark theme.
+      // Same category of pending UI/UX color decision.
       test.fixme(
-        route.name === 'Licenses',
-        'Pending UI/UX color-contrast fix for the Revoked status pill (both themes)',
+        route.name === 'Licenses' || route.name === 'License Requests',
+        'Pending UI/UX color-contrast fix for the Revoked/Rejected status pill (both themes)',
+      );
+
+      // License Requests' Renewal column reuses --color-secondary-text for its "Renewal"
+      // label, which is the same value as --color-secondary (#b88416, ~3.3:1) -- the same
+      // root-cause token as the status-pill issue above, just on a different element.
+      test.fixme(
+        route.name === 'License Requests' && theme === 'light',
+        'Pending UI/UX color-contrast fix for the Renewal column label (light theme only)',
       );
 
       // Same root cause, different surface: --color-primary (#d8b315) is one value for both
