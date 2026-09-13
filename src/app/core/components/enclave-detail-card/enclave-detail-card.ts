@@ -12,6 +12,7 @@ import { EnsyLabsIcon, IconName } from '@enclave/core/icons';
   styleUrl: './enclave-detail-card.scss',
 })
 export class EnclaveDetailCard {
+  public readonly title = input('Overview');
   public readonly actionButtonText = input<string>();
   public readonly actionButtonIcon = input<IconName>();
   public readonly actionButtonClicked = output();

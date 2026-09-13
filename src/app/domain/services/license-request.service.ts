@@ -74,6 +74,14 @@ export class LicenseRequestService {
       existingLicenseId: '13',
       status: 'Approved',
     },
+    {
+      id: '9',
+      orgId: '2',
+      productId: '6',
+      userId: '2',
+      requestNotes: 'Trying out Beacon Alerts for the ops team.',
+      status: 'Rejected',
+    },
   ];
 
   public getLicenseRequests(): LicenseRequestModel[] {

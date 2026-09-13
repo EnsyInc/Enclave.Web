@@ -29,6 +29,8 @@ export const IconName = {
   Revoke: 'revoke',
   Renew: 'renew',
   RefArrow: 'ref-arrow',
+  Reject: 'reject',
+  Approve: 'approve',
 } as const;
 export type IconName = (typeof IconName)[keyof typeof IconName];
 

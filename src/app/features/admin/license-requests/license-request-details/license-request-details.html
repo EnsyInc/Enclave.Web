@@ -1,1 +1,98 @@
-<p>license-request-details works!</p>
+<div class="license-request-details-container">
+  <div class="license-request-details-header">
+    <enclave-details-header
+      [title]="`${product().name} - ${org().name}`"
+      [showTitleAvatar]="true"
+      [status]="licenseRequest().status"
+      [subTitle]="license() ? 'Renewal' : 'New License'"
+    />
+
+    @if (licenseRequest().status === 'Pending') {
+      <div>
+        <button class="action-button" matButton>
+          <div>
+            <ensy-labs-icon name="reject" />
+            <span>Reject</span>
+          </div>
+        </button>
+
+        <button class="action-button" matButton>
+          <div>
+            <ensy-labs-icon name="approve" />
+            <span>Approve</span>
+          </div>
+        </button>
+      </div>
+    }
+  </div>
+
+  <div class="license-request-details-content">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" enclavePersistentTab>
+      <mat-tab label="Info">
+        <div class="tab-content">
+          <enclave-detail-card>
+            <div class="license-request-info">
+              <enclave-detail-list>
+                <enclave-detail-row label="Product">
+                  <a [routerLink]="['/admin/products', product().id]">
+                    {{ product().name }}
+                  </a>
+                </enclave-detail-row>
+                <enclave-detail-row label="Organization">
+                  <a [routerLink]="['/admin/organizations', org().id]">
+                    {{ org().name }}
+                  </a>
+                </enclave-detail-row>
+                <enclave-detail-row label="Requested By">
+                  {{ user().email }}
+                </enclave-detail-row>
+                <enclave-detail-row label="Existing License">
+                  @if (license(); as license) {
+                    <a [routerLink]="['/admin/licenses', license.id]"> See existing license </a>
+                  } @else {
+                    None
+                  }
+                </enclave-detail-row>
+                <enclave-detail-row label="Status">
+                  <enclave-status [status]="licenseRequest().status" />
+                </enclave-detail-row>
+              </enclave-detail-list>
+            </div>
+          </enclave-detail-card>
+
+          <enclave-detail-card title="Notes">
+            <div class="license-request-notes">
+              <mat-divider [vertical]="true" />
+              <div class="responses">
+                @if (licenseRequest().status === 'Rejected') {
+                  <div class="response">
+                    <span>
+                      @if (licenseRequest().rejectionReason; as rejectionReason) {
+                        {{ rejectionReason }}
+                      } @else {
+                        <i>No notes</i>
+                      }
+                    </span>
+                    <span class="responder"> Enclave Admin </span>
+                  </div>
+                }
+                <div class="response">
+                  <span>
+                    @if (licenseRequest().requestNotes; as requestNotes) {
+                      {{ requestNotes }}
+                    } @else {
+                      <i>No notes</i>
+                    }
+                  </span>
+                  <span class="responder">
+                    {{ user().email }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </enclave-detail-card>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
