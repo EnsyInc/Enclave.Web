@@ -87,4 +87,10 @@ export class LicenseRequestService {
   public getLicenseRequestsForOrg(orgId: string): LicenseRequestModel[] {
     return this.LICENSE_REQUEST_SEEDS.filter((licenseRequest) => licenseRequest.orgId === orgId);
   }
+
+  public getPendingLicenseRequests(): LicenseRequestModel[] {
+    return this.LICENSE_REQUEST_SEEDS.filter(
+      (licenseRequest) => licenseRequest.status === 'Pending',
+    );
+  }
 }

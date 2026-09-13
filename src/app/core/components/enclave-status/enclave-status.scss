@@ -42,6 +42,15 @@
 :host(.upcoming) {
   --enclave-status-color: var(--color-secondary);
 }
+:host(.pending) {
+  --enclave-status-color: var(--color-secondary);
+}
+:host(.approved) {
+  --enclave-status-color: var(--color-primary);
+}
+:host(.rejected) {
+  --enclave-status-color: var(--color-error);
+}
 
 .status-container {
   display: flex;

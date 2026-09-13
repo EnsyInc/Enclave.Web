@@ -56,14 +56,18 @@ describe('LicenseRequestService', () => {
 
     it('seeds one org with no requests', () => {
       const licenseRequests = service.getLicenseRequests();
-      const orgIdsWithRequests = new Set(licenseRequests.map((licenseRequest) => licenseRequest.orgId));
+      const orgIdsWithRequests = new Set(
+        licenseRequests.map((licenseRequest) => licenseRequest.orgId),
+      );
 
       expect(orgIdsWithRequests.has('6')).toBe(false);
     });
 
     it('gives every rejected request a rejection reason', () => {
       const licenseRequests = service.getLicenseRequests();
-      const rejected = licenseRequests.filter((licenseRequest) => licenseRequest.status === 'Rejected');
+      const rejected = licenseRequests.filter(
+        (licenseRequest) => licenseRequest.status === 'Rejected',
+      );
 
       expect(rejected.length).toBeGreaterThan(0);
       expect(rejected.every((licenseRequest) => !!licenseRequest.rejectionReason)).toBe(true);
@@ -72,7 +76,9 @@ describe('LicenseRequestService', () => {
 
   describe('getLicenseRequestById', () => {
     it('returns the matching license request', () => {
-      expect(service.getLicenseRequestById('1')).toEqual(expect.objectContaining({ id: '1', orgId: '1' }));
+      expect(service.getLicenseRequestById('1')).toEqual(
+        expect.objectContaining({ id: '1', orgId: '1' }),
+      );
     });
 
     it('returns undefined for an unknown id', () => {

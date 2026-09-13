@@ -1,9 +1,9 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   inject,
-  input,
   signal,
   viewChild,
 } from '@angular/core';
@@ -18,6 +18,7 @@ import { map } from 'rxjs';
 import { EnsyLabsIcon } from '@enclave/core/icons';
 import { AppHeader } from '@enclave/core/layout/app-header/app-header';
 import { readLocalStorage, writeLocalStorage } from '@enclave/core/storage/local-storage';
+import { LicenseRequestService } from '@enclave/domain/services';
 
 export const SIDENAV_STORAGE_KEY = 'enclave-sidenav-collapsed';
 
@@ -38,8 +39,9 @@ export const SIDENAV_STORAGE_KEY = 'enclave-sidenav-collapsed';
   styleUrl: './app-shell.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppShell {
+export class AppShell implements AfterViewInit {
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly licenseRequestsService = inject(LicenseRequestService);
   private readonly drawer = viewChild.required<MatSidenav>('drawer');
   private readonly sidenavContainer = viewChild.required(MatSidenavContainer);
   private animationFrameId?: number;
@@ -50,7 +52,12 @@ export class AppShell {
   );
   protected readonly sidenavCollapsed = signal(this.getInitialSidenavCollapseState());
   protected readonly sidenavContentHidden = signal(this.getInitialSidenavCollapseState());
-  protected readonly licenseRequestsCount = input<number>(3);
+  protected readonly licenseRequestsCount = signal<number>(0);
+
+  ngAfterViewInit(): void {
+    const pendingLicenseRequests = this.licenseRequestsService.getPendingLicenseRequests();
+    this.licenseRequestsCount.set(pendingLicenseRequests.length);
+  }
 
   protected onToggleSidenav(): void {
     if (this.isHandset()) {
