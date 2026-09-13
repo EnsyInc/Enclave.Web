@@ -102,4 +102,22 @@ describe('LicenseRequestService', () => {
       expect(service.getLicenseRequestsForOrg('999')).toEqual([]);
     });
   });
+
+  describe('getLicenseRequestsForLicense', () => {
+    it('returns only the license requests renewing/upgrading the given license', () => {
+      const licenseRequests = service.getLicenseRequestsForLicense('2');
+
+      expect(licenseRequests).toEqual([
+        expect.objectContaining({ id: '1', existingLicenseId: '2' }),
+      ]);
+    });
+
+    it('returns an empty array for a license with no requests against it', () => {
+      expect(service.getLicenseRequestsForLicense('1')).toEqual([]);
+    });
+
+    it('returns an empty array for an unknown license id', () => {
+      expect(service.getLicenseRequestsForLicense('999')).toEqual([]);
+    });
+  });
 });

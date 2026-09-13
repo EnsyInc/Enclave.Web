@@ -57,3 +57,35 @@ test.describe('time left indicator', () => {
     await expect(page.locator('enclave-time-left')).toBeVisible();
   });
 });
+
+test.describe('renewal request banner', () => {
+  test('is hidden for a license with no pending renewal request', async ({ page }) => {
+    await page.goto('/admin/licenses/1');
+
+    await expect(page.locator('.license-request-container')).toHaveCount(0);
+  });
+
+  test("shows the requester's email and notes for a license with a pending renewal request", async ({
+    page,
+  }) => {
+    await page.goto('/admin/licenses/2');
+
+    const banner = page.locator('.license-request-container');
+    await expect(banner).toBeVisible();
+    await expect(banner).toContainText('jamie.ellery@northwind.io');
+    await expect(banner).toContainText('Renewing before end of quarter.');
+  });
+
+  // The button already links to `/admin/license-requests/:id` in the template, but that
+  // details route isn't registered in app.routes.ts yet (only the `license-requests` list
+  // is) -- clicking it currently 404s via the wildcard redirect to `/not-found`.
+  test.fixme('clicking Review Request navigates to the pending request in the license requests view', async ({
+    page,
+  }) => {
+    await page.goto('/admin/licenses/2');
+
+    await page.getByRole('button', { name: 'Review Request' }).click();
+
+    await expect(page).toHaveURL('/admin/license-requests/1');
+  });
+});

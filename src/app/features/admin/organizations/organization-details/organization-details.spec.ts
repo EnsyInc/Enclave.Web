@@ -1,6 +1,14 @@
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { ANIMATION_MODULE_TYPE } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import {
+  ActivatedRoute,
+  convertToParamMap,
+  provideRouter,
+  Router,
+  RouterLink,
+} from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 
@@ -40,14 +48,13 @@ const product: ProductModel = {
 interface FixtureOptions {
   licenses?: LicenseModel[];
   users?: UserModel[];
+  router?: { navigate: ReturnType<typeof vi.fn> };
 }
 
 function createFixture(options: FixtureOptions = {}): {
   fixture: ComponentFixture<OrganizationDetails>;
   component: OrganizationDetails;
-  navigate: ReturnType<typeof vi.fn>;
 } {
-  const navigate = vi.fn().mockResolvedValue(true);
   const licenses = options.licenses ?? [];
   const users = options.users ?? [];
 
@@ -72,7 +79,9 @@ function createFixture(options: FixtureOptions = {}): {
         },
       },
       { provide: ProductService, useValue: { getProductById: () => product } },
-      { provide: Router, useValue: { navigate } },
+      // Only stubbed with a fake `navigate` when a test needs to assert on it (persistent-tab
+      // wiring below) -- otherwise a real router lets RouterLink resolve a genuine urlTree.
+      options.router ? { provide: Router, useValue: options.router } : provideRouter([]),
       {
         // enclavePersistentTab, wired to the Info tab in the template, injects this itself.
         provide: ActivatedRoute,
@@ -87,7 +96,7 @@ function createFixture(options: FixtureOptions = {}): {
   const fixture = TestBed.createComponent(OrganizationDetails);
   fixture.componentRef.setInput('organizationId', '1');
 
-  return { fixture, component: fixture.componentInstance, navigate };
+  return { fixture, component: fixture.componentInstance };
 }
 
 // MatTabGroup flips the clicked tab's `isActive` (which lazily attaches its content portal)
@@ -173,7 +182,8 @@ describe('OrganizationDetails', () => {
   // (enclave-persistent-tab.spec.ts) -- this just proves the Info tab is actually wired up with
   // enclavePersistentTab and a reachable Router.navigate.
   it('populates the URL with the Info tab once mounted', async () => {
-    const { fixture, navigate } = createFixture();
+    const navigate = vi.fn().mockResolvedValue(true);
+    const { fixture } = createFixture({ router: { navigate } });
     fixture.detectChanges();
     await fixture.whenStable();
 
@@ -236,6 +246,27 @@ describe('OrganizationDetails', () => {
       const rows: NodeListOf<HTMLElement> =
         fixture.debugElement.nativeElement.querySelectorAll('.licenses-table tr');
       expect(rows[1].textContent).toContain('No licenses yet');
+    });
+
+    it("wires the row's Details menu item to that license's own details page", async () => {
+      const { fixture } = createFixture({ licenses });
+      fixture.detectChanges();
+      await fixture.whenStable();
+      await selectLicensesTab(fixture);
+
+      const overlayContainer = TestBed.inject(OverlayContainer);
+      const trigger: HTMLButtonElement = fixture.debugElement.nativeElement.querySelector(
+        'button[aria-label="Enclave Core actions"]',
+      );
+      trigger.click();
+      fixture.detectChanges();
+
+      const links = fixture.debugElement
+        .queryAll(By.directive(RouterLink))
+        .map((debugEl) => debugEl.injector.get(RouterLink).urlTree?.toString());
+      expect(links).toContain('/admin/licenses/l1');
+
+      overlayContainer.ngOnDestroy();
     });
   });
 
