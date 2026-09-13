@@ -88,6 +88,12 @@ export class LicenseRequestService {
     return this.LICENSE_REQUEST_SEEDS.filter((licenseRequest) => licenseRequest.orgId === orgId);
   }
 
+  public getLicenseRequestsForLicense(licenseId: string): LicenseRequestModel[] {
+    return this.LICENSE_REQUEST_SEEDS.filter(
+      (licenseRequest) => licenseRequest.existingLicenseId === licenseId,
+    );
+  }
+
   public getPendingLicenseRequests(): LicenseRequestModel[] {
     return this.LICENSE_REQUEST_SEEDS.filter(
       (licenseRequest) => licenseRequest.status === 'Pending',
