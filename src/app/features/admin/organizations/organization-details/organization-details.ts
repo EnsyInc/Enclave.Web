@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -29,6 +28,7 @@ import {
 } from '@enclave/core/components';
 import { EnclavePersistentSort, EnclavePersistentTab } from '@enclave/core/directives';
 import { EnsyLabsIcon } from '@enclave/core/icons';
+import { EnclaveDatePipe } from '@enclave/core/pipes';
 import {
   LicenseRequestService,
   LicenseService,
@@ -40,8 +40,8 @@ import {
 @Component({
   selector: 'enclave-organization-details',
   imports: [
-    DatePipe,
     EnclaveAvatar,
+    EnclaveDatePipe,
     EnclaveDetailCard,
     EnclaveDetailList,
     EnclaveDetailRow,

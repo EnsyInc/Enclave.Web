@@ -9,6 +9,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
@@ -18,6 +19,7 @@ import {
   EnclaveAvatar,
   EnclaveSearchBarFilter,
   EnclaveStatus,
+  EnclaveMoreActionsMenu,
 } from '@enclave/core/components';
 import { EnclavePersistentSort } from '@enclave/core/directives';
 import { EnsyLabsIcon } from '@enclave/core/icons';
@@ -28,12 +30,14 @@ import { OrganizationService, UserService } from '@enclave/domain/services';
   selector: 'enclave-organization-list',
   imports: [
     EnclaveAvatar,
+    EnclaveMoreActionsMenu,
     EnclavePageHeader,
     EnclavePersistentSort,
     EnclaveSearchBarFilter,
     EnclaveStatus,
     EnsyLabsIcon,
     MatButtonModule,
+    MatMenuModule,
     MatSortModule,
     MatTableModule,
     RouterLink,
@@ -54,7 +58,16 @@ export class OrganizationList implements AfterViewInit {
     })),
   );
   protected readonly orgCount = computed(() => this.orgRows().length);
-  protected readonly orgDataSource = computed(() => new MatTableDataSource(this.orgRows()));
+  protected readonly orgDataSource = computed(() => {
+    const ds = new MatTableDataSource(this.orgRows());
+    ds.filterPredicate = (row, filter) => {
+      return [row.id, row.name, row.primaryContactEmail, row.status]
+        .join(' ')
+        .toLowerCase()
+        .includes(filter);
+    };
+    return ds;
+  });
   protected readonly displayedColumns = ['name', 'primaryContactEmail', 'status', 'action'];
   protected readonly orgSearch = viewChild.required(EnclaveSearchBarFilter);
   protected readonly orgSort = viewChild.required(MatSort);
