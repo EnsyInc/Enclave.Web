@@ -20,6 +20,10 @@ export class EnclaveSearchBarFilter {
   // Set only from outside the input itself (URL nav) - pushed into the DOM imperatively below.
   // Typing never touches this, so it never fights the browser over the value mid-keystroke.
   private readonly externalSearchText = signal<string | null>(null);
+  // The value from our own most recent router.navigate() call, so its queryParamMap echo can be
+  // told apart from a genuine external navigation (browser back/forward, direct URL edit). null
+  // means we haven't navigated yet, so the initial URL load is always accepted.
+  private lastSentSearchText: string | null = null;
 
   public readonly searchPlaceholder = input.required<string>();
   public readonly urlQueryParamPropagationDebounceTime = input(400);
@@ -30,6 +34,18 @@ export class EnclaveSearchBarFilter {
     // Initial state load from URL and responsiveness to url changes
     this.route.queryParamMap.pipe(takeUntilDestroyed()).subscribe((params) => {
       const value = (params.get(this.urlQueryParamName()) ?? '').trim();
+
+      // router.navigate() is async: its queryParamMap echo can arrive after the user has
+      // already typed something newer. Ignore it in that case so it doesn't stomp the newer
+      // local edit - the newer edit will send its own navigation once its debounce elapses.
+      const isStaleEcho =
+        this.lastSentSearchText !== null &&
+        value === this.lastSentSearchText &&
+        this.searchText() !== this.lastSentSearchText;
+      if (isStaleEcho) {
+        return;
+      }
+
       this.searchText.set(value);
       this.externalSearchText.set(value);
     });
@@ -56,6 +72,8 @@ export class EnclaveSearchBarFilter {
         if (this.router.getCurrentNavigation()) {
           return;
         }
+
+        this.lastSentSearchText = search;
 
         const queryParams: Params = {};
         queryParams[this.urlQueryParamName()] = search || null;
