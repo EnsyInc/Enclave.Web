@@ -1,0 +1,55 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.login-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 10rem;
+
+  .logo {
+    color: var(--color-primary);
+    --ensy-labs-icon-size: 10rem;
+  }
+
+  .auth-options {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 5rem;
+  }
+}
+
+// Fixed Microsoft brand colors per the "Sign in with Microsoft" redlines - not our
+// --color-* tokens, since this button must look the same regardless of app theme.
+.ms-signin-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 41px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background-color: #2f2f2f;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+  .ms-logo {
+    --ensy-labs-icon-size: 21px;
+  }
+}
+
+:host-context([data-theme='light']) .ms-signin-button {
+  background-color: #ffffff;
+  color: #5e5e5e;
+  border-color: #8c8c8c;
+}

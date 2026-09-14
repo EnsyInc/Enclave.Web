@@ -1,0 +1,12 @@
+<div class="login-container">
+  <ensy-labs-icon name="logo-full" class="logo" />
+
+  <div class="auth-options">
+    <div #googleButton class="google-button"></div>
+
+    <button type="button" class="ms-signin-button" (click)="authService.loginWithMicrosoft()">
+      <ensy-labs-icon name="microsoft-logo" class="ms-logo" />
+      <span>Sign in with Microsoft</span>
+    </button>
+  </div>
+</div>
