@@ -20,6 +20,22 @@ describe('LoginPage', () => {
     expect(component).toBeTruthy();
   });
 
+  it('renders a welcome heading and subtitle', () => {
+    const heading = fixture.nativeElement.querySelector('.heading h1');
+    const subtitle = fixture.nativeElement.querySelector('.heading p');
+
+    expect(heading?.textContent?.trim()).toBe('Welcome back');
+    expect(subtitle?.textContent?.trim()).toBe(
+      'Sign in with your organization account to access Enclave',
+    );
+  });
+
+  it('centers the sign-in buttons instead of stretching them to full width', () => {
+    const authOptions = fixture.nativeElement.querySelector('.auth-options');
+
+    expect(getComputedStyle(authOptions).alignItems).toBe('center');
+  });
+
   describe('Microsoft sign-in button', () => {
     let button: HTMLElement;
 
