@@ -130,6 +130,40 @@ describe('EnclaveSearchBarFilter', () => {
     expect(navigateSpy).not.toHaveBeenCalled();
   });
 
+  // Regression: router.navigate() is async, so the queryParamMap echo of a debounced
+  // navigation can arrive after the user has already typed something new (or deleted
+  // everything). That echo must not clobber the newer local edit, and the newer edit's
+  // own debounced navigation must still fire once its debounce elapses.
+  it('does not restore stale search text when a delayed queryParamMap echo arrives after the user already deleted it', () => {
+    vi.useFakeTimers();
+    const input: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
+
+    input.value = 'widgets';
+    input.dispatchEvent(new Event('keyup'));
+    vi.advanceTimersByTime(400);
+    expect(navigateSpy).toHaveBeenCalledTimes(1);
+
+    input.value = '';
+    input.dispatchEvent(new Event('keyup'));
+    expect(component.searchText()).toBe('');
+
+    // The 'widgets' navigation from above resolves late, after the delete.
+    vi.advanceTimersByTime(40);
+    queryParamMap$.next(convertToParamMap({ search: 'widgets' }));
+    fixture.detectChanges();
+
+    expect(component.searchText()).toBe('');
+    expect(input.value).toBe('');
+
+    vi.advanceTimersByTime(360);
+    expect(navigateSpy).toHaveBeenCalledTimes(2);
+    expect(navigateSpy).toHaveBeenLastCalledWith([], {
+      relativeTo: routeStub,
+      queryParams: { search: null },
+      queryParamsHandling: 'merge',
+    });
+  });
+
   it('reads a custom query param name when configured', () => {
     fixture.componentRef.setInput('urlQueryParamName', 'filter');
     queryParamMap$.next(convertToParamMap({ filter: 'widgets' }));

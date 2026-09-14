@@ -25,6 +25,12 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'login',
+    loadComponent: () =>
+      import('@enclave/features/auth/login-page/login-page').then((m) => m.LoginPage),
+    title: 'Login',
+  },
+  {
     path: 'admin',
     component: AppShell,
     data: {

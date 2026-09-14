@@ -31,6 +31,7 @@ export const IconName = {
   RefArrow: 'ref-arrow',
   Reject: 'reject',
   Approve: 'approve',
+  MicrosoftLogo: 'microsoft-logo',
 } as const;
 export type IconName = (typeof IconName)[keyof typeof IconName];
 

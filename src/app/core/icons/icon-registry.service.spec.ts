@@ -56,6 +56,7 @@ describe('IconRegistryService', () => {
       ['ref-arrow', 'icons/ref-arrow.svg'],
       ['reject', 'icons/reject.svg'],
       ['approve', 'icons/approve.svg'],
+      ['microsoft-logo', 'icons/microsoft-logo.svg'],
     ];
 
     // Compare the name lists rather than just the call count: a bare count mismatch reports

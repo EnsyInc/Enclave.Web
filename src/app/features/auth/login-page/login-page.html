@@ -1,0 +1,19 @@
+<div class="login-container">
+  <div class="login-card">
+    <ensy-labs-icon name="logo-full" class="logo" />
+
+    <div class="heading">
+      <h1>Welcome back</h1>
+      <p>Sign in with your organization account to access Enclave</p>
+    </div>
+
+    <div class="auth-options">
+      <!-- Google Sign-In is temporarily disabled - see login-page.ts. -->
+
+      <button type="button" class="ms-signin-button" (click)="authService.loginWithMicrosoft()">
+        <ensy-labs-icon name="microsoft-logo" class="ms-logo" />
+        <span>Sign in with Microsoft</span>
+      </button>
+    </div>
+  </div>
+</div>

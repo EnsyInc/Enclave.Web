@@ -7,10 +7,11 @@ const routes = [
   { name: 'Organizations', path: '/admin/organizations' },
   { name: 'Licenses', path: '/admin/licenses' },
   { name: 'License Requests', path: '/admin/license-requests' },
-  // These two render outside AppShell, so they exercise a different landmark structure than
+  // These three render outside AppShell, so they exercise a different landmark structure than
   // every route above: no sidenav, no header, no skip link -- just the page's own <h1>.
   { name: 'Not Found', path: '/not-found' },
   { name: 'Forbidden', path: '/forbidden' },
+  { name: 'Login', path: '/login' },
 ];
 
 // Matches ThemeService's STORAGE_KEY ('enclave-theme') — see theme.service.ts.
