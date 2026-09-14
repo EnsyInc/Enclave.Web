@@ -1,3 +1,4 @@
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSortHeader } from '@angular/material/sort';
 import { By } from '@angular/platform-browser';
@@ -63,10 +64,11 @@ const unsortedOrgs: OrganizationModel[] = [
 
 function rowNames(fixture: ComponentFixture<OrganizationList>): (string | undefined)[] {
   // enclave-avatar renders its own internal fallback <span> -- select the name span by its
-  // position right after the avatar, not by tag alone, or it'd pick up both.
+  // position right after the avatar (now inside the routerLink <a>), not by tag alone, or it'd
+  // pick up both -- see license-list.spec.ts for the same rationale.
   return Array.from(
     fixture.debugElement.nativeElement.querySelectorAll(
-      'tr[mat-row] .org-name enclave-avatar + span',
+      'tr[mat-row] .org-name enclave-avatar + a span',
     ),
   ).map((el) => (el as HTMLElement).textContent?.trim());
 }
@@ -137,21 +139,36 @@ describe('OrganizationList', () => {
     expect(rows).toHaveLength(3);
   });
 
-  it("wires each row to navigate to that organization's details page", async () => {
+  it('links the organization name to its detail route', async () => {
     const fixture = createFixture();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const rowLinks = fixture.debugElement
+    const nameLink: HTMLAnchorElement =
+      fixture.debugElement.nativeElement.querySelector('.org-name a');
+    expect(nameLink.getAttribute('href')).toBe('/admin/organizations/1');
+  });
+
+  it("wires the row's Details menu item to that organization's details page too", async () => {
+    const fixture = createFixture();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const overlayContainer = TestBed.inject(OverlayContainer);
+    const trigger: HTMLButtonElement = fixture.debugElement.nativeElement.querySelector(
+      'button[aria-label="Alpha Org actions"]',
+    );
+    trigger.click();
+    fixture.detectChanges();
+
+    const links = fixture.debugElement
       .queryAll(By.directive(RouterLink))
       .map((debugEl) => debugEl.injector.get(RouterLink).urlTree?.toString());
+    expect(links).toContain('/admin/organizations/1');
 
-    expect(rowLinks).toEqual([
-      '/admin/organizations/1',
-      '/admin/organizations/2',
-      '/admin/organizations/3',
-    ]);
+    overlayContainer.ngOnDestroy();
   });
 
   it("resolves and displays each organization's primary contact email", async () => {

@@ -4,10 +4,10 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/admin/organizations');
 });
 
-test('clicking an organization row shows the organization page and full breadcrumb', async ({
+test('navigating via the organization name shows the organization page and full breadcrumb', async ({
   page,
 }) => {
-  await page.locator('tr[mat-row]', { hasText: 'Northwind Systems' }).click();
+  await page.getByRole('link', { name: 'Northwind Systems' }).click();
 
   await expect(page).toHaveURL('/admin/organizations/1?tab=info');
   await expect(page.locator('.title')).toHaveText('Northwind Systems');
@@ -17,6 +17,17 @@ test('clicking an organization row shows the organization page and full breadcru
   await expect(breadcrumb).toContainText('Admin');
   await expect(breadcrumb).toContainText('Organizations');
   await expect(breadcrumb).toContainText('Northwind Systems');
+});
+
+test('navigating via the Details menu item shows the organization page too', async ({ page }) => {
+  const row = page.locator('tr[mat-row]', { hasText: 'Northwind Systems' });
+  // The actions button is `visibility: hidden` until the row is hovered/focused (organization-list.scss).
+  await row.hover();
+  await row.getByRole('button', { name: 'Northwind Systems actions' }).click();
+  await page.getByRole('menuitem', { name: 'Details' }).click();
+
+  await expect(page).toHaveURL('/admin/organizations/1?tab=info');
+  await expect(page.locator('.title')).toHaveText('Northwind Systems');
 });
 
 test('renders the resolved status and primary contact email in the header', async ({ page }) => {
