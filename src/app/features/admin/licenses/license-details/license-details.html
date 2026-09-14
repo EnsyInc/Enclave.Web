@@ -48,11 +48,11 @@
                   </a>
                 </enclave-detail-row>
                 <enclave-detail-row label="Start Date">
-                  {{ license().start | date: 'd MMM y' : 'UTC' }}
+                  {{ license().start | enclaveDate }}
                 </enclave-detail-row>
                 <enclave-detail-row label="Expiry Date">
                   <div class="expiry-date-row">
-                    <span> {{ license().end | date: 'd MMM y' : 'UTC' }}</span>
+                    <span> {{ license().end | enclaveDate }}</span>
                     @if (license().status === 'Active') {
                       <enclave-time-left [startDate]="license().start" [endDate]="license().end" />
                     }

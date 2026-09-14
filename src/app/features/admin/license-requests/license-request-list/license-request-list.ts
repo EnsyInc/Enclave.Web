@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -25,6 +24,7 @@ import {
 } from '@enclave/core/components';
 import { EnclavePersistentSort } from '@enclave/core/directives';
 import { EnsyLabsIcon } from '@enclave/core/icons';
+import { EnclaveDatePipe } from '@enclave/core/pipes';
 import { LicenseRequestModel } from '@enclave/domain/models';
 import {
   LicenseRequestService,
@@ -36,8 +36,8 @@ import {
 @Component({
   selector: 'enclave-license-request-list',
   imports: [
-    DatePipe,
     EnclaveAvatar,
+    EnclaveDatePipe,
     EnclaveMoreActionsMenu,
     EnclavePageHeader,
     EnclavePersistentSort,
@@ -84,9 +84,16 @@ export class LicenseRequestList implements AfterViewInit {
       this.licenseRequestRows().filter((licenseRequest) => licenseRequest.status === 'Pending')
         .length,
   );
-  protected readonly licenseRequestDataSource = computed(
-    () => new MatTableDataSource(this.licenseRequestRows()),
-  );
+  protected readonly licenseRequestDataSource = computed(() => {
+    const ds = new MatTableDataSource(this.licenseRequestRows());
+    ds.filterPredicate = (row, filter) => {
+      return [row.orgId, row.organization, row.productId, row.product, row.renewalLabel, row.status]
+        .join(' ')
+        .toLowerCase()
+        .includes(filter);
+    };
+    return ds;
+  });
   protected readonly displayedColumns = ['organization', 'product', 'renewal', 'status', 'action'];
   protected readonly licenseRequestSearch = viewChild.required(EnclaveSearchBarFilter);
   protected readonly licenseRequestSort = viewChild.required(MatSort);

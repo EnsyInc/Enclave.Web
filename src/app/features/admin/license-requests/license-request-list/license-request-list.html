@@ -45,7 +45,7 @@
           <span
             [matTooltip]="
               element.existingLicenseExpiry
-                ? `License expires on: ${(element.existingLicenseExpiry | date: 'd MMM y' : 'UTC')}`
+                ? `License expires on: ${(element.existingLicenseExpiry | enclaveDate)}`
                 : undefined
             "
             [class]="element.renewalLabelClass"

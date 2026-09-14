@@ -60,9 +60,16 @@ export class ProductList implements AfterViewInit {
   protected readonly activeProductsCount = computed(
     () => this.productsList().filter((p) => p.status === 'Active').length,
   );
-  protected readonly productsDataSource = computed(
-    () => new MatTableDataSource(this.productsList()),
-  );
+  protected readonly productsDataSource = computed(() => {
+    const ds = new MatTableDataSource(this.productsList());
+    ds.filterPredicate = (row, filter) => {
+      return [row.id, row.name, row.description, row.status]
+        .join(' ')
+        .toLowerCase()
+        .includes(filter);
+    };
+    return ds;
+  });
   protected readonly displayedColumns = ['name', 'description', 'status', 'action'];
   protected readonly productSearch = viewChild.required(EnclaveSearchBarFilter);
   protected readonly productSort = viewChild.required(MatSort);

@@ -58,7 +58,16 @@ export class OrganizationList implements AfterViewInit {
     })),
   );
   protected readonly orgCount = computed(() => this.orgRows().length);
-  protected readonly orgDataSource = computed(() => new MatTableDataSource(this.orgRows()));
+  protected readonly orgDataSource = computed(() => {
+    const ds = new MatTableDataSource(this.orgRows());
+    ds.filterPredicate = (row, filter) => {
+      return [row.id, row.name, row.primaryContactEmail, row.status]
+        .join(' ')
+        .toLowerCase()
+        .includes(filter);
+    };
+    return ds;
+  });
   protected readonly displayedColumns = ['name', 'primaryContactEmail', 'status', 'action'];
   protected readonly orgSearch = viewChild.required(EnclaveSearchBarFilter);
   protected readonly orgSort = viewChild.required(MatSort);

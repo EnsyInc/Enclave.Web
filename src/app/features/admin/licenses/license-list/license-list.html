@@ -55,7 +55,7 @@
         <div class="license-expiry-date">
           <span>
             @if (element.status === 'Active' || element.status === 'Expired') {
-              {{ element.end | date: 'd MMM y' : 'UTC' }}
+              {{ element.end | enclaveDate }}
             } @else {
               -
             }

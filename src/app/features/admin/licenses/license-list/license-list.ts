@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -26,14 +25,15 @@ import {
 } from '@enclave/core/components';
 import { EnclavePersistentSort } from '@enclave/core/directives';
 import { EnsyLabsIcon } from '@enclave/core/icons';
+import { EnclaveDatePipe } from '@enclave/core/pipes';
 import { LicenseModel } from '@enclave/domain/models';
 import { LicenseService, OrganizationService, ProductService } from '@enclave/domain/services';
 
 @Component({
   selector: 'enclave-license-list',
   imports: [
-    DatePipe,
     EnclaveAvatar,
+    EnclaveDatePipe,
     EnclaveMoreActionsMenu,
     EnclavePageHeader,
     EnclavePersistentSort,
@@ -50,11 +50,13 @@ import { LicenseService, OrganizationService, ProductService } from '@enclave/do
   templateUrl: './license-list.html',
   styleUrl: './license-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [EnclaveDatePipe],
 })
 export class LicenseList implements AfterViewInit {
   private readonly licenseService = inject(LicenseService);
   private readonly orgService = inject(OrganizationService);
   private readonly productService = inject(ProductService);
+  private readonly enclaveDatePipe = inject(EnclaveDatePipe);
 
   protected readonly licenseList = signal<LicenseModel[]>([]);
   protected readonly licenseRows = computed(() =>
@@ -67,12 +69,6 @@ export class LicenseList implements AfterViewInit {
   protected readonly activeLicenseCount = computed(
     () => this.licenseRows().filter((l) => l.status === 'Active').length,
   );
-  protected readonly licenseDataSource = computed(() => {
-    const ds = new MatTableDataSource(this.licenseRows());
-    ds.sortingDataAccessor = licenseSortingDataAccessor;
-    return ds;
-  });
-
   protected readonly displayedColumns = [
     'organization',
     'product',
@@ -81,6 +77,22 @@ export class LicenseList implements AfterViewInit {
     'timeLeft',
     'action',
   ];
+  protected readonly licenseDataSource = computed(() => {
+    const ds = new MatTableDataSource(this.licenseRows());
+    ds.sortingDataAccessor = licenseSortingDataAccessor;
+    ds.filterPredicate = (row, filter) => {
+      const endColumn =
+        row.status === 'Active' || row.status === 'Expired'
+          ? this.enclaveDatePipe.transform(row.end)
+          : '-';
+
+      return [row.orgId, row.organization, row.productId, row.product, row.status, endColumn]
+        .join(' ')
+        .toLowerCase()
+        .includes(filter);
+    };
+    return ds;
+  });
   protected readonly licenseSearch = viewChild.required(EnclaveSearchBarFilter);
   protected readonly licenseSort = viewChild.required(MatSort);
 
